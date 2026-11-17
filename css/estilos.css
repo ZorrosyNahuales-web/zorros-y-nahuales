@@ -133,7 +133,7 @@ nav {
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.98);
 }
 
-/* Inclinaciones sutiles */
+/* Inclinaciones sutiles en computadora */
 .p1, .p7, .p13, .p19 { transform: rotate(-3deg); }
 .p2, .p8, .p14, .p20 { transform: rotate(2deg); }
 .p3, .p9, .p15       { transform: rotate(-2deg); }
@@ -206,7 +206,7 @@ nav {
   opacity: 1;
 }
 
-/* SECCIÓN SOBRE EL COLECTIVO (Conserva la textura de obsidiana al cubrir el título fijo) */
+/* SECCIÓN SOBRE EL COLECTIVO */
 main {
   position: relative;
   z-index: 40;
@@ -285,32 +285,87 @@ footer a {
   border-bottom: 1px solid var(--acento);
 }
 
-/* Adaptación para tablets y celulares */
+/* =========================================================
+   ADAPTACIÓN DE PORTADA Y TAPIZ PARA TABLETS Y CELULARES
+   ========================================================= */
 @media (max-width: 850px) {
   .barra-superior {
     position: static;
-    padding: 1rem;
+    padding: 0.9rem 0.6rem 0.4rem;
   }
-  .escena-principal {
-    grid-template-columns: repeat(3, 1fr);
-    padding-top: 1rem;
+
+  .barra-superior nav {
+    flex-wrap: nowrap;
+    gap: 0.45rem;
   }
+
+  .barra-superior .btn-nav {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    padding: 0.5rem 0.65rem;
+    white-space: nowrap;
+  }
+
   .nucleo-central {
     position: static;
     transform: none;
     grid-column: 1 / -1;
-    margin-bottom: 1rem;
+    padding: 1.2rem 1rem 1.6rem;
+    margin-bottom: 0.5rem;
+    background: none;
   }
+
+  .logo-colectivo {
+    max-height: 82px;
+  }
+
+  .titulo-colectivo {
+    font-size: 2.35rem;
+  }
+
+  .subtitulo-colectivo {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .escena-principal {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.15rem 0.5rem;
+    padding: 0.5rem 0.8rem 2.5rem;
+  }
+
   .foto-performer {
-    height: 150px;
+    flex-direction: column;
+    height: auto;
+    transform: none !important;
+  }
+
+  .foto-performer img {
+    width: 86px;
+    height: 86px;
+    max-width: 86px;
+    max-height: 86px;
+    opacity: 0.9;
+  }
+
+  .foto-performer .nombre-flotante {
+    position: static;
+    opacity: 1;
+    margin-top: 0.35rem;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: rgba(247, 245, 240, 0.82);
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
   }
 }
 
-@media (max-width: 500px) {
-  .escena-principal {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 /* =========================================================
    FICHA DESPLEGABLE (MODAL) ENCIMA DEL TAPIZ
    ========================================================= */
@@ -502,6 +557,7 @@ body.modal-abierto {
     padding: 1.4rem 1.3rem 1.8rem;
   }
 }
+
 /* BLOQUE DE DOSSIERS POR AÑO */
 .dossiers-bloque {
   margin-top: 1.5rem;
@@ -527,6 +583,7 @@ body.modal-abierto {
   min-width: 110px;
   text-align: center;
 }
+
 /* =========================================================
    FONDO FOTOGRÁFICO PARA SOBRE EL COLECTIVO
    ========================================================= */
@@ -602,7 +659,7 @@ main:has(#colectivo) {
         rgba(22, 24, 29, 0) 32%,
         var(--fondo) 46%
       ),
-      url("../img/colectivo.png");
+      url("../img/zorros y nahuales.jpg");
     background-size: 100% auto;
     background-position: top center;
     background-repeat: no-repeat;
