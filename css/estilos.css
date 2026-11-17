@@ -21,20 +21,21 @@ body {
   color: var(--texto);
   font-family: 'Lato', sans-serif;
   line-height: 1.65;
-  padding: 1.2rem 3%;
+  overflow-x: hidden;
 }
 
-/* Barra superior con botones cuadrados rosas */
+/* Barra superior flotante en esquina superior derecha */
 .barra-superior {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 0.8rem;
+  position: fixed;
+  top: 1.2rem;
+  right: 1.5rem;
+  z-index: 50;
 }
 
 nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .btn-nav {
@@ -42,48 +43,53 @@ nav {
   color: var(--texto);
   text-decoration: none;
   font-family: 'Lato', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.6rem 1.05rem;
+  padding: 0.55rem 0.95rem;
   border: 1px solid var(--acento);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
   transition: background-color 0.25s, color 0.25s, transform 0.2s;
 }
 
 .btn-nav:hover {
-  background-color: transparent;
+  background-color: var(--fondo);
   color: var(--acento);
   transform: translateY(-2px);
 }
 
-/* Matriz de 20 Glifos del Tonalpohualli alrededor del núcleo central */
+/* TAPIZ COMPLETO DE 20 GLIFOS (5 columnas x 4 filas = 20 glifos de borde a borde) */
 .escena-principal {
-  min-height: 86vh;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 680px;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(4, minmax(135px, 19vh));
-  grid-template-areas:
-    "p1  p2  p3     p4     p5  p6"
-    "p7  p8  centro centro p9  p10"
-    "p11 p12 centro centro p13 p14"
-    "p15 p16 p17    p18    p19 p20";
-  gap: 0.75rem;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 4px; /* Casi pegados unos con otros sin encimarse */
+  padding: 6px;
   align-items: center;
   justify-items: center;
-  margin-bottom: 4rem;
 }
 
-/* Núcleo central */
+/* NÚCLEO CENTRAL FLOTANDO ENCIMA DEL TAPIZ DE GLIFOS */
 .nucleo-central {
-  grid-area: centro;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 1rem;
-  z-index: 5;
+  padding: 1.6rem 2.4rem;
+  z-index: 20;
+  pointer-events: none; /* Permite hacer clic en los glifos que están justo detrás */
+  background: radial-gradient(circle, rgba(22, 24, 29, 0.92) 35%, rgba(22, 24, 29, 0.55) 70%, transparent 100%);
+  border-radius: 50%;
 }
 
 .logo-colectivo {
@@ -91,51 +97,54 @@ nav {
   width: auto;
   margin-bottom: 0.5rem;
   display: block;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.85));
 }
 
 .titulo-colectivo {
   font-family: 'Londrina Solid', sans-serif;
-  font-size: 3rem;
+  font-size: 3.3rem;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1;
   color: var(--texto);
   margin-bottom: 0.45rem;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.95);
 }
 
 .subtitulo-colectivo {
   font-family: 'Lato', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: var(--acento);
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
-/* Posiciones e inclinaciones orgánicas de los 20 glifos */
-.p1  { grid-area: p1;  transform: rotate(-4deg); }
-.p2  { grid-area: p2;  transform: rotate(3deg); }
-.p3  { grid-area: p3;  transform: rotate(-2deg); }
-.p4  { grid-area: p4;  transform: rotate(4deg); }
-.p5  { grid-area: p5;  transform: rotate(-3deg); }
-.p6  { grid-area: p6;  transform: rotate(3deg); }
-.p7  { grid-area: p7;  transform: rotate(4deg); }
-.p8  { grid-area: p8;  transform: rotate(-3deg); }
-.p9  { grid-area: p9;  transform: rotate(3deg); }
-.p10 { grid-area: p10; transform: rotate(-4deg); }
-.p11 { grid-area: p11; transform: rotate(-3deg); }
-.p12 { grid-area: p12; transform: rotate(2deg); }
-.p13 { grid-area: p13; transform: rotate(-2deg); }
-.p14 { grid-area: p14; transform: rotate(4deg); }
-.p15 { grid-area: p15; transform: rotate(3deg); }
-.p16 { grid-area: p16; transform: rotate(-4deg); }
-.p17 { grid-area: p17; transform: rotate(2deg); }
-.p18 { grid-area: p18; transform: rotate(-3deg); }
-.p19 { grid-area: p19; transform: rotate(4deg); }
-.p20 { grid-area: p20; transform: rotate(-2deg); }
+/* Inclinaciones sutiles de códice vivo */
+.p1  { transform: rotate(-3deg); }
+.p2  { transform: rotate(2deg); }
+.p3  { transform: rotate(-2deg); }
+.p4  { transform: rotate(3deg); }
+.p5  { transform: rotate(-2deg); }
+.p6  { transform: rotate(2deg); }
+.p7  { transform: rotate(-3deg); }
+.p8  { transform: rotate(2deg); }
+.p9  { transform: rotate(-2deg); }
+.p10 { transform: rotate(3deg); }
+.p11 { transform: rotate(-2deg); }
+.p12 { transform: rotate(2deg); }
+.p13 { transform: rotate(-3deg); }
+.p14 { transform: rotate(2deg); }
+.p15 { transform: rotate(-2deg); }
+.p16 { transform: rotate(3deg); }
+.p17 { transform: rotate(-2deg); }
+.p18 { transform: rotate(2deg); }
+.p19 { transform: rotate(-3deg); }
+.p20 { transform: rotate(2deg); }
 
-/* Siluetas recortadas con aura rosa mexicano */
+/* Cada glifo ocupa casi todo el espacio de su celda */
 .foto-performer {
   position: relative;
   display: flex;
@@ -146,27 +155,38 @@ nav {
   background: transparent;
   border: none;
   text-decoration: none;
-  transition: transform 0.35s ease, filter 0.35s ease;
+  z-index: 5;
+  transition: transform 0.35s ease, opacity 0.35s ease, filter 0.35s ease;
 }
 
 .foto-performer img {
-  max-width: 90%;
-  max-height: 90%;
-  width: auto;
-  height: auto;
+  width: 94%;
+  height: 94%;
+  max-width: 230px;
+  max-height: 230px;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 0 6px rgba(230, 0, 126, 0.38));
-  transition: filter 0.35s ease, transform 0.35s ease;
+  /* Estado reposo: ligeramente apagado para no competir con el título central */
+  opacity: 0.72;
+  filter: saturate(0.75) drop-shadow(0 0 4px rgba(230, 0, 126, 0.25));
+  transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
 }
 
+/* EFECTO FOCUS: Cuando el cursor toca UN glifo, los demás 19 se vuelven más opacos y desaturados */
+.escena-principal:has(.foto-performer:hover) .foto-performer:not(:hover) img {
+  opacity: 0.22;
+  filter: saturate(0.15) brightness(0.7);
+}
+
+/* El glifo seleccionado enciende su saturación al 100% y su halo luminoso rosa */
 .foto-performer:hover {
   transform: scale(1.12) rotate(0deg);
-  z-index: 10;
+  z-index: 30; /* Pasa incluso por encima de la sombra del título si lo deseas */
 }
 
 .foto-performer:hover img {
-  filter: drop-shadow(0 0 18px rgba(230, 0, 126, 0.95)) drop-shadow(0 0 6px rgba(255, 110, 190, 0.7));
+  opacity: 1;
+  filter: saturate(1.15) drop-shadow(0 0 18px rgba(230, 0, 126, 0.95)) drop-shadow(0 0 6px rgba(255, 110, 190, 0.75));
 }
 
 /* Etiqueta rosa con el nombre/glifo al pasar el cursor */
@@ -175,7 +195,7 @@ nav {
   bottom: 4px;
   background-color: var(--acento);
   color: var(--texto);
-  padding: 0.2rem 0.6rem;
+  padding: 0.22rem 0.65rem;
   font-family: 'Londrina Solid', sans-serif;
   font-size: 1.05rem;
   letter-spacing: 0.06em;
@@ -184,20 +204,22 @@ nav {
   transition: opacity 0.25s ease;
   pointer-events: none;
   white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
 }
 
 .foto-performer:hover .nombre-flotante {
   opacity: 1;
 }
 
-/* Secciones inferiores */
+/* Secciones inferiores (Sobre el colectivo y Contacto) */
 main {
   max-width: 1100px;
   margin: 0 auto;
+  padding: 0 5%;
 }
 
 section {
-  padding: 3.5rem 0;
+  padding: 4rem 0;
   border-top: 1px solid var(--borde);
   border-bottom: 1px solid var(--borde);
 }
@@ -240,7 +262,7 @@ h2 {
 }
 
 footer {
-  padding: 3rem 0;
+  padding: 3rem 5%;
   font-size: 0.9rem;
   color: var(--texto-suave);
   display: flex;
@@ -258,37 +280,31 @@ footer a {
 }
 
 /* Adaptación para tablets y celulares */
-@media (max-width: 950px) {
+@media (max-width: 850px) {
+  .barra-superior {
+    position: static;
+    justify-content: center;
+    padding: 1rem;
+  }
   .escena-principal {
-    grid-template-columns: repeat(4, 1fr);
+    height: auto;
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
-    grid-template-areas:
-      "centro centro centro centro"
-      "p1  p2  p3  p4"
-      "p5  p6  p7  p8"
-      "p9  p10 p11 p12"
-      "p13 p14 p15 p16"
-      "p17 p18 p19 p20";
+    padding-top: 1rem;
+  }
+  .nucleo-central {
+    position: static;
+    transform: none;
+    grid-column: 1 / -1;
+    margin-bottom: 1.5rem;
   }
   .foto-performer {
-    height: 150px;
+    height: 130px;
   }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 500px) {
   .escena-principal {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-areas:
-      "centro centro"
-      "p1  p2"
-      "p3  p4"
-      "p5  p6"
-      "p7  p8"
-      "p9  p10"
-      "p11 p12"
-      "p13 p14"
-      "p15 p16"
-      "p17 p18"
-      "p19 p20";
   }
 }
