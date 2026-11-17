@@ -589,29 +589,59 @@ main:has(#colectivo) {
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
 }
 
-/* EN CELULAR: FOTO COMPLETA Y NÍTIDA ARRIBA + TEXTO LIMPIO ABAJO */
+/* EN CELULAR: COMPOSICIÓN EDITORIAL EQUILIBRADA */
 @media (max-width: 680px) {
   #colectivo {
     min-height: auto;
-    padding: calc(56.25vw + 2.2rem) 1.4rem 2.5rem;
+    padding: calc(44vw + 0.8rem) 1.4rem 2.2rem;
     background-color: var(--fondo);
     background-image:
       linear-gradient(
         180deg,
-        rgba(22, 24, 29, 0) 0%,
-        rgba(22, 24, 29, 0) 82%,
-        var(--fondo) 100%
+        rgba(22, 24, 29, 0.15) 0%,
+        rgba(22, 24, 29, 0) 32%,
+        var(--fondo) 46%
       ),
-      url("../img/zorros y nahuales.jpg");
+      url("../img/colectivo.png");
     background-size: 100% auto;
     background-position: top center;
     background-repeat: no-repeat;
   }
 
+  #colectivo h2 {
+    font-size: 1.9rem;
+    margin-bottom: 0.9rem;
+  }
+
+  #colectivo .manifiesto-texto {
+    font-size: 0.96rem;
+    line-height: 1.62;
+    margin-bottom: 1rem;
+  }
+
+  .dossiers-bloque {
+    margin-top: 1.4rem;
+  }
+
+  .dossiers-botones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+
+  .dossiers-botones .boton {
+    min-width: 0;
+    width: 100%;
+    padding: 0.7rem 0.5rem;
+    font-size: 0.82rem;
+  }
+
   .credito-foto {
     position: static;
     display: block;
-    margin-top: 2rem;
+    margin-top: 1.6rem;
+    font-size: 0.66rem;
     text-align: right;
+    opacity: 0.75;
   }
 }
