@@ -547,7 +547,7 @@ body.modal-abierto {
       rgba(22, 24, 29, 0.85) 55%,
       rgba(22, 24, 29, 0.65) 100%
     ),
-    url("../img/colectivo.png");
+    url("../img/zorros y nahuales.jpg");
   background-size: cover;
   background-position: center center;
 }
@@ -569,7 +569,7 @@ body.modal-abierto {
         rgba(22, 24, 29, 0.90) 0%,
         rgba(22, 24, 29, 0.84) 100%
       ),
-      url("../img/colectivo.png");
+      url("../img/zorros y nahuales.jpg");
   }
 }
 
