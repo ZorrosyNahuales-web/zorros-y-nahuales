@@ -315,6 +315,12 @@ footer a {
    FICHA DESPLEGABLE (MODAL) ENCIMA DEL TAPIZ
    ========================================================= */
 
+/* Bloquea el scroll de la portada mientras hay una ficha abierta */
+body.modal-abierto {
+  overflow: hidden;
+  height: 100vh;
+}
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -327,6 +333,8 @@ footer a {
   z-index: 100;
   opacity: 0;
   pointer-events: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   transition: opacity 0.3s ease;
 }
 
@@ -339,12 +347,11 @@ footer a {
   position: relative;
   width: 100%;
   max-width: 780px;
-  max-height: 95vh;
-  overflow-y: auto;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 0.5rem;
+  padding: 0.5rem 0 1.5rem;
   transform: translateY(16px) scale(0.97);
   transition: transform 0.35s ease;
 }
@@ -400,7 +407,6 @@ footer a {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
   display: grid;
   grid-template-columns: 270px 1fr;
-  overflow: hidden;
 }
 
 .modal-foto-performance {
@@ -478,17 +484,21 @@ footer a {
 }
 
 @media (max-width: 680px) {
+  .modal-overlay {
+    align-items: flex-start;
+    padding: 1rem;
+  }
   .modal-rectangulo {
     grid-template-columns: 1fr;
   }
   .modal-foto-performance {
-    height: 220px;
-    min-height: 220px;
+    height: 200px;
+    min-height: 200px;
   }
   .modal-glifo-superior img {
-    height: 135px;
+    height: 190px;
   }
   .modal-info {
-    padding: 1.5rem;
+    padding: 1.4rem 1.3rem 1.8rem;
   }
 }
