@@ -21,14 +21,14 @@ body {
   color: var(--texto);
   font-family: 'Lato', sans-serif;
   line-height: 1.65;
-  padding: 1.5rem 3%;
+  padding: 1.2rem 3%;
 }
 
-/* Barra superior con botones cuadrados rosas en la esquina derecha */
+/* Barra superior con botones cuadrados rosas */
 .barra-superior {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.8rem;
 }
 
 nav {
@@ -46,9 +46,8 @@ nav {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.65rem 1.1rem;
+  padding: 0.6rem 1.05rem;
   border: 1px solid var(--acento);
-  border-radius: 0px; /* Cuadrados exactos */
   transition: background-color 0.25s, color 0.25s, transform 0.2s;
 }
 
@@ -58,21 +57,23 @@ nav {
   transform: translateY(-2px);
 }
 
-/* Constelación / Retícula principal con el título al centro */
+/* Constelación tipo Collage orgánico en primera pantalla */
 .escena-principal {
-  min-height: 82vh;
+  min-height: 85vh;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, minmax(210px, 1fr));
+  grid-template-rows: repeat(3, minmax(175px, 24vh));
   grid-template-areas:
     "p1 p2 p3 p4"
     "p5 centro centro p6"
     "p7 p8 p9 p10";
-  gap: 1.2rem;
+  gap: 0.8rem;
+  align-items: center;
+  justify-items: center;
   margin-bottom: 4rem;
 }
 
-/* Bloque central: Logo + Zorros y Nahuales + Subtítulo */
+/* Núcleo central sin caja rígida */
 .nucleo-central {
   grid-area: centro;
   display: flex;
@@ -80,28 +81,26 @@ nav {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 2rem;
-  background-color: var(--fondo);
-  border: 1px solid var(--borde);
-  z-index: 2;
+  padding: 1rem;
+  z-index: 5;
 }
 
 .logo-colectivo {
-  max-height: 85px;
+  max-height: 110px;
   width: auto;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.6rem;
   display: block;
 }
 
 .titulo-colectivo {
   font-family: 'Londrina Solid', sans-serif;
-  font-size: 3.2rem;
+  font-size: 3.3rem;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1;
   color: var(--texto);
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .subtitulo-colectivo {
@@ -113,69 +112,73 @@ nav {
   text-transform: uppercase;
 }
 
-/* Asignación de posiciones alrededor del centro */
-.p1 { grid-area: p1; }
-.p2 { grid-area: p2; }
-.p3 { grid-area: p3; }
-.p4 { grid-area: p4; }
-.p5 { grid-area: p5; }
-.p6 { grid-area: p6; }
-.p7 { grid-area: p7; }
-.p8 { grid-area: p8; }
-.p9 { grid-area: p9; }
-.p10 { grid-area: p10; }
+/* Posiciones e inclinaciones orgánicas de collage */
+.p1 { grid-area: p1; transform: rotate(-4deg); }
+.p2 { grid-area: p2; transform: rotate(3deg); }
+.p3 { grid-area: p3; transform: rotate(-2deg); }
+.p4 { grid-area: p4; transform: rotate(4deg); }
+.p5 { grid-area: p5; transform: rotate(3deg); }
+.p6 { grid-area: p6; transform: rotate(-3deg); }
+.p7 { grid-area: p7; transform: rotate(2deg); }
+.p8 { grid-area: p8; transform: rotate(-3deg); }
+.p9 { grid-area: p9; transform: rotate(4deg); }
+.p10 { grid-area: p10; transform: rotate(-2deg); }
 
-/* Tarjeta fotográfica de cada performer */
+/* Recortes sin borde ni fondo cuadrado */
 .foto-performer {
   position: relative;
-  display: block;
-  overflow: hidden;
-  background-color: var(--superficie);
-  border: 1px solid var(--borde);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
   text-decoration: none;
-  transition: border-color 0.3s ease, transform 0.3s ease;
-}
-
-.foto-performer:hover {
-  border-color: var(--acento);
-  transform: scale(1.02);
-  z-index: 3;
+  transition: transform 0.35s ease, filter 0.35s ease;
 }
 
 .foto-performer img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 95%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain; /* Respeta la silueta recortada PNG sin cortar cabezas ni brazos */
   display: block;
-  transition: filter 0.3s ease;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.foto-performer:hover {
+  transform: scale(1.08) rotate(0deg);
+  z-index: 10;
 }
 
 .foto-performer:hover img {
-  filter: brightness(0.75);
+  filter: drop-shadow(0 0 14px rgba(230, 0, 126, 0.65));
 }
 
-/* Etiqueta con el nombre del artista al pasar el cursor */
+/* Etiqueta rosa con el nombre al pasar el cursor */
 .nombre-flotante {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(22, 24, 29, 0.92));
+  bottom: 8px;
+  background-color: var(--acento);
   color: var(--texto);
-  padding: 1.5rem 1rem 0.8rem;
+  padding: 0.25rem 0.7rem;
   font-family: 'Londrina Solid', sans-serif;
-  font-size: 1.3rem;
-  letter-spacing: 0.05em;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
 }
 
 .foto-performer:hover .nombre-flotante {
   opacity: 1;
 }
 
-/* Secciones inferiores (Sobre el colectivo y Footer) */
+/* Secciones inferiores */
 main {
   max-width: 1100px;
   margin: 0 auto;
@@ -242,7 +245,6 @@ footer a {
   border-bottom: 1px solid var(--acento);
 }
 
-/* Adaptación para celulares y pantallas pequeñas */
 @media (max-width: 850px) {
   .escena-principal {
     grid-template-columns: repeat(2, 1fr);
@@ -256,6 +258,6 @@ footer a {
       "p9 p10";
   }
   .foto-performer {
-    height: 240px;
+    height: 200px;
   }
 }
