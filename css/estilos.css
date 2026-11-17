@@ -1,0 +1,176 @@
+/* Paleta y variables del jardín digital */
+:root {
+  --fondo: #121110;         /* Negro tierra profundo */
+  --superficie: #1c1a18;    /* Gris carbón cálido */
+  --texto: #ece8e1;         /* Blanco hueso */
+  --texto-suave: #a39b90;   /* Tierra clara / ceniza */
+  --acento: #c86d51;        /* Terracota / barro */
+  --borde: #2e2a27;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--fondo);
+  color: var(--texto);
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  padding: 0 5%;
+}
+
+/* Encabezado y navegación */
+header {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--borde);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.titulo-colectivo {
+  font-size: 2.2rem;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.subtitulo-colectivo {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+
+nav a {
+  color: var(--texto);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+nav a:hover {
+  color: var(--acento);
+  border-bottom-color: var(--acento);
+}
+
+/* Secciones generales */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+section {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--borde);
+}
+
+h2 {
+  font-size: 1.4rem;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+  color: var(--texto-suave);
+}
+
+/* Directorio de Performers */
+.grid-performers {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.tarjeta-performer {
+  display: block;
+  text-decoration: none;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.tarjeta-performer:hover {
+  transform: translateY(-4px);
+  border-color: var(--acento);
+}
+
+.tarjeta-performer img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(20%);
+}
+
+.tarjeta-info {
+  padding: 1.2rem;
+}
+
+.tarjeta-info h3 {
+  font-size: 1.15rem;
+  font-weight: normal;
+  margin-bottom: 0.3rem;
+}
+
+.tarjeta-info p {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+/* Manifiesto y Dossier */
+.manifiesto-texto {
+  font-size: 1.2rem;
+  max-width: 750px;
+  margin-bottom: 2rem;
+}
+
+.boton {
+  display: inline-block;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto);
+  border: 1px solid var(--acento);
+  padding: 0.75rem 1.4rem;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.boton:hover {
+  background: var(--acento);
+  color: var(--fondo);
+}
+
+/* Pie de página y contacto */
+footer {
+  padding: 3rem 0;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+footer a {
+  color: var(--texto);
+  text-decoration: none;
+  border-bottom: 1px solid var(--acento);
+}
