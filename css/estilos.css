@@ -1,11 +1,14 @@
-/* Paleta y variables del jardín digital */
+/* Importar tipografías gratuitas desde Google Fonts: Londrina Solid (títulos) y Lato (textos) */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Londrina+Solid:wght@400;900&display=swap');
+
+/* Paleta de identidad: Rosa Mexicano + Negro Carbón + Blanco Hueso */
 :root {
-  --fondo: #121110;         /* Negro tierra profundo */
-  --superficie: #1c1a18;    /* Gris carbón cálido */
-  --texto: #ece8e1;         /* Blanco hueso */
-  --texto-suave: #a39b90;   /* Tierra clara / ceniza */
-  --acento: #c86d51;        /* Terracota / barro */
-  --borde: #2e2a27;
+  --fondo: #16181d;         /* Negro carbón profundo */
+  --superficie: #1f2229;    /* Tarjetas ligeramente más claras */
+  --texto: #f7f5f0;         /* Blanco hueso cálido */
+  --texto-suave: #b5b0a8;   /* Gris claro cálido */
+  --acento: #e6007e;        /* Rosa mexicano vibrante */
+  --borde: #2d313a;
 }
 
 * {
@@ -17,49 +20,73 @@
 body {
   background-color: var(--fondo);
   color: var(--texto);
-  font-family: 'Georgia', serif;
-  line-height: 1.6;
+  font-family: 'Lato', sans-serif;
+  line-height: 1.65;
   padding: 0 5%;
 }
 
-/* Encabezado y navegación */
+/* Encabezado centrado con Logo y Título */
 header {
-  padding: 3rem 0 2rem;
+  padding: 3.5rem 0 2.5rem;
   border-bottom: 1px solid var(--borde);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.2rem;
+}
+
+.marca-central {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo-colectivo {
+  max-height: 95px;
+  width: auto;
+  display: block;
 }
 
 .titulo-colectivo {
-  font-size: 2.2rem;
-  font-weight: normal;
-  letter-spacing: 0.08em;
+  font-family: 'Londrina Solid', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  line-height: 1;
+  color: var(--texto);
 }
 
 .subtitulo-colectivo {
-  font-family: system-ui, sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 0.85rem;
-  color: var(--texto-suave);
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--acento);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
+/* Menú de navegación centrado */
 nav {
   display: flex;
-  gap: 1.5rem;
-  font-family: system-ui, sans-serif;
-  font-size: 0.9rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 0.5rem;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 nav a {
   color: var(--texto);
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 4px;
   transition: border-color 0.3s, color 0.3s;
 }
 
@@ -80,17 +107,19 @@ section {
 }
 
 h2 {
-  font-size: 1.4rem;
-  font-weight: normal;
+  font-family: 'Londrina Solid', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 400;
   letter-spacing: 0.05em;
-  margin-bottom: 1.5rem;
-  color: var(--texto-suave);
+  text-transform: uppercase;
+  margin-bottom: 1.8rem;
+  color: var(--texto);
 }
 
 /* Directorio de Performers */
 .grid-performers {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 2rem;
 }
 
@@ -100,68 +129,73 @@ h2 {
   color: var(--texto);
   background: var(--superficie);
   border: 1px solid var(--borde);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .tarjeta-performer:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   border-color: var(--acento);
+  box-shadow: 0 8px 24px rgba(230, 0, 126, 0.22);
 }
 
 .tarjeta-performer img {
   width: 100%;
-  height: 300px;
+  height: 310px;
   object-fit: cover;
   display: block;
-  filter: grayscale(20%);
 }
 
 .tarjeta-info {
-  padding: 1.2rem;
+  padding: 1.3rem;
 }
 
 .tarjeta-info h3 {
-  font-size: 1.15rem;
-  font-weight: normal;
-  margin-bottom: 0.3rem;
+  font-family: 'Londrina Solid', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
 }
 
 .tarjeta-info p {
-  font-family: system-ui, sans-serif;
-  font-size: 0.85rem;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
   color: var(--texto-suave);
 }
 
 /* Manifiesto y Dossier */
 .manifiesto-texto {
-  font-size: 1.2rem;
-  max-width: 750px;
+  font-size: 1.15rem;
+  font-weight: 300;
+  max-width: 780px;
   margin-bottom: 2rem;
 }
 
 .boton {
   display: inline-block;
-  font-family: system-ui, sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 0.85rem;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--texto);
+  background-color: var(--acento);
   border: 1px solid var(--acento);
-  padding: 0.75rem 1.4rem;
+  padding: 0.85rem 1.6rem;
   text-decoration: none;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .boton:hover {
-  background: var(--acento);
-  color: var(--fondo);
+  background-color: transparent;
+  color: var(--acento);
 }
 
 /* Pie de página y contacto */
 footer {
   padding: 3rem 0;
-  font-family: system-ui, sans-serif;
-  font-size: 0.85rem;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
   color: var(--texto-suave);
   display: flex;
   flex-wrap: wrap;
@@ -173,4 +207,8 @@ footer a {
   color: var(--texto);
   text-decoration: none;
   border-bottom: 1px solid var(--acento);
+}
+
+footer a:hover {
+  color: var(--acento);
 }
