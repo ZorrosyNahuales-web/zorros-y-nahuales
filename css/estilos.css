@@ -8,6 +8,8 @@
   --texto-suave: #b5b0a8;
   --acento: #e6007e;
   --borde: #2d313a;
+  /* Textura mineral de obsidiana en SVG embebido */
+  --textura-obsidiana: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='obsidiana'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23obsidiana)' opacity='0.065'/%3E%3C/svg%3E");
 }
 
 * {
@@ -18,6 +20,11 @@
 
 body {
   background-color: var(--fondo);
+  background-image:
+    var(--textura-obsidiana),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.028) 0%, transparent 32%, rgba(0, 0, 0, 0.25) 55%, rgba(255, 255, 255, 0.02) 78%, transparent 100%),
+    radial-gradient(ellipse at 25% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
   color: var(--texto);
   font-family: 'Lato', sans-serif;
   line-height: 1.65;
@@ -65,7 +72,7 @@ nav {
   transform: translateY(-2px);
 }
 
-/* TAPIZ DE 20 GLIFOS QUE SE MUEVE NATURALMENTE CON EL SCROLL */
+/* TAPIZ DE 20 GLIFOS SOBRE OBSIDIANA */
 .escena-principal {
   position: relative;
   width: 100%;
@@ -75,7 +82,7 @@ nav {
   padding: 5rem 1% 3.5rem;
   align-items: center;
   justify-items: center;
-  background-color: var(--fondo);
+  background-color: transparent;
 }
 
 /* SOLO EL LOGO, TÍTULO Y SUBTÍTULO QUEDAN FIJOS AL CENTRO */
@@ -199,14 +206,17 @@ nav {
   opacity: 1;
 }
 
-/* SECCIÓN SOBRE EL COLECTIVO (Cubre el fondo al bajar para que el título fijo no estorbe el texto) */
+/* SECCIÓN SOBRE EL COLECTIVO (Conserva la textura de obsidiana al cubrir el título fijo) */
 main {
   position: relative;
   z-index: 40;
   background-color: var(--fondo);
+  background-image:
+    var(--textura-obsidiana),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.022) 0%, transparent 45%);
   width: 100%;
   padding: 0 5%;
-  box-shadow: 0 -20px 40px var(--fondo);
+  box-shadow: 0 -24px 48px var(--fondo);
 }
 
 section {
@@ -258,6 +268,7 @@ footer {
   position: relative;
   z-index: 40;
   background-color: var(--fondo);
+  background-image: var(--textura-obsidiana);
   padding: 3rem 5%;
   font-size: 0.9rem;
   color: var(--texto-suave);
