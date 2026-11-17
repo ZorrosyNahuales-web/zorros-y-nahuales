@@ -531,17 +531,22 @@ body.modal-abierto {
    FONDO FOTOGRÁFICO A PANTALLA COMPLETA PARA SOBRE EL COLECTIVO
    ========================================================= */
 main:has(#colectivo) {
-  max-width: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #colectivo {
   position: relative;
-  width: 100%;
+  width: 100vw !important;
+  max-width: 100vw !important;
   min-height: 92vh;
-  margin: 0;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  box-sizing: border-box;
   border-radius: 0;
   border: none;
   border-top: 1px solid rgba(230, 0, 126, 0.3);
@@ -590,7 +595,7 @@ main:has(#colectivo) {
 .credito-foto {
   position: absolute;
   bottom: 1.2rem;
-  right: 1.8rem;
+  right: 2rem;
   z-index: 2;
   font-size: 0.72rem;
   font-weight: 400;
