@@ -139,23 +139,20 @@ nav {
 }
 
 .foto-performer img {
-  max-width: 95%;
-  max-height: 100%;
+  max-width: 92%;
+  max-height: 92%;
   width: auto;
   height: auto;
-  object-fit: contain; /* Respeta la silueta recortada PNG sin cortar cabezas ni brazos */
+  object-fit: contain;
   display: block;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
-  transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-.foto-performer:hover {
-  transform: scale(1.08) rotate(0deg);
-  z-index: 10;
+  /* Aura rosa sutil permanente que sigue la silueta del glifo */
+  filter: drop-shadow(0 0 6px rgba(230, 0, 126, 0.35));
+  transition: filter 0.35s ease, transform 0.35s ease;
 }
 
 .foto-performer:hover img {
-  filter: drop-shadow(0 0 14px rgba(230, 0, 126, 0.65));
+  /* Halo luminoso rosa intenso al pasar el cursor */
+  filter: drop-shadow(0 0 18px rgba(230, 0, 126, 0.95)) drop-shadow(0 0 6px rgba(255, 110, 190, 0.7));
 }
 
 /* Etiqueta rosa con el nombre al pasar el cursor */
