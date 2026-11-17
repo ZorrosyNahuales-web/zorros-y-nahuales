@@ -29,7 +29,7 @@ body {
   position: fixed;
   top: 1.2rem;
   right: 1.5rem;
-  z-index: 50;
+  z-index: 60;
 }
 
 nav {
@@ -59,57 +59,56 @@ nav {
   transform: translateY(-2px);
 }
 
-/* TAPIZ COMPLETO DE 20 GLIFOS (5 columnas x 4 filas = 20 glifos de borde a borde) */
+/* TAPIZ DE 20 GLIFOS QUE SE DESPLAZA CON EL SCROLL */
 .escena-principal {
   position: relative;
   width: 100%;
-  height: 100vh;
-  min-height: 680px;
+  height: auto; /* Crece lo necesario para que NINGÚN glifo se salga por abajo */
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  gap: 4px; /* Casi pegados unos con otros sin encimarse */
-  padding: 6px;
+  gap: 12px 6px;
+  padding: 4.5rem 1% 3rem;
   align-items: center;
   justify-items: center;
+  background-color: var(--fondo);
 }
 
-/* NÚCLEO CENTRAL FLOTANDO ENCIMA DEL TAPIZ DE GLIFOS */
+/* NÚCLEO CENTRAL FIJO AL CENTRO MIENTRAS RECORRES LOS GLIFOS */
 .nucleo-central {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: sticky;
+  top: 32vh;
+  grid-column: 1 / -1;
+  grid-row: 2 / 4;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 1.6rem 2.4rem;
-  z-index: 20;
-  pointer-events: none; /* Permite hacer clic en los glifos que están justo detrás */
-  background: radial-gradient(circle, rgba(22, 24, 29, 0.92) 35%, rgba(22, 24, 29, 0.55) 70%, transparent 100%);
+  padding: 1.5rem 2.5rem;
+  z-index: 25;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(22, 24, 29, 0.92) 38%, rgba(22, 24, 29, 0.55) 72%, transparent 100%);
   border-radius: 50%;
 }
 
 .logo-colectivo {
-  max-height: 105px;
+  max-height: 110px;
   width: auto;
   margin-bottom: 0.5rem;
   display: block;
-  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.85));
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.9));
 }
 
 .titulo-colectivo {
   font-family: 'Londrina Solid', sans-serif;
-  font-size: 3.3rem;
+  font-size: 3.4rem;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1;
   color: var(--texto);
   margin-bottom: 0.45rem;
-  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.95);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.98);
 }
 
 .subtitulo-colectivo {
@@ -119,39 +118,42 @@ nav {
   color: var(--acento);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.98);
 }
 
-/* Inclinaciones sutiles de códice vivo */
-.p1  { transform: rotate(-3deg); }
-.p2  { transform: rotate(2deg); }
-.p3  { transform: rotate(-2deg); }
-.p4  { transform: rotate(3deg); }
-.p5  { transform: rotate(-2deg); }
-.p6  { transform: rotate(2deg); }
-.p7  { transform: rotate(-3deg); }
-.p8  { transform: rotate(2deg); }
-.p9  { transform: rotate(-2deg); }
-.p10 { transform: rotate(3deg); }
-.p11 { transform: rotate(-2deg); }
-.p12 { transform: rotate(2deg); }
-.p13 { transform: rotate(-3deg); }
-.p14 { transform: rotate(2deg); }
-.p15 { transform: rotate(-2deg); }
-.p16 { transform: rotate(3deg); }
-.p17 { transform: rotate(-2deg); }
-.p18 { transform: rotate(2deg); }
-.p19 { transform: rotate(-3deg); }
-.p20 { transform: rotate(2deg); }
+/* Ubicación explícita de los 20 glifos en las 4 filas */
+.p1  { grid-column: 1; grid-row: 1; transform: rotate(-3deg); }
+.p2  { grid-column: 2; grid-row: 1; transform: rotate(2deg); }
+.p3  { grid-column: 3; grid-row: 1; transform: rotate(-2deg); }
+.p4  { grid-column: 4; grid-row: 1; transform: rotate(3deg); }
+.p5  { grid-column: 5; grid-row: 1; transform: rotate(-2deg); }
 
-/* Cada glifo ocupa casi todo el espacio de su celda */
+.p6  { grid-column: 1; grid-row: 2; transform: rotate(2deg); }
+.p7  { grid-column: 2; grid-row: 2; transform: rotate(-3deg); }
+.p8  { grid-column: 3; grid-row: 2; transform: rotate(2deg); }
+.p9  { grid-column: 4; grid-row: 2; transform: rotate(-2deg); }
+.p10 { grid-column: 5; grid-row: 2; transform: rotate(3deg); }
+
+.p11 { grid-column: 1; grid-row: 3; transform: rotate(-2deg); }
+.p12 { grid-column: 2; grid-row: 3; transform: rotate(2deg); }
+.p13 { grid-column: 3; grid-row: 3; transform: rotate(-3deg); }
+.p14 { grid-column: 4; grid-row: 3; transform: rotate(2deg); }
+.p15 { grid-column: 5; grid-row: 3; transform: rotate(-2deg); }
+
+.p16 { grid-column: 1; grid-row: 4; transform: rotate(3deg); }
+.p17 { grid-column: 2; grid-row: 4; transform: rotate(-2deg); }
+.p18 { grid-column: 3; grid-row: 4; transform: rotate(2deg); }
+.p19 { grid-column: 4; grid-row: 4; transform: rotate(-3deg); }
+.p20 { grid-column: 5; grid-row: 4; transform: rotate(2deg); }
+
+/* Tamaño y comportamiento de cada glifo */
 .foto-performer {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 215px;
   background: transparent;
   border: none;
   text-decoration: none;
@@ -160,28 +162,27 @@ nav {
 }
 
 .foto-performer img {
-  width: 94%;
-  height: 94%;
-  max-width: 230px;
-  max-height: 230px;
+  width: 92%;
+  height: 92%;
+  max-width: 210px;
+  max-height: 210px;
   object-fit: contain;
   display: block;
-  /* Estado reposo: ligeramente apagado para no competir con el título central */
   opacity: 0.72;
   filter: saturate(0.75) drop-shadow(0 0 4px rgba(230, 0, 126, 0.25));
   transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
 }
 
-/* EFECTO FOCUS: Cuando el cursor toca UN glifo, los demás 19 se vuelven más opacos y desaturados */
+/* Al tocar un glifo, los demás se opacan */
 .escena-principal:has(.foto-performer:hover) .foto-performer:not(:hover) img {
   opacity: 0.22;
   filter: saturate(0.15) brightness(0.7);
 }
 
-/* El glifo seleccionado enciende su saturación al 100% y su halo luminoso rosa */
+/* Glifo seleccionado a todo color con halo rosa */
 .foto-performer:hover {
   transform: scale(1.12) rotate(0deg);
-  z-index: 30; /* Pasa incluso por encima de la sombra del título si lo deseas */
+  z-index: 30;
 }
 
 .foto-performer:hover img {
@@ -189,7 +190,6 @@ nav {
   filter: saturate(1.15) drop-shadow(0 0 18px rgba(230, 0, 126, 0.95)) drop-shadow(0 0 6px rgba(255, 110, 190, 0.75));
 }
 
-/* Etiqueta rosa con el nombre/glifo al pasar el cursor */
 .nombre-flotante {
   position: absolute;
   bottom: 4px;
@@ -211,8 +211,11 @@ nav {
   opacity: 1;
 }
 
-/* Secciones inferiores (Sobre el colectivo y Contacto) */
+/* SECCIÓN SOBRE EL COLECTIVO (Siempre limpia debajo de todos los glifos) */
 main {
+  position: relative;
+  z-index: 40;
+  background-color: var(--fondo);
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 5%;
@@ -262,6 +265,9 @@ h2 {
 }
 
 footer {
+  position: relative;
+  z-index: 40;
+  background-color: var(--fondo);
   padding: 3rem 5%;
   font-size: 0.9rem;
   color: var(--texto-suave);
@@ -287,19 +293,22 @@ footer a {
     padding: 1rem;
   }
   .escena-principal {
-    height: auto;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
     padding-top: 1rem;
   }
   .nucleo-central {
     position: static;
-    transform: none;
     grid-column: 1 / -1;
-    margin-bottom: 1.5rem;
+    grid-row: 1;
+    margin-bottom: 1rem;
+  }
+  .p1, .p2, .p3, .p4, .p5, .p6, .p7, .p8, .p9, .p10,
+  .p11, .p12, .p13, .p14, .p15, .p16, .p17, .p18, .p19, .p20 {
+    grid-column: auto;
+    grid-row: auto;
   }
   .foto-performer {
-    height: 130px;
+    height: 140px;
   }
 }
 
