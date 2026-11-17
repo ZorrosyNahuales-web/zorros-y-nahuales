@@ -338,12 +338,13 @@ footer a {
 .modal-contenido {
   position: relative;
   width: 100%;
-  max-width: 760px;
-  max-height: 92vh;
+  max-width: 780px;
+  max-height: 95vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 0.5rem;
   transform: translateY(16px) scale(0.97);
   transition: transform 0.35s ease;
 }
@@ -355,7 +356,7 @@ footer a {
 /* Botón cerrar arriba a la derecha */
 .modal-cerrar {
   position: absolute;
-  top: 0;
+  top: 0.5rem;
   right: 0;
   background-color: var(--fondo);
   color: var(--texto);
@@ -374,20 +375,20 @@ footer a {
   color: var(--acento);
 }
 
-/* 1. Glifo agrandado arriba */
+/* 1. Glifo agrandado monumental arriba */
 .modal-glifo-superior {
-  margin-bottom: -18px; /* Se asoma ligeramente sobre el borde superior del rectángulo */
+  margin-bottom: -22px;
   z-index: 5;
   pointer-events: none;
 }
 
 .modal-glifo-superior img {
-  height: 175px;
+  height: 285px;
   width: auto;
-  max-width: 240px;
+  max-width: 360px;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 0 22px rgba(230, 0, 126, 0.9)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.9));
+  filter: drop-shadow(0 0 26px rgba(230, 0, 126, 0.95)) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.95));
 }
 
 /* 2. Rectángulo inferior con foto de performance, semblanza y enlaces */
