@@ -543,7 +543,7 @@ body.modal-abierto {
       rgba(22, 24, 29, 0.85) 55%,
       rgba(22, 24, 29, 0.68) 100%
     ),
-    url("../img/colectivo.png");
+    url("../img/zorros y nahuales.jpg");
   background-size: cover;
   background-position: center center;
 }
@@ -565,6 +565,27 @@ body.modal-abierto {
         rgba(22, 24, 29, 0.90) 0%,
         rgba(22, 24, 29, 0.84) 100%
       ),
-      url("../img/colectivo.png");
+      url("../img/zorros y nahuales.jpg");
+  }
+}
+/* CRÉDITO FOTOGRÁFICO EN ESQUINA INFERIOR DERECHA */
+.credito-foto {
+  position: absolute;
+  bottom: 0.9rem;
+  right: 1.2rem;
+  z-index: 2;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(247, 245, 240, 0.72);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
+}
+
+@media (max-width: 680px) {
+  .credito-foto {
+    position: static;
+    display: block;
+    margin-top: 1.5rem;
+    text-align: right;
   }
 }
