@@ -527,3 +527,44 @@ body.modal-abierto {
   min-width: 110px;
   text-align: center;
 }
+/* =========================================================
+   FONDO FOTOGRÁFICO PARA LA SECCIÓN SOBRE EL COLECTIVO
+   ========================================================= */
+#colectivo {
+  position: relative;
+  border-radius: 4px;
+  padding: 3.5rem 2.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(230, 0, 126, 0.25);
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(22, 24, 29, 0.94) 0%,
+      rgba(22, 24, 29, 0.85) 55%,
+      rgba(22, 24, 29, 0.68) 100%
+    ),
+    url("../img/colectivo.png");
+  background-size: cover;
+  background-position: center center;
+}
+
+#colectivo h2,
+#colectivo .manifiesto-texto,
+#colectivo .dossiers-bloque {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
+
+@media (max-width: 680px) {
+  #colectivo {
+    padding: 2.2rem 1.4rem;
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(22, 24, 29, 0.90) 0%,
+        rgba(22, 24, 29, 0.84) 100%
+      ),
+      url("../img/colectivo.png");
+  }
+}
