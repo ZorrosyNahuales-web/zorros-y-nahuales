@@ -250,12 +250,14 @@
 
         modal.classList.add("activo");
         modal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-abierto");
       });
     });
 
     function cerrarModal() {
       modal.classList.remove("activo");
       modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-abierto");
     }
 
     btnCerrar.addEventListener("click", cerrarModal);
