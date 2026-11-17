@@ -1,13 +1,12 @@
-/* Importar tipografías gratuitas desde Google Fonts: Londrina Solid (títulos) y Lato (textos) */
+/* Tipografías de Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Londrina+Solid:wght@400;900&display=swap');
 
-/* Paleta de identidad: Rosa Mexicano + Negro Carbón + Blanco Hueso */
 :root {
-  --fondo: #16181d;         /* Negro carbón profundo */
-  --superficie: #1f2229;    /* Tarjetas ligeramente más claras */
-  --texto: #f7f5f0;         /* Blanco hueso cálido */
-  --texto-suave: #b5b0a8;   /* Gris claro cálido */
-  --acento: #e6007e;        /* Rosa mexicano vibrante */
+  --fondo: #16181d;
+  --superficie: #1f2229;
+  --texto: #f7f5f0;
+  --texto-suave: #b5b0a8;
+  --acento: #e6007e;
   --borde: #2d313a;
 }
 
@@ -22,80 +21,161 @@ body {
   color: var(--texto);
   font-family: 'Lato', sans-serif;
   line-height: 1.65;
-  padding: 0 5%;
+  padding: 1.5rem 3%;
 }
 
-/* Encabezado centrado con Logo y Título */
-header {
-  padding: 3.5rem 0 2.5rem;
-  border-bottom: 1px solid var(--borde);
+/* Barra superior con botones cuadrados rosas en la esquina derecha */
+.barra-superior {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn-nav {
+  background-color: var(--acento);
+  color: var(--texto);
+  text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid var(--acento);
+  border-radius: 0px; /* Cuadrados exactos */
+  transition: background-color 0.25s, color 0.25s, transform 0.2s;
+}
+
+.btn-nav:hover {
+  background-color: transparent;
+  color: var(--acento);
+  transform: translateY(-2px);
+}
+
+/* Constelación / Retícula principal con el título al centro */
+.escena-principal {
+  min-height: 82vh;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, minmax(210px, 1fr));
+  grid-template-areas:
+    "p1 p2 p3 p4"
+    "p5 centro centro p6"
+    "p7 p8 p9 p10";
+  gap: 1.2rem;
+  margin-bottom: 4rem;
+}
+
+/* Bloque central: Logo + Zorros y Nahuales + Subtítulo */
+.nucleo-central {
+  grid-area: centro;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   text-align: center;
-  gap: 1.2rem;
-}
-
-.marca-central {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
+  padding: 2rem;
+  background-color: var(--fondo);
+  border: 1px solid var(--borde);
+  z-index: 2;
 }
 
 .logo-colectivo {
-  max-height: 95px;
+  max-height: 85px;
   width: auto;
+  margin-bottom: 0.8rem;
   display: block;
 }
 
 .titulo-colectivo {
   font-family: 'Londrina Solid', sans-serif;
-  font-size: 3.5rem;
+  font-size: 3.2rem;
   font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1;
   color: var(--texto);
+  margin-bottom: 0.6rem;
 }
 
 .subtitulo-colectivo {
   font-family: 'Lato', sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: var(--acento);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-/* Menú de navegación centrado */
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 0.5rem;
-  font-family: 'Lato', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+/* Asignación de posiciones alrededor del centro */
+.p1 { grid-area: p1; }
+.p2 { grid-area: p2; }
+.p3 { grid-area: p3; }
+.p4 { grid-area: p4; }
+.p5 { grid-area: p5; }
+.p6 { grid-area: p6; }
+.p7 { grid-area: p7; }
+.p8 { grid-area: p8; }
+.p9 { grid-area: p9; }
+.p10 { grid-area: p10; }
 
-nav a {
-  color: var(--texto);
+/* Tarjeta fotográfica de cada performer */
+.foto-performer {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background-color: var(--superficie);
+  border: 1px solid var(--borde);
   text-decoration: none;
-  border-bottom: 2px solid transparent;
-  padding-bottom: 4px;
-  transition: border-color 0.3s, color 0.3s;
+  transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
-nav a:hover {
-  color: var(--acento);
-  border-bottom-color: var(--acento);
+.foto-performer:hover {
+  border-color: var(--acento);
+  transform: scale(1.02);
+  z-index: 3;
 }
 
-/* Secciones generales */
+.foto-performer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+.foto-performer:hover img {
+  filter: brightness(0.75);
+}
+
+/* Etiqueta con el nombre del artista al pasar el cursor */
+.nombre-flotante {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(22, 24, 29, 0.92));
+  color: var(--texto);
+  padding: 1.5rem 1rem 0.8rem;
+  font-family: 'Londrina Solid', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.foto-performer:hover .nombre-flotante {
+  opacity: 1;
+}
+
+/* Secciones inferiores (Sobre el colectivo y Footer) */
 main {
   max-width: 1100px;
   margin: 0 auto;
@@ -103,6 +183,7 @@ main {
 
 section {
   padding: 3.5rem 0;
+  border-top: 1px solid var(--borde);
   border-bottom: 1px solid var(--borde);
 }
 
@@ -112,58 +193,10 @@ h2 {
   font-weight: 400;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.5rem;
   color: var(--texto);
 }
 
-/* Directorio de Performers */
-.grid-performers {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-}
-
-.tarjeta-performer {
-  display: block;
-  text-decoration: none;
-  color: var(--texto);
-  background: var(--superficie);
-  border: 1px solid var(--borde);
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.tarjeta-performer:hover {
-  transform: translateY(-5px);
-  border-color: var(--acento);
-  box-shadow: 0 8px 24px rgba(230, 0, 126, 0.22);
-}
-
-.tarjeta-performer img {
-  width: 100%;
-  height: 310px;
-  object-fit: cover;
-  display: block;
-}
-
-.tarjeta-info {
-  padding: 1.3rem;
-}
-
-.tarjeta-info h3 {
-  font-family: 'Londrina Solid', sans-serif;
-  font-size: 1.45rem;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  margin-bottom: 0.25rem;
-}
-
-.tarjeta-info p {
-  font-family: 'Lato', sans-serif;
-  font-size: 0.9rem;
-  color: var(--texto-suave);
-}
-
-/* Manifiesto y Dossier */
 .manifiesto-texto {
   font-size: 1.15rem;
   font-weight: 300;
@@ -183,7 +216,7 @@ h2 {
   border: 1px solid var(--acento);
   padding: 0.85rem 1.6rem;
   text-decoration: none;
-  transition: background 0.3s, transform 0.2s;
+  transition: background 0.3s, color 0.3s;
 }
 
 .boton:hover {
@@ -191,16 +224,16 @@ h2 {
   color: var(--acento);
 }
 
-/* Pie de página y contacto */
 footer {
   padding: 3rem 0;
-  font-family: 'Lato', sans-serif;
   font-size: 0.9rem;
   color: var(--texto-suave);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 footer a {
@@ -209,6 +242,20 @@ footer a {
   border-bottom: 1px solid var(--acento);
 }
 
-footer a:hover {
-  color: var(--acento);
+/* Adaptación para celulares y pantallas pequeñas */
+@media (max-width: 850px) {
+  .escena-principal {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "centro centro"
+      "p1 p2"
+      "p3 p4"
+      "p5 p6"
+      "p7 p8"
+      "p9 p10";
+  }
+  .foto-performer {
+    height: 240px;
+  }
 }
