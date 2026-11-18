@@ -1,1 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trayectoria | Zorros y Nahuales</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <!-- Leaflet CSS (Mapa interactivo libre) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <style>
+    /* =========================================================
+       ESTILOS ESPECÍFICOS DE TRAYECTORIA Y MAPA VIVO
+       ========================================================= */
+    .barra-trayectoria {
+      position: sticky;
+      top: 0;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(180deg, rgba(22, 24, 29, 0.96) 65%, rgba(22, 24, 29, 0) 100%);
+      pointer-events: auto;
+    }
 
+    .cabecera-pagina {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.2rem 5% 1.6rem;
+      text-align: center;
+    }
+
+    .cabecera-pagina .etiqueta-superior {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.4rem;
+    }
+
+    .cabecera-pagina h1 {
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.05;
+      margin-bottom: 0.8rem;
+    }
+
+    .cabecera-pagina p {
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1.02rem;
+      font-weight: 300;
+      color: var(--texto-suave);
+    }
+
+    /* Leyenda de marcadores */
+    .leyenda-mapa {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.4rem;
+      margin-top: 1.3rem;
+      font-size: 0.8rem;
+      color: var(--texto-suave);
+    }
+
+    .leyenda-item {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .leyenda-muestra {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .leyenda-muestra img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--acento);
+      background-color: var(--fondo);
+    }
+
+    .leyenda-muestra img + img {
+      margin-left: -7px;
+      border-color: #b46cff;
+    }
+
+    /* Contenedor del Mapa */
+    .contenedor-mapa {
+      max-width: 1160px;
+      margin: 0 auto 3.5rem;
+      padding: 0 5%;
+    }
+
+    .marco-mapa {
+      position: relative;
+      width: 100%;
+      height: 540px;
+      border: 1px solid rgba(230, 0, 126, 0.45);
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.75);
+      background-color: #111317;
+      overflow: hidden;
+    }
+
+    #mapa-trayectoria {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background-color: #111317;
+    }
+
+    /* Marcadores circulares personalizados */
+    .pin-colectivo {
+      background: transparent !important;
+      border: none !important;
+    }
+
+    .pin-grupo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+
+    .pin-grupo:hover {
+      transform: scale(1.16);
+      z-index: 999 !important;
+    }
+
+    .pin-circulo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: var(--fondo);
+      border: 2px solid var(--acento);
+      box-shadow: 0 0 14px rgba(230, 0, 126, 0.8), 0 4px 10px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pin-circulo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Segundo círculo entrelazado para colaboraciones */
+    .pin-circulo.colaboracion {
+      margin-left: -11px;
+      border-color: #c27aff;
+      box-shadow: 0 0 14px rgba(194, 122, 255, 0.75), 0 4px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Etiqueta de año debajo del marcador */
+    .pin-etiqueta-anio {
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--fondo);
+      color: var(--texto);
+      border: 1px solid var(--acento);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 1px 6px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* Popup oscuro personalizado de Leaflet */
+    .leaflet-popup-content-wrapper {
+      background-color: var(--superficie) !important;
+      background-image: var(--textura-obsidiana) !important;
+      color: var(--texto) !important;
+      border: 1px solid var(--acento) !important;
+      border-radius: 0 !important;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.92) !important;
+      padding: 0 !important;
+    }
+
+    .leaflet-popup-tip {
+      background-color: var(--acento) !important;
+    }
+
+    .leaflet-popup-close-button {
+      color: var(--texto) !important;
+      font-size: 1.3rem !important;
+      padding: 6px 10px !important;
+    }
+
+    .leaflet-popup-close-button:hover {
+      color: var(--acento) !important;
+    }
+
+    .leaflet-popup-content {
+      margin: 0 !important;
+      width: 285px !important;
+      font-family: 'Lato', sans-serif !important;
+    }
+
+    .popup-ficha {
+      padding: 1.15rem 1.2rem 1.2rem;
+    }
+
+    .popup-logos {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .popup-logos img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--acento);
+      background-color: var(--fondo);
+    }
+
+    .popup-logos img.logo-aliada {
+      margin-left: -12px;
+      border-color: #c27aff;
+    }
+
+    .popup-alianza-texto {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--texto-suave);
+      line-height: 1.25;
+    }
+
+    .popup-fecha {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.2rem;
+    }
+
+    .popup-sede {
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      color: var(--texto);
+      margin-bottom: 0.55rem;
+    }
+
+    .popup-resumen {
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.55;
+      color: var(--texto);
+      margin: 0;
+    }
+
+    /* Bitácora cronológica debajo del mapa */
+    .bitacora-trayectoria {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 5% 4.5rem;
+    }
+
+    .bitacora-cabecera {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--borde);
+    }
+
+    .bitacora-cabecera h2 {
+      margin-bottom: 0;
+      font-size: 1.8rem;
+    }
+
+    .filtros-anio {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .btn-filtro {
+      background-color: transparent;
+      color: var(--texto-suave);
+      border: 1px solid var(--borde);
+      padding: 0.45rem 0.9rem;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-filtro:hover,
+    .btn-filtro.activo {
+      background-color: var(--acento);
+      border-color: var(--acento);
+      color: var(--texto);
+    }
+
+    .grid-hitos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.3rem;
+    }
+
+    .tarjeta-hito {
+      background-color: var(--superficie);
+      background-image: var(--textura-obsidiana);
+      border: 1px solid var(--borde);
+      padding: 1.4rem 1.5rem;
+      cursor: pointer;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tarjeta-hito:hover {
+      border-color: var(--acento);
+      transform: translateY(-3px);
+    }
+
+    .tarjeta-hito.oculto {
+      display: none;
+    }
+
+    .hito-superior {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hito-logos {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .hito-logos img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--acento);
+      background-color: var(--fondo);
+    }
+
+    .hito-logos img + img {
+      margin-left: -10px;
+      border-color: #c27aff;
+    }
+
+    .hito-fecha {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.2rem;
+    }
+
+    .hito-titulo {
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      color: var(--texto);
+    }
+
+    .hito-colaboracion {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #c27aff;
+      margin-top: 0.25rem;
+    }
+
+    .hito-descripcion {
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--texto-suave);
+      margin-top: 0.65rem;
+    }
+
+    .hito-ver-mapa {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--texto);
+      border-bottom: 1px solid var(--acento);
+      align-self: flex-start;
+    }
+
+    @media (max-width: 720px) {
+      .marco-mapa {
+        height: 410px;
+      }
+
+      .grid-hitos {
+        grid-template-columns: 1fr;
+      }
+
+      .leaflet-popup-content {
+        width: 245px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA SUPERIOR -->
+  <header class="barra-superior barra-trayectoria">
+    <nav>
+      <a href="index.html" class="btn-nav">Inicio</a>
+      <a href="trayectoria.html" class="btn-nav">Trayectoria</a>
+      <a href="blog.html" class="btn-nav">Blog</a>
+      <a href="eventos.html" class="btn-nav">Eventos Activos</a>
+    </nav>
+  </header>
+
+  <!-- CABECERA -->
+  <section class="cabecera-pagina" style="border: none;">
+    <p class="etiqueta-superior">Cartografía viva · 2024 – 2026</p>
+    <h1>Trayectoria y Territorios</h1>
+    <p>
+      Explora los espacios comunitarios, recintos culturales y encuentros donde Zorros y Nahuales ha tejido redes de performance y artes vivas. Toca cada emblema en el mapa para desplegar su memoria.
+    </p>
+
+    <div class="leyenda-mapa">
+      <div class="leyenda-item">
+        <span class="leyenda-muestra">
+          <img src="img/logo.png" alt="Zorros y Nahuales">
+        </span>
+        <span>Zorros y Nahuales</span>
+      </div>
+      <div class="leyenda-item">
+        <span class="leyenda-muestra">
+          <img src="img/logo.png" alt="Zorros y Nahuales">
+          <img src="img/jacarandas .png" alt="Colectiva Jacarandas y Violetas">
+        </span>
+        <span>En colaboración con Colectiva Jacarandas y Violetas</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAPA INTERACTIVO -->
+  <div class="contenedor-mapa">
+    <div class="marco-mapa">
+      <div id="mapa-trayectoria"></div>
+    </div>
+  </div>
+
+  <!-- BITÁCORA CRONOLÓGICA SINCRONIZADA CON EL MAPA -->
+  <div class="bitacora-trayectoria">
+    <div class="bitacora-cabecera">
+      <h2>Archivo de Encuentros</h2>
+      <div class="filtros-anio">
+        <button class="btn-filtro activo" data-anio="todos">Todos</button>
+        <button class="btn-filtro" data-anio="2026">2026</button>
+        <button class="btn-filtro" data-anio="2025">2025</button>
+        <button class="btn-filtro" data-anio="2024">2024</button>
+      </div>
+    </div>
+
+    <div class="grid-hitos" id="lista-hitos"></div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <div>
+      <strong>Contacto para programación y gestión:</strong><br>
+      Correo: <a href="mailto:zorrosynahuales@gmail.com">zorrosynahuales@gmail.com</a> · Instagram: <a href="https://instagram.com/zorrosynahuales" target="_blank">@zorrosynahuales</a>
+    </div>
+    <div>
+      Archivo vivo de Zorros y Nahuales.<br>
+      Cartografía de encuentros y colaboraciones.
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script>
+    // =========================================================
+    // BASE DE DATOS DE ENCUENTROS (EDITA AQUÍ RESÚMENES O FECHAS)
+    // =========================================================
+    const encuentros = [
+      {
+        id: "faro-aragon-2024",
+        anio: "2024",
+        fecha: "1 y 2 de noviembre de 2024",
+        sede: "FARO Aragón",
+        ubicacion: "Gustavo A. Madero, CDMX",
+        coords: [19.4839, -99.0706],
+        colaboracion: "En colaboración con Colectiva Jacarandas y Violetas",
+        logos: ["img/logo.png", "img/jacarandas .png"],
+        resumen: "Encuentro de artes vivas y performance realizado en conjunto con la Colectiva Jacarandas y Violetas en el marco de las jornadas de noviembre en FARO Aragón."
+      },
+      {
+        id: "faro-oriente-2024",
+        anio: "2024",
+        fecha: "Mediados de noviembre de 2024",
+        sede: "FARO Oriente",
+        ubicacion: "Iztapalapa, CDMX",
+        coords: [19.3712, -99.0137],
+        colaboracion: "En colaboración con Colectiva Jacarandas y Violetas",
+        logos: ["img/logo.png", "img/jacarandas .png"],
+        resumen: "Segunda activación territorial junto a la Colectiva Jacarandas y Violetas, abriendo espacio para acciones performáticas y diálogo comunitario en el oriente de la ciudad."
+      },
+      {
+        id: "museo-unam-hoy-2025",
+        anio: "2025",
+        fecha: "28 de noviembre de 2025",
+        sede: "Museo UNAM Hoy",
+        ubicacion: "Centro Histórico, CDMX",
+        coords: [19.4342, -99.1325],
+        colaboracion: "",
+        logos: ["img/logo.png"],
+        resumen: "Programa de performance y artes vivas gestionado por Zorros y Nahuales en el recinto universitario del Centro Histórico, articulando cuerpo, memoria y espacio museístico."
+      },
+      {
+        id: "nezahualcoyotl-2026",
+        anio: "2026",
+        fecha: "24 de octubre de 2026",
+        sede: "Ciudad Nezahualcóyotl",
+        ubicacion: "Nezahualcóyotl, Estado de México",
+        coords: [19.4006, -99.0148],
+        colaboracion: "",
+        logos: ["img/logo.png"],
+        resumen: "Activación escénica y ciclo de performance de Zorros y Nahuales en Nezahualcóyotl, expandiendo las redes de acompañamiento y cuidado hacia la periferia oriente."
+      }
+    ];
+
+    // Inicializar mapa centrado en el Valle de México
+    const mapa = L.map('mapa-trayectoria', {
+      center: [19.423, -99.062],
+      zoom: 11,
+      scrollWheelZoom: false
+    });
+
+    // Capa oscura CartoDB Dark Matter (estética obsidiana sin costo ni llaves)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(mapa);
+
+    const marcadoresPorId = {};
+    const contenedorLista = document.getElementById('lista-hitos');
+
+    encuentros.forEach(ev => {
+      const esColab = ev.logos.length > 1;
+
+      // Construir icono circular simple o doble entrelazado
+      const htmlLogosPin = esColab
+        ? `<div class="pin-grupo">
+             <div class="pin-circulo"><img src="${ev.logos[0]}" alt="Zorros y Nahuales"></div>
+             <div class="pin-circulo colaboracion"><img src="${ev.logos[1]}" alt="Jacarandas y Violetas"></div>
+             <span class="pin-etiqueta-anio">${ev.anio}</span>
+           </div>`
+        : `<div class="pin-grupo">
+             <div class="pin-circulo"><img src="${ev.logos[0]}" alt="Zorros y Nahuales"></div>
+             <span class="pin-etiqueta-anio">${ev.anio}</span>
+           </div>`;
+
+      const iconoPersonalizado = L.divIcon({
+        className: 'pin-colectivo',
+        html: htmlLogosPin,
+        iconSize: esColab ? [82, 54] : [50, 54],
+        iconAnchor: esColab ? [41, 24] : [25, 24],
+        popupAnchor: [0, -24]
+      });
+
+      // Contenido de la tarjeta desplegable al picarle al lugar
+      const htmlPopup = `
+        <div class="popup-ficha">
+          <div class="popup-logos">
+            <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
+            ${esColab ? `<img src="${ev.logos[1]}" class="logo-aliada" alt="Jacarandas y Violetas">` : ''}
+            <span class="popup-alianza-texto">${ev.colaboracion || 'Zorros y Nahuales'}</span>
+          </div>
+          <div class="popup-fecha">${ev.fecha}</div>
+          <div class="popup-sede">${ev.sede}</div>
+          <p class="popup-resumen">${ev.resumen}</p>
+        </div>
+      `;
+
+      const marcador = L.marker(ev.coords, { icon: iconoPersonalizado })
+        .addTo(mapa)
+        .bindPopup(htmlPopup, { maxWidth: 300 });
+
+      marcadoresPorId[ev.id] = marcador;
+
+      // Crear tarjeta sincronizada en la bitácora inferior
+      const tarjeta = document.createElement('article');
+      tarjeta.className = 'tarjeta-hito';
+      tarjeta.dataset.anio = ev.anio;
+      tarjeta.innerHTML = `
+        <div>
+          <div class="hito-superior">
+            <div>
+              <div class="hito-fecha">${ev.fecha} · ${ev.ubicacion}</div>
+              <h3 class="hito-titulo">${ev.sede}</h3>
+              ${ev.colaboracion ? `<div class="hito-colaboracion">${ev.colaboracion}</div>` : ''}
+            </div>
+            <div class="hito-logos">
+              <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
+              ${esColab ? `<img src="${ev.logos[1]}" alt="Jacarandas y Violetas">` : ''}
+            </div>
+          </div>
+          <p class="hito-descripcion">${ev.resumen}</p>
+        </div>
+        <span class="hito-ver-mapa">Ubicar en el mapa &rarr;</span>
+      `;
+
+      tarjeta.addEventListener('click', () => {
+        document.getElementById('mapa-trayectoria').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        mapa.flyTo(ev.coords, 14, { duration: 1.1 });
+        setTimeout(() => {
+          marcador.openPopup();
+        }, 650);
+      });
+
+      contenedorLista.appendChild(tarjeta);
+    });
+
+    // Filtros por año en la bitácora
+    const botonesFiltro = document.querySelectorAll('.btn-filtro');
+    botonesFiltro.forEach(btn => {
+      btn.addEventListener('click', () => {
+        botonesFiltro.forEach(b => b.classList.remove('activo'));
+        btn.classList.add('activo');
+        const anioSeleccionado = btn.dataset.anio;
+
+        document.querySelectorAll('.tarjeta-hito').forEach(card => {
+          if (anioSeleccionado === 'todos' || card.dataset.anio === anioSeleccionado) {
+            card.classList.remove('oculto');
+          } else {
+            card.classList.add('oculto');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
