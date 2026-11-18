@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <style>
     /* =========================================================
-       OHTLI · ALTAR CARDINAL CON LOS 4 DIOSES POR FUERA DEL MAPA
+       OHTLI · ALTAR CARDINAL CON UMBRAL DE LOS 4 DIOSES
        ========================================================= */
     .barra-trayectoria {
       position: sticky;
@@ -22,7 +22,7 @@
     .cabecera-ohtli {
       max-width: 980px;
       margin: 0 auto;
-      padding: 1.6rem 5% 0.8rem;
+      padding: 1.5rem 5% 0.6rem;
       text-align: center;
     }
 
@@ -42,60 +42,76 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       line-height: 1;
-      margin-bottom: 0.55rem;
+      margin-bottom: 0.5rem;
     }
 
     .cabecera-ohtli p {
       max-width: 640px;
       margin: 0 auto;
-      font-size: 0.96rem;
+      font-size: 0.95rem;
       font-weight: 300;
       color: var(--texto-suave);
     }
 
     /* =========================================================
-       ALTAR CARDINAL: 4 DIOSES ALREDEDOR + MAPA LEGIBLE AL CENTRO
+       ALTAR CARDINAL: LOS 4 DIOSES CRUZANDO EL BORDE DEL MAPA
        ========================================================= */
     .altar-cardinal {
-      max-width: 1280px;
-      margin: 1.2rem auto 3.5rem;
-      padding: 0 3%;
-      display: grid;
-      grid-template-columns: 145px 1fr 145px;
-      grid-template-rows: auto minmax(470px, 1fr) auto;
-      grid-template-areas:
-        ".        norte    ."
-        "poniente mapa     oriente"
-        ".        sur      .";
-      gap: 0.9rem;
-      align-items: center;
-      justify-items: center;
+      position: relative;
+      max-width: 1120px;
+      width: 86%;
+      margin: 5.2rem auto 5.8rem;
     }
 
-    .deidad-norte    { grid-area: norte; }
-    .deidad-sur      { grid-area: sur; }
-    .deidad-poniente { grid-area: poniente; }
-    .deidad-oriente  { grid-area: oriente; }
+    /* Marco del Mapa Central más grande y 100% legible */
+    .marco-mapa {
+      position: relative;
+      width: 100%;
+      height: 560px;
+      border: 1px solid rgba(230, 0, 126, 0.65);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
+      background-color: #161920;
+      overflow: hidden;
+      z-index: 10;
+    }
 
+    #mapa-trayectoria {
+      width: 100%;
+      height: 100%;
+      background-color: #161920;
+    }
+
+    #mapa-trayectoria .leaflet-tile-pane {
+      filter: invert(100%) hue-rotate(190deg) brightness(94%) contrast(104%) saturate(45%);
+    }
+
+    /* Popups siempre por encima de los dioses */
+    .leaflet-popup-pane {
+      z-index: 900 !important;
+    }
+
+    /* Deidades montadas exactamente a la mitad del borde del mapa */
     .deidad-rumbo {
+      position: absolute;
+      z-index: 500;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      opacity: 0.44;
-      filter: grayscale(40%);
+      opacity: 0.55;
+      filter: grayscale(35%) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.95));
       transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
-      padding: 0.35rem;
+      pointer-events: none;
     }
 
-    /* Solo Tezcatlipoca (Norte) y Quetzalcóatl (Oriente) son interactivos al clic */
     .deidad-interactiva {
       cursor: pointer;
+      pointer-events: auto;
     }
 
     .deidad-rumbo img {
-      width: 96px;
-      height: 96px;
+      width: 142px;
+      height: 142px;
       object-fit: contain;
       mix-blend-mode: screen;
       -webkit-mask-image: radial-gradient(circle, #000 58%, transparent 96%);
@@ -107,50 +123,57 @@
       font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--texto-suave);
-      margin-top: 0.25rem;
+      color: var(--texto);
+      background: rgba(13, 15, 18, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 3px 9px;
+      margin-top: -6px;
       line-height: 1.25;
-      transition: color 0.35s ease;
+      transition: color 0.35s ease, border-color 0.35s ease;
     }
 
+    /* Posición de umbral: mitad afuera, mitad adentro del borde del mapa */
+    .deidad-norte {
+      top: -72px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .deidad-sur {
+      bottom: -82px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .deidad-poniente {
+      top: 50%;
+      left: -72px;
+      transform: translateY(-50%);
+    }
+
+    .deidad-oriente {
+      top: 50%;
+      right: -72px;
+      transform: translateY(-50%);
+    }
+
+    /* Iluminación ritual al acercarse o interactuar */
     .deidad-interactiva:hover,
     .deidad-rumbo.iluminado {
       opacity: 1;
-      transform: scale(1.08);
     }
 
     .deidad-norte:hover,
-    .deidad-norte.iluminado    { filter: grayscale(0%) drop-shadow(0 0 18px rgba(180, 108, 255, 0.9)); }
-    .deidad-sur.iluminado      { filter: grayscale(0%) drop-shadow(0 0 18px rgba(46, 196, 182, 0.9)); }
-    .deidad-poniente.iluminado { filter: grayscale(0%) drop-shadow(0 0 18px rgba(230, 57, 70, 0.95)); }
+    .deidad-norte.iluminado    { transform: translateX(-50%) scale(1.07); filter: grayscale(0%) drop-shadow(0 0 22px rgba(180, 108, 255, 0.95)); }
+    .deidad-sur.iluminado      { transform: translateX(-50%) scale(1.07); filter: grayscale(0%) drop-shadow(0 0 22px rgba(46, 196, 182, 0.95)); }
+    .deidad-poniente.iluminado { transform: translateY(-50%) scale(1.07); filter: grayscale(0%) drop-shadow(0 0 22px rgba(230, 57, 70, 0.95)); }
     .deidad-oriente:hover,
-    .deidad-oriente.iluminado  { filter: grayscale(0%) drop-shadow(0 0 18px rgba(247, 245, 240, 0.85)); }
+    .deidad-oriente.iluminado  { transform: translateY(-50%) scale(1.07); filter: grayscale(0%) drop-shadow(0 0 22px rgba(247, 245, 240, 0.9)); }
 
     .deidad-interactiva:hover .deidad-etiqueta,
     .deidad-rumbo.iluminado .deidad-etiqueta {
       color: var(--acento);
-    }
-
-    /* Marco del Mapa Central 100% despejado y legible */
-    .marco-mapa {
-      grid-area: mapa;
-      position: relative;
-      width: 100%;
-      height: 510px;
-      border: 1px solid rgba(230, 0, 126, 0.55);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.88);
-      background-color: #161920;
-      overflow: hidden;
-    }
-
-    #mapa-trayectoria {
-      width: 100%;
-      height: 100%;
-      background-color: #161920;
-    }
-
-    #mapa-trayectoria .leaflet-tile-pane {
-      filter: invert(100%) hue-rotate(190deg) brightness(94%) contrast(104%) saturate(45%);
+      border-color: var(--acento);
     }
 
     /* =========================================================
@@ -465,23 +488,23 @@
 
     @media (max-width: 860px) {
       .altar-cardinal {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto 400px auto;
-        grid-template-areas:
-          "norte    poniente"
-          "mapa     mapa"
-          "oriente  sur";
-        gap: 0.75rem;
-      }
-
-      .deidad-rumbo img {
-        width: 68px;
-        height: 68px;
+        width: 92%;
+        margin: 3.8rem auto 4.5rem;
       }
 
       .marco-mapa {
-        height: 400px;
+        height: 420px;
       }
+
+      .deidad-rumbo img {
+        width: 88px;
+        height: 88px;
+      }
+
+      .deidad-norte { top: -44px; }
+      .deidad-sur   { bottom: -52px; }
+      .deidad-poniente { left: -18px; }
+      .deidad-oriente  { right: -18px; }
 
       .grid-hitos {
         grid-template-columns: 1fr;
@@ -508,22 +531,22 @@
     <p>Explora el territorio del Valle de México custodiado por los cuatro rumbos. Toca los emblemas del mapa o las deidades del Norte y Oriente para recorrer sus activaciones.</p>
   </section>
 
-  <!-- ALTAR CARDINAL CON LOS 4 DIOSES POR FUERA DEL MAPA -->
+  <!-- ALTAR CARDINAL CON LOS 4 DIOSES CRUZANDO EL BORDE DEL MAPA -->
   <div class="altar-cardinal" id="altar-cardinal">
 
     <!-- NORTE: TEZCATLIPOCA (INTERACTIVO) -->
     <div class="deidad-rumbo deidad-norte deidad-interactiva" id="dios-norte" title="Ir al Norte · FARO Aragón">
       <img src="img/tezcatlipoca.png" alt="Tezcatlipoca · Norte" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Norte<br>Tezcatlipoca</span>
+      <span class="deidad-etiqueta">Norte · Tezcatlipoca</span>
     </div>
 
     <!-- PONIENTE / OESTE: XIPE TÓTEC -->
     <div class="deidad-rumbo deidad-poniente" id="dios-poniente">
       <img src="img/xipe-totec.png" alt="Xipe Tótec · Poniente" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Poniente<br>Xipe Tótec</span>
+      <span class="deidad-etiqueta">Poniente · Xipe Tótec</span>
     </div>
 
-    <!-- MAPA CENTRAL 100% DESPEJADO Y LEGIBLE -->
+    <!-- MAPA CENTRAL MÁS AMPLIO Y LEGIBLE -->
     <div class="marco-mapa">
       <div id="mapa-trayectoria"></div>
     </div>
@@ -531,13 +554,13 @@
     <!-- ORIENTE / ESTE: QUETZALCÓATL (INTERACTIVO) -->
     <div class="deidad-rumbo deidad-oriente deidad-interactiva" id="dios-oriente" title="Ir al Oriente · FARO Oriente y Nezahualcóyotl">
       <img src="img/quetzalcoatl.png" alt="Quetzalcóatl · Oriente" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Oriente<br>Quetzalcóatl</span>
+      <span class="deidad-etiqueta">Oriente · Quetzalcóatl</span>
     </div>
 
     <!-- SUR: HUITZILOPOCHTLI -->
     <div class="deidad-rumbo deidad-sur" id="dios-sur">
       <img src="img/huitzilopochtli.png" alt="Huitzilopochtli · Sur" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Sur<br>Huitzilopochtli</span>
+      <span class="deidad-etiqueta">Sur · Huitzilopochtli</span>
     </div>
 
   </div>
