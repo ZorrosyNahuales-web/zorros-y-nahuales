@@ -15,7 +15,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      z-index: 1100;
+      z-index: 1200;
       padding: 0.9rem 1.5rem;
       background: linear-gradient(180deg, rgba(13, 15, 18, 0.95) 55%, rgba(13, 15, 18, 0) 100%);
       pointer-events: auto;
@@ -32,17 +32,19 @@
       overflow: hidden;
     }
 
+    /* z-index 460 asegura que los popups de Leaflet siempre queden POR ENCIMA de los dioses */
     #mapa-trayectoria {
+      position: relative;
       width: 100%;
       height: 100%;
-      z-index: 1;
-      background-color: #0d0f12;
+      z-index: 460;
+      background-color: transparent;
     }
 
-    /* Estilo obsidiana minimalista sobre OpenStreetMap (sin API key y sin ruido visual) */
+    /* Estilo obsidiana minimalista: siluetas sutiles sin competir con dioses ni pins */
     #mapa-trayectoria .leaflet-tile-pane {
-      filter: invert(100%) hue-rotate(195deg) brightness(62%) contrast(125%) saturate(25%);
-      opacity: 0.72;
+      filter: invert(100%) hue-rotate(195deg) brightness(52%) contrast(135%) saturate(15%);
+      opacity: 0.44;
     }
 
     /* Viñeta oscura periférica para integrar el mapa y los dioses */
@@ -50,9 +52,9 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, transparent 42%, rgba(11, 13, 16, 0.92) 95%);
+      background: radial-gradient(circle at center, transparent 40%, rgba(10, 12, 15, 0.94) 94%);
       pointer-events: none;
-      z-index: 400;
+      z-index: 470;
     }
 
     /* Título flotante arriba a la izquierda con respaldo sutil */
@@ -63,7 +65,7 @@
       z-index: 520;
       pointer-events: none;
       max-width: 280px;
-      background: linear-gradient(135deg, rgba(13, 15, 18, 0.88) 65%, rgba(13, 15, 18, 0) 100%);
+      background: linear-gradient(135deg, rgba(13, 15, 18, 0.9) 65%, rgba(13, 15, 18, 0) 100%);
       padding: 0.75rem 1rem;
       border-left: 2px solid var(--acento);
     }
@@ -96,27 +98,27 @@
     }
 
     /* =========================================================
-       DEIDADES DE LOS 4 RUMBOS EMPALMADAS EN EL MAPA (COMPACTAS)
+       DEIDADES DE LOS 4 RUMBOS EMPALMADAS EN EL MAPA (z-index 420)
        ========================================================= */
     .deidad-rumbo {
       position: absolute;
-      z-index: 450;
+      z-index: 420;
       pointer-events: none;
       display: flex;
       flex-direction: column;
       align-items: center;
-      opacity: 0.3;
+      opacity: 0.28;
       filter: grayscale(45%) contrast(110%);
       transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
     }
 
     .deidad-rumbo img {
-      width: clamp(80px, 9.5vw, 125px);
+      width: clamp(78px, 9vw, 118px);
       height: auto;
       object-fit: contain;
       mix-blend-mode: screen;
-      -webkit-mask-image: radial-gradient(circle, #000 58%, transparent 96%);
-      mask-image: radial-gradient(circle, #000 58%, transparent 96%);
+      -webkit-mask-image: radial-gradient(circle, #000 56%, transparent 95%);
+      mask-image: radial-gradient(circle, #000 56%, transparent 95%);
     }
 
     .deidad-etiqueta {
@@ -140,7 +142,7 @@
     }
 
     .deidad-sur {
-      bottom: 0.9rem;
+      bottom: 0.8rem;
       left: 50%;
       transform: translateX(-50%);
     }
@@ -254,7 +256,7 @@
       color: var(--texto) !important;
       border: 1px solid var(--acento) !important;
       border-radius: 0 !important;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95) !important;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.98) !important;
       padding: 0 !important;
     }
 
@@ -507,7 +509,7 @@
       }
 
       .deidad-rumbo img {
-        width: 64px;
+        width: 60px;
       }
 
       .deidad-oriente { right: 0.3rem; }
@@ -653,8 +655,8 @@
       }
     ];
 
-    // Centro base del Valle de México
-    const centroBase = { lat: 19.423, lng: -99.062 };
+    // Centro ajustado para que los 4 pins queden libres entre los 4 dioses
+    const centroBase = { lat: 19.402, lng: -99.068 };
 
     const mapa = L.map('mapa-trayectoria', {
       center: [centroBase.lat, centroBase.lng],
