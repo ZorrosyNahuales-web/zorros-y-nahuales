@@ -893,21 +893,9 @@ main:has(#colectivo) {
   }
 }
 /* =========================================================
-   FIJAR HERO EN SU LUGAR (EVITA QUE EL LOGO BAJE AL HACER SCROLL)
+   EVITAR QUE .nucleo-central SE ASOME SOBRE EL FORMULARIO
    ========================================================= */
-.hero-contenido,
-.contenido-hero,
-.portada-contenido,
-.titulo-principal-contenedor {
-  position: relative !important;
-  top: auto !important;
-  transform: none !important;
-  z-index: 2 !important;
-}
-
-.buzon-vinculacion,
-section,
-footer {
+.buzon-vinculacion {
   position: relative;
-  z-index: 5;
+  z-index: 40;
 }
