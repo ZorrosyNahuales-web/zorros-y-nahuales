@@ -11,11 +11,9 @@
        OHTLI · ALTAR CARDINAL CON UMBRAL DE LOS 4 DIOSES
        ========================================================= */
     .barra-trayectoria {
-      position: sticky;
-      top: 0;
-      z-index: 1200;
-      padding: 0.9rem 1.5rem;
-      background: linear-gradient(180deg, rgba(22, 24, 29, 0.96) 65%, rgba(22, 24, 29, 0) 100%);
+      position: relative;
+      padding: 1.2rem 1.5rem 0.6rem;
+      background: transparent;
       pointer-events: auto;
     }
 
@@ -592,6 +590,35 @@
       margin-top: 0.65rem;
     }
 
+    .hito-creditos-extra {
+      margin-top: 0.85rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.76rem;
+      line-height: 1.55;
+      color: var(--texto-suave);
+    }
+
+    .hito-creditos-extra strong {
+      color: var(--texto);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+    }
+
+    .hito-creditos-extra a {
+      color: #c27aff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(194, 122, 255, 0.45);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .hito-creditos-extra a:hover {
+      color: var(--texto);
+      border-color: var(--acento);
+    }
+
     .hito-ver-mapa {
       display: inline-block;
       margin-top: 1.1rem;
@@ -608,7 +635,6 @@
        AJUSTES RESPONSIVOS PARA CELULAR (PANTALLAS <= 860PX)
        ========================================================= */
     @media (max-width: 860px) {
-      /* 1. Barra superior sin sticky para que no tape la lectura en pantalla chica */
       .barra-trayectoria {
         position: relative;
         padding: 0.75rem 0.75rem 0.4rem;
@@ -635,7 +661,6 @@
         font-size: 0.88rem;
       }
 
-      /* 2. Altar Cardinal reorganizado: Mapa limpio + Rosa de los 4 Rumbos en rejilla */
       .altar-cardinal {
         width: 92%;
         margin: 1.4rem auto 2.5rem;
@@ -650,14 +675,12 @@
         height: 360px;
       }
 
-      /* Ocultar atribución estorbosa de Leaflet en móvil para limpiar el borde */
       .leaflet-control-attribution {
         font-size: 0.55rem !important;
         background: rgba(13, 15, 18, 0.75) !important;
         color: rgba(255, 255, 255, 0.5) !important;
       }
 
-      /* Deidades pasan de flotar en los bordes a ser tarjetas cardinales debajo del mapa */
       .deidad-rumbo {
         position: static;
         transform: none !important;
@@ -697,7 +720,6 @@
         letter-spacing: 0.1em;
       }
 
-      /* 3. Ficha popup centrada y cómoda en pantalla de teléfono */
       .tarjeta-popup-superior {
         top: 0.6rem;
         width: 94%;
@@ -708,7 +730,6 @@
         height: 135px;
       }
 
-      /* 4. Archivo de encuentros a 1 columna */
       .bitacora-cabecera {
         flex-direction: column;
         align-items: flex-start;
@@ -866,7 +887,8 @@
         imagenArchivo: "img/faroaragon.png",
         creditoFoto: "Fotografía: Luisa Luna Valle “T21V”, 2024.",
         resumenMapa: "Participación en la exposición Ohtli Mictlán, dirigida por Jacarandas y Violetas, con el performance “Voces de la muerte y el viento”.<br><strong>Sede:</strong> Faro Aragón",
-        resumenArchivo: "En el marco de las jornadas de noviembre en FARO Aragón, se expuso por parte del colectivo el performance en vivo “Voces de la muerte y el viento” dentro del evento Caminando entre los muertos y la exposición fotográfica Ohtli Mictlán, dirigida por la colectiva Jacarandas y Violetas."
+        resumenArchivo: "En el marco de las jornadas de noviembre en FARO Aragón, se expuso por parte del colectivo el performance en vivo “Voces de la muerte y el viento” dentro del evento Caminando entre los muertos y la exposición fotográfica Ohtli Mictlán, dirigida por la colectiva Jacarandas y Violetas.",
+        creditosExtraHtml: ""
       },
       {
         id: "faro-oriente-2024",
@@ -882,7 +904,35 @@
         imagenArchivo: "img/farooriente.png",
         creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2024.",
         resumenMapa: "Participación en la exposición Ohtli Mictlán, dirigida por Jacarandas y Violetas, con el performance “Voces de la muerte y el viento”.<br><strong>Sede:</strong> Faro Oriente",
-        resumenArchivo: "Reperformance de “Voces de la muerte y el viento” en el marco de la exposición Ohtli Mictlán dirigida por Jacarandas y Violetas."
+        resumenArchivo: "Reperformance de “Voces de la muerte y el viento” en el marco de la exposición Ohtli Mictlán dirigida por Jacarandas y Violetas.",
+        creditosExtraHtml: ""
+      },
+      {
+        id: "cantina-salon-isabel-2025",
+        rumbo: "centro",
+        anio: "2025",
+        fecha: "21 de febrero de 2025",
+        sede: "Cantina Salón Isabel · Galería Margot",
+        ubicacion: "Centro Histórico, CDMX",
+        coords: [19.4316, -99.1388],
+        colaboracion: "Evento dirigido por Galería Margot",
+        logos: ["img/logo.png"],
+        imagenMapa: "img/margot.png",
+        imagenArchivo: "img/margot.png",
+        creditoFoto: "Fotografía: Julio López, 2025.",
+        resumenMapa: "Reperformance colectivo de “Tezcatlipoca Nepantlami” dentro de un evento dirigido por Galería Margot.<br><strong>Sede:</strong> Cantina Salón Isabel, Centro Histórico",
+        resumenArchivo: "Reperformance de la pieza “Tezcatlipoca Nepantlami” dentro de un encuentro dirigido por Galería Margot. Tezcatlipoca Nepantlami es una acción performática colectiva que se articula como un tránsito ritual desde el exterior hacia el espacio expositivo. A través de una procesión silenciosa, la invocación simbólica y el uso del cuerpo como soporte ceremonial, la pieza activa un umbral donde mito, presencia y acción se entrelazan. El performance culmina en un estado de trance ritual, integrando respiración, canto y lectura de manifiesto.",
+        creditosExtraHtml: `
+          <div><strong>Performers:</strong>
+            <a href="https://www.instagram.com/itza.suarez00/" target="_blank" rel="noopener">@itza.suarez00</a>,
+            <a href="https://www.instagram.com/yonosoy.cesar/" target="_blank" rel="noopener">@yonosoy.cesar</a>,
+            <a href="https://www.instagram.com/elizz_moraa/" target="_blank" rel="noopener">@elizz_moraa</a>,
+            <a href="https://www.instagram.com/carly.0904/" target="_blank" rel="noopener">@carly.0904</a>
+          </div>
+          <div><strong>Registro fotográfico:</strong>
+            <a href="https://www.instagram.com/lux_essentia/" target="_blank" rel="noopener">Julio López (@lux_essentia)</a>
+          </div>
+        `
       },
       {
         id: "museo-unam-hoy-2025",
@@ -898,7 +948,8 @@
         imagenArchivo: "img/museounam.png",
         creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2025.",
         resumenMapa: "Presentación de Ciclo de performance “Tezcatlipoca, Rituales del Caos”.<br><strong>Sede:</strong> Museo UNAM Hoy",
-        resumenArchivo: "“Tezcatlipoca: Rituales del Caos” es un ciclo de performance de presentación única en el que artistas de la Facultad de Artes y Diseño de la UNAM y bailarines de la Escuela Nacional de Danza Clásica, así como de la Academia de la Danza Mexicana, presentan piezas performáticas inspiradas en la figura del dios mexica Tezcatlipoca. El proyecto propone una serie de rituales contemporáneos que utilizan la acción performática como medio de revelación, cuestionamiento y transformación simbólica. Tomando el mito como punto de partida, se realiza una relectura crítica y actual que busca activar discursividades alrededor del poder, la mirada, el conflicto y la creación ritualizada en el espacio público-museal."
+        resumenArchivo: "“Tezcatlipoca: Rituales del Caos” es un ciclo de performance de presentación única en el que artistas de la Facultad de Artes y Diseño de la UNAM y bailarines de la Escuela Nacional de Danza Clásica, así como de la Academia de la Danza Mexicana, presentan piezas performáticas inspiradas en la figura del dios mexica Tezcatlipoca. El proyecto propone una serie de rituales contemporáneos que utilizan la acción performática como medio de revelación, cuestionamiento y transformación simbólica. Tomando el mito como punto de partida, se realiza una relectura crítica y actual que busca activar discursividades alrededor del poder, la mirada, el conflicto y la creación ritualizada en el espacio público-museal.",
+        creditosExtraHtml: ""
       },
       {
         id: "galeria-canalla-2026",
@@ -914,7 +965,8 @@
         imagenArchivo: "img/canalla.png",
         creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2026.",
         resumenMapa: "Presentación del Ciclo de performance “Sonidero Corporal” partiendo del proyecto Violencia cegada, muerte anestesiada.<br><strong>Sede:</strong> Galería Canalla, Nezahualcóyotl, Edomex",
-        resumenArchivo: "Violencia cegada, muerte anestesiada es un proyecto de arte corporal desarrollado en el Estado de México que articuló performance, trabajo en territorio y una línea de difusión audiovisual para reflexionar sobre la normalización de la violencia en la vida cotidiana. El proyecto se construyó como un proceso activo iniciado en febrero de 2026, que involucró a artistas emergentes y residentes del Edomex, y culminó en una activación escénica en formato sonidero. Más que una exhibición, se planteó como un dispositivo de producción, documentación y activación simbólica en territorio."
+        resumenArchivo: "Violencia cegada, muerte anestesiada es un proyecto de arte corporal desarrollado en el Estado de México que articuló performance, trabajo en territorio y una línea de difusión audiovisual para reflexionar sobre la normalización de la violencia en la vida cotidiana. El proyecto se construyó como un proceso activo iniciado en febrero de 2026, que involucró a artistas emergentes y residentes del Edomex, y culminó en una activación escénica en formato sonidero. Más que una exhibición, se planteó como un dispositivo de producción, documentación y activación simbólica en territorio.",
+        creditosExtraHtml: ""
       }
     ];
 
@@ -1039,15 +1091,30 @@
       }
     });
 
+    // Interacción al tocar Tezcatlipoca (Norte) y Quetzalcóatl (Oriente)
+    deidades.norte.addEventListener('click', () => {
+      cerrarFichaEvento();
+      activarColorDios('norte');
+      iluminarTodosDelRumbo('norte');
+      mapa.flyTo([19.4839, -99.0706], 13, { duration: 0.9 });
+    });
+
+    deidades.oriente.addEventListener('click', () => {
+      cerrarFichaEvento();
+      activarColorDios('oriente');
+      iluminarTodosDelRumbo('oriente');
+      mapa.flyTo([19.3824, -99.0208], 13, { duration: 0.9 });
+    });
+
     // =========================================================
-    // PINS CIRCULARES Y FICHAS TÉCNICAS SINCRONIZADAS
+    // MARCADORES EN EL MAPA Y TARJETAS DEL ARCHIVO
     // =========================================================
-    const contenedorLista = document.getElementById('lista-hitos');
-    const marcadoresPorId = {};
-    const registroMarcadores = [];
+    const marcadores = {};
+    const contenedorHitos = document.getElementById('lista-hitos');
 
     encuentros.forEach(ev => {
       const esColab = ev.logos.length > 1;
+      const anchoIcono = esColab ? 80 : 48;
 
       const htmlLogosPin = esColab
         ? `<div class="pin-grupo" data-id="${ev.id}" data-rumbo="${ev.rumbo}">
@@ -1063,21 +1130,24 @@
       const iconoPersonalizado = L.divIcon({
         className: 'pin-colectivo',
         html: htmlLogosPin,
-        iconSize: esColab ? [82, 54] : [50, 54],
-        iconAnchor: esColab ? [41, 24] : [25, 24]
+        iconSize: [anchoIcono, 54],
+        iconAnchor: [anchoIcono / 2, 27]
       });
 
       const marcador = L.marker(ev.coords, { icon: iconoPersonalizado }).addTo(mapa);
-      marcadoresPorId[ev.id] = marcador;
-      registroMarcadores.push({ marcador, anio: ev.anio });
-
-      marcador.on('click', () => {
+      marcador.on('click', (e) => {
+        L.DomEvent.stopPropagation(e);
         activarColorDios(ev.rumbo);
         iluminarEventoIndividual(ev.id);
         abrirFichaEvento(ev);
       });
 
-      // Ficha técnica en el Archivo de Encuentros inferior
+      marcadores[ev.id] = marcador;
+
+      const htmlLogosCard = ev.logos
+        .map(src => `<img src="${src}" alt="Logo participante">`)
+        .join('');
+
       const tarjeta = document.createElement('article');
       tarjeta.className = 'tarjeta-hito';
       tarjeta.dataset.anio = ev.anio;
@@ -1091,95 +1161,42 @@
             <div class="hito-superior">
               <div>
                 <div class="hito-fecha">${ev.fecha} · ${ev.ubicacion}</div>
-                <h3 class="hito-titulo">${ev.sede}</h3>
+                <div class="hito-titulo">${ev.sede}</div>
                 ${ev.colaboracion ? `<div class="hito-colaboracion">${ev.colaboracion}</div>` : ''}
               </div>
-              <div class="hito-logos">
-                <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
-                ${esColab ? `<img src="${ev.logos[1]}" alt="Jacarandas y Violetas">` : ''}
-              </div>
+              <div class="hito-logos">${htmlLogosCard}</div>
             </div>
             <p class="hito-descripcion">${ev.resumenArchivo}</p>
+            ${ev.creditosExtraHtml ? `<div class="hito-creditos-extra">${ev.creditosExtraHtml}</div>` : ''}
           </div>
           <span class="hito-ver-mapa">Ubicar en el mapa &rarr;</span>
         </div>
       `;
 
-      tarjeta.addEventListener('click', () => {
+      tarjeta.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
         document.getElementById('altar-cardinal').scrollIntoView({ behavior: 'smooth', block: 'center' });
         activarColorDios(ev.rumbo);
         iluminarEventoIndividual(ev.id);
-        mapa.flyTo(ev.coords, 13, { duration: 1.1 });
-        setTimeout(() => {
-          abrirFichaEvento(ev);
-          iluminarEventoIndividual(ev.id);
-        }, 650);
+        mapa.flyTo(ev.coords, 14, { duration: 0.9 });
+        abrirFichaEvento(ev);
       });
 
-      contenedorLista.appendChild(tarjeta);
+      contenedorHitos.appendChild(tarjeta);
     });
 
-    // =========================================================
-    // CLIC EN TEZCATLIPOCA (NORTE) Y QUETZALCÓATL (ORIENTE)
-    // =========================================================
-    deidades.norte.addEventListener('click', () => {
-      cerrarFichaEvento();
-      activarColorDios('norte');
-      iluminarTodosDelRumbo('norte');
-      const faroAragon = encuentros.find(e => e.id === 'faro-aragon-2024');
-      if (faroAragon) {
-        mapa.flyTo(faroAragon.coords, 13, { duration: 1.1 });
-        setTimeout(() => {
-          activarColorDios('norte');
-          iluminarTodosDelRumbo('norte');
-        }, 1150);
-      }
-    });
-
-    deidades.oriente.addEventListener('click', () => {
-      cerrarFichaEvento();
-      activarColorDios('oriente');
-      iluminarTodosDelRumbo('oriente');
-      const eventosOriente = encuentros.filter(e => e.rumbo === 'oriente');
-      if (eventosOriente.length > 0) {
-        const limites = L.latLngBounds(eventosOriente.map(e => e.coords));
-        mapa.flyToBounds(limites, { padding: [95, 95], maxZoom: 13, duration: 1.1 });
-        setTimeout(() => {
-          activarColorDios('oriente');
-          iluminarTodosDelRumbo('oriente');
-        }, 1150);
-      }
-    });
-
-    // =========================================================
-    // FILTROS POR AÑO: SINCRONIZA TARJETAS INFERIORES + CÍRCULOS EN MAPA
-    // =========================================================
-    const botonesFiltro = document.querySelectorAll('.btn-filtro');
-    botonesFiltro.forEach(btn => {
+    // Filtros por año en el archivo inferior
+    document.querySelectorAll('.btn-filtro').forEach(btn => {
       btn.addEventListener('click', () => {
-        botonesFiltro.forEach(b => b.classList.remove('activo'));
+        document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
         btn.classList.add('activo');
-        const anioSeleccionado = btn.dataset.anio;
-
-        cerrarFichaEvento();
+        const anio = btn.dataset.anio;
 
         document.querySelectorAll('.tarjeta-hito').forEach(card => {
-          if (anioSeleccionado === 'todos' || card.dataset.anio === anioSeleccionado) {
+          if (anio === 'todos' || card.dataset.anio === anio) {
             card.classList.remove('oculto');
           } else {
             card.classList.add('oculto');
-          }
-        });
-
-        registroMarcadores.forEach(({ marcador, anio }) => {
-          if (anioSeleccionado === 'todos' || anio === anioSeleccionado) {
-            if (!mapa.hasLayer(marcador)) {
-              marcador.addTo(mapa);
-            }
-          } else {
-            if (mapa.hasLayer(marcador)) {
-              mapa.removeLayer(marcador);
-            }
           }
         });
       });
