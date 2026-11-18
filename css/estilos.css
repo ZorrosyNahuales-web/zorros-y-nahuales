@@ -31,9 +31,9 @@ body {
   overflow-x: hidden;
 }
 
-/* Barra superior fija y centrada arriba */
+/* Barra superior centrada arriba (se desplaza con la portada) */
 .barra-superior {
-  position: fixed;
+  position: absolute;
   top: 1.2rem;
   left: 0;
   right: 0;
