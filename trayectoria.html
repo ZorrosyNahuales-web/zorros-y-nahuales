@@ -170,6 +170,26 @@
     }
 
     /* =========================================================
+       CRÉDITO FOTOGRÁFICO EN ESQUINA INFERIOR DERECHA
+       ========================================================= */
+    .credito-foto {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(180deg, rgba(13, 15, 18, 0) 0%, rgba(13, 15, 18, 0.88) 45%);
+      color: rgba(247, 245, 240, 0.88);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.64rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      padding: 12px 9px 5px 14px;
+      text-align: right;
+      pointer-events: none;
+      line-height: 1.25;
+      max-width: 100%;
+    }
+
+    /* =========================================================
        POPUP FLOTANTE SUPERIOR: SIEMPRE ENCIMA DE LOS DIOSES
        ========================================================= */
     .tarjeta-popup-superior {
@@ -219,8 +239,9 @@
     }
 
     .popup-foto-contenedor {
+      position: relative;
       width: 100%;
-      height: 155px;
+      height: 165px;
       overflow: hidden;
       border: 1px solid var(--borde);
       margin-bottom: 0.8rem;
@@ -262,7 +283,6 @@
       margin: 0;
     }
 
-    /* Logos interactivos hacia Instagram al pie de las fichas de colaboración */
     .popup-redes-alianza {
       display: flex;
       align-items: center;
@@ -478,8 +498,9 @@
     }
 
     .hito-imagen-contenedor {
+      position: relative;
       width: 100%;
-      height: 225px;
+      height: 235px;
       overflow: hidden;
       border-bottom: 1px solid var(--borde);
       background-color: var(--fondo);
@@ -697,12 +718,11 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
-    // Enlaces oficiales a Instagram
     const INSTAGRAM_ZORROS = "https://www.instagram.com/zorros.y.nahuales/";
     const INSTAGRAM_JACARANDAS = "https://www.instagram.com/jacarandas.y.violetas/";
 
     // =========================================================
-    // BASE DE DATOS DE ENCUENTROS (MAPA + ARCHIVO INFERIOR)
+    // BASE DE DATOS DE ENCUENTROS (CON CRÉDITOS FOTOGRÁFICOS)
     // =========================================================
     const encuentros = [
       {
@@ -717,6 +737,7 @@
         logos: ["img/logo.png", "img/jacarandas.png"],
         imagenMapaBase: "img/registrofaroaragon",
         imagenArchivoBase: "img/registroaragon",
+        creditoFoto: "Fotografía: Luisa Luna Valle “T21V”, 2024.",
         resumenMapa: "Participación en la exposición Ohtli Mictlán, dirigida por Jacarandas y Violetas, con el performance “Voces de la muerte y el viento”.<br><strong>Sede:</strong> Faro Aragón",
         resumenArchivo: "En el marco de las jornadas de noviembre en FARO Aragón, se expuso por parte del colectivo el performance en vivo “Voces de la muerte y el viento” dentro del evento Caminando entre los muertos y la exposición fotográfica Ohtli Mictlán, dirigida por la colectiva Jacarandas y Violetas."
       },
@@ -732,6 +753,7 @@
         logos: ["img/logo.png", "img/jacarandas.png"],
         imagenMapaBase: "img/registrofarooriente",
         imagenArchivoBase: "img/registrooriente",
+        creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2024.",
         resumenMapa: "Participación en la exposición Ohtli Mictlán, dirigida por Jacarandas y Violetas, con el performance “Voces de la muerte y el viento”.<br><strong>Sede:</strong> Faro Oriente",
         resumenArchivo: "Reperformance de “Voces de la muerte y el viento” en el marco de la exposición Ohtli Mictlán dirigida por Jacarandas y Violetas."
       },
@@ -747,6 +769,7 @@
         logos: ["img/logo.png"],
         imagenMapaBase: "img/registromuseounam",
         imagenArchivoBase: "img/registromuseounam",
+        creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2025.",
         resumenMapa: "Presentación de Ciclo de performance “Tezcatlipoca, Rituales del Caos”.<br><strong>Sede:</strong> Museo UNAM Hoy",
         resumenArchivo: "“Tezcatlipoca: Rituales del Caos” es un ciclo de performance de presentación única en el que artistas de la Facultad de Artes y Diseño de la UNAM y bailarines de la Escuela Nacional de Danza Clásica, así como de la Academia de la Danza Mexicana, presentan piezas performáticas inspiradas en la figura del dios mexica Tezcatlipoca. El proyecto propone una serie de rituales contemporáneos que utilizan la acción performática como medio de revelación, cuestionamiento y transformación simbólica. Tomando el mito como punto de partida, se realiza una relectura crítica y actual que busca activar discursividades alrededor del poder, la mirada, el conflicto y la creación ritualizada en el espacio público-museal."
       },
@@ -762,12 +785,12 @@
         logos: ["img/logo.png"],
         imagenMapaBase: "img/registrocanalla",
         imagenArchivoBase: "img/registrocanalla",
+        creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2026.",
         resumenMapa: "Presentación del Ciclo de performance “Sonidero Corporal” partiendo del proyecto Violencia cegada, muerte anestesiada.<br><strong>Sede:</strong> Galería Canalla, Nezahualcóyotl, Edomex",
         resumenArchivo: "Violencia cegada, muerte anestesiada es un proyecto de arte corporal desarrollado en el Estado de México que articuló performance, trabajo en territorio y una línea de difusión audiovisual para reflexionar sobre la normalización de la violencia en la vida cotidiana. El proyecto se construyó como un proceso activo iniciado en febrero de 2026, que involucró a artistas emergentes y residentes del Edomex, y culminó en una activación escénica en formato sonidero. Más que una exhibición, se planteó como un dispositivo de producción, documentación y activación simbólica en territorio."
       }
     ];
 
-    // Helper para cargar automáticamente .jpg, .png o .webp sin romper la vista
     function resolverImagen(imgEl, basePath) {
       const paso = parseInt(imgEl.dataset.paso || "0", 10);
       if (paso === 0) {
@@ -820,6 +843,7 @@
       contenidoFicha.innerHTML = `
         <div class="popup-foto-contenedor">
           <img src="${ev.imagenMapaBase}.jpg" alt="${ev.sede}" onerror="resolverImagen(this, '${ev.imagenMapaBase}')">
+          <span class="credito-foto">${ev.creditoFoto}</span>
         </div>
         <div class="popup-fecha">${ev.fecha}</div>
         <div class="popup-sede">${ev.sede}</div>
@@ -946,6 +970,7 @@
       tarjeta.innerHTML = `
         <div class="hito-imagen-contenedor">
           <img src="${ev.imagenArchivoBase}.jpg" alt="${ev.sede}" onerror="resolverImagen(this, '${ev.imagenArchivoBase}')">
+          <span class="credito-foto">${ev.creditoFoto}</span>
         </div>
         <div class="hito-cuerpo">
           <div>
