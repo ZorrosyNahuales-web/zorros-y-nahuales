@@ -908,33 +908,6 @@
         creditosExtraHtml: ""
       },
       {
-        id: "cantina-salon-isabel-2025",
-        rumbo: "centro",
-        anio: "2025",
-        fecha: "21 de febrero de 2025",
-        sede: "Cantina Salón Isabel · Galería Margot",
-        ubicacion: "Centro Histórico, CDMX",
-        coords: [19.4316, -99.1388],
-        colaboracion: "Evento dirigido por Galería Margot",
-        logos: ["img/logo.png"],
-        imagenMapa: "img/margot.png",
-        imagenArchivo: "img/margot.png",
-        creditoFoto: "Fotografía: Julio López, 2025.",
-        resumenMapa: "Reperformance colectivo de “Tezcatlipoca Nepantlami” dentro de un evento dirigido por Galería Margot.<br><strong>Sede:</strong> Cantina Salón Isabel, Centro Histórico",
-        resumenArchivo: "Reperformance de la pieza “Tezcatlipoca Nepantlami” dentro de un encuentro dirigido por Galería Margot. Tezcatlipoca Nepantlami es una acción performática colectiva que se articula como un tránsito ritual desde el exterior hacia el espacio expositivo. A través de una procesión silenciosa, la invocación simbólica y el uso del cuerpo como soporte ceremonial, la pieza activa un umbral donde mito, presencia y acción se entrelazan. El performance culmina en un estado de trance ritual, integrando respiración, canto y lectura de manifiesto.",
-        creditosExtraHtml: `
-          <div><strong>Performers:</strong>
-            <a href="https://www.instagram.com/itza.suarez00/" target="_blank" rel="noopener">@itza.suarez00</a>,
-            <a href="https://www.instagram.com/yonosoy.cesar/" target="_blank" rel="noopener">@yonosoy.cesar</a>,
-            <a href="https://www.instagram.com/elizz_moraa/" target="_blank" rel="noopener">@elizz_moraa</a>,
-            <a href="https://www.instagram.com/carly.0904/" target="_blank" rel="noopener">@carly.0904</a>
-          </div>
-          <div><strong>Registro fotográfico:</strong>
-            <a href="https://www.instagram.com/lux_essentia/" target="_blank" rel="noopener">Julio López (@lux_essentia)</a>
-          </div>
-        `
-      },
-      {
         id: "museo-unam-hoy-2025",
         rumbo: "centro",
         anio: "2025",
@@ -950,6 +923,33 @@
         resumenMapa: "Presentación de Ciclo de performance “Tezcatlipoca, Rituales del Caos”.<br><strong>Sede:</strong> Museo UNAM Hoy",
         resumenArchivo: "“Tezcatlipoca: Rituales del Caos” es un ciclo de performance de presentación única en el que artistas de la Facultad de Artes y Diseño de la UNAM y bailarines de la Escuela Nacional de Danza Clásica, así como de la Academia de la Danza Mexicana, presentan piezas performáticas inspiradas en la figura del dios mexica Tezcatlipoca. El proyecto propone una serie de rituales contemporáneos que utilizan la acción performática como medio de revelación, cuestionamiento y transformación simbólica. Tomando el mito como punto de partida, se realiza una relectura crítica y actual que busca activar discursividades alrededor del poder, la mirada, el conflicto y la creación ritualizada en el espacio público-museal.",
         creditosExtraHtml: ""
+      },
+      {
+        id: "cantina-salon-isabel-2026",
+        rumbo: "centro",
+        anio: "2026",
+        fecha: "21 de febrero de 2026",
+        sede: "Cantina Salón Isabel · Galería Margot",
+        ubicacion: "Centro Histórico, CDMX",
+        coords: [19.4316, -99.1388],
+        colaboracion: "Evento dirigido por Galería Margot",
+        logos: ["img/logo.png"],
+        imagenMapa: "img/margot.png",
+        imagenArchivo: "img/margot.png",
+        creditoFoto: "Fotografía: Julio López, 2026.",
+        resumenMapa: "Reperformance colectivo de “Tezcatlipoca Nepantlami” dentro de un evento dirigido por Galería Margot.<br><strong>Sede:</strong> Cantina Salón Isabel, Centro Histórico",
+        resumenArchivo: "Reperformance de la pieza “Tezcatlipoca Nepantlami” dentro de un encuentro dirigido por Galería Margot. Tezcatlipoca Nepantlami es una acción performática colectiva que se articula como un tránsito ritual desde el exterior hacia el espacio expositivo. A través de una procesión silenciosa, la invocación simbólica y el uso del cuerpo como soporte ceremonial, la pieza activa un umbral donde mito, presencia y acción se entrelazan. El performance culmina en un estado de trance ritual, integrando respiración, canto y lectura de manifiesto.",
+        creditosExtraHtml: `
+          <div><strong>Performers:</strong>
+            <a href="https://www.instagram.com/itza.suarez00/" target="_blank" rel="noopener">@itza.suarez00</a>,
+            <a href="https://www.instagram.com/yonosoy.cesar/" target="_blank" rel="noopener">@yonosoy.cesar</a>,
+            <a href="https://www.instagram.com/elizz_moraa/" target="_blank" rel="noopener">@elizz_moraa</a>,
+            <a href="https://www.instagram.com/carly.0904/" target="_blank" rel="noopener">@carly.0904</a>
+          </div>
+          <div><strong>Registro fotográfico:</strong>
+            <a href="https://www.instagram.com/lux_essentia/" target="_blank" rel="noopener">Julio López (@lux_essentia)</a>
+          </div>
+        `
       },
       {
         id: "galeria-canalla-2026",
@@ -1185,18 +1185,36 @@
       contenedorHitos.appendChild(tarjeta);
     });
 
-    // Filtros por año en el archivo inferior
+    // Filtros por año en el archivo inferior Y en el mapa
     document.querySelectorAll('.btn-filtro').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
         btn.classList.add('activo');
         const anio = btn.dataset.anio;
 
+        // 1. Filtrar tarjetas del archivo inferior
         document.querySelectorAll('.tarjeta-hito').forEach(card => {
           if (anio === 'todos' || card.dataset.anio === anio) {
             card.classList.remove('oculto');
           } else {
             card.classList.add('oculto');
+          }
+        });
+
+        // 2. Mostrar u ocultar los pines del mapa según el año
+        cerrarFichaEvento();
+        encuentros.forEach(ev => {
+          const marcador = marcadores[ev.id];
+          if (!marcador) return;
+
+          if (anio === 'todos' || ev.anio === anio) {
+            if (!mapa.hasLayer(marcador)) {
+              marcador.addTo(mapa);
+            }
+          } else {
+            if (mapa.hasLayer(marcador)) {
+              mapa.removeLayer(marcador);
+            }
           }
         });
       });
