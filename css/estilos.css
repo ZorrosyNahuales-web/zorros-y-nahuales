@@ -703,3 +703,58 @@ main:has(#colectivo) {
     opacity: 0.75;
   }
 }
+/* =========================================================
+   BOTONES DE NAVEGACIÓN BILINGÜES (NÁHUATL + SUBTÍTULO)
+   ========================================================= */
+.barra-superior nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0.55rem;
+}
+
+.barra-superior .btn-nav {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.1;
+  padding: 0.48rem 0.95rem;
+  min-height: 44px;
+}
+
+.nav-principal {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nav-sub {
+  font-size: 0.56rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.82;
+  margin-top: 2px;
+}
+
+@media (max-width: 860px) {
+  .barra-superior nav {
+    gap: 0.4rem;
+  }
+
+  .barra-superior .btn-nav {
+    padding: 0.4rem 0.68rem;
+    min-height: 38px;
+  }
+
+  .nav-principal {
+    font-size: 0.72rem;
+  }
+
+  .nav-sub {
+    font-size: 0.5rem;
+  }
+}
