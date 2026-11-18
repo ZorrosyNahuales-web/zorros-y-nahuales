@@ -63,7 +63,6 @@
       margin: 5.2rem auto 5.8rem;
     }
 
-    /* Marco del Mapa Central */
     .marco-mapa {
       position: relative;
       width: 100%;
@@ -85,7 +84,7 @@
       filter: invert(100%) hue-rotate(190deg) brightness(94%) contrast(104%) saturate(45%);
     }
 
-    /* Deidades montadas a la mitad del borde del mapa (de opaco/gris a color natural) */
+    /* Deidades montadas a la mitad del borde del mapa */
     .deidad-rumbo {
       position: absolute;
       z-index: 30;
@@ -127,7 +126,6 @@
       transition: color 0.35s ease, border-color 0.35s ease;
     }
 
-    /* Posición de umbral: mitad afuera, mitad adentro del borde del mapa */
     .deidad-norte {
       top: -72px;
       left: 50%;
@@ -152,7 +150,6 @@
       transform: translateY(-50%);
     }
 
-    /* Paso limpio de opaco a color (sin resplandores externos en los dioses) */
     .deidad-interactiva:hover,
     .deidad-rumbo.iluminado {
       opacity: 1;
@@ -178,16 +175,16 @@
     .tarjeta-popup-superior {
       display: none;
       position: absolute;
-      top: 1.1rem;
+      top: 1rem;
       left: 50%;
       transform: translateX(-50%);
       z-index: 900;
-      width: min(350px, 88%);
+      width: min(370px, 90%);
       background-color: var(--superficie);
       background-image: var(--textura-obsidiana);
       border: 1px solid var(--acento);
       box-shadow: 0 22px 55px rgba(0, 0, 0, 0.98);
-      padding: 1.2rem 1.35rem 1.3rem;
+      padding: 1.15rem 1.25rem 1.2rem;
       animation: aparecerFicha 0.25s ease-out;
     }
 
@@ -202,79 +199,118 @@
 
     .btn-cerrar-ficha {
       position: absolute;
-      top: 0.55rem;
-      right: 0.75rem;
-      background: transparent;
-      border: none;
-      color: var(--texto-suave);
-      font-size: 1.35rem;
+      top: 0.45rem;
+      right: 0.7rem;
+      background: rgba(13, 15, 18, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--texto);
+      width: 26px;
+      height: 26px;
+      font-size: 1.2rem;
       line-height: 1;
       cursor: pointer;
-      transition: color 0.2s ease;
+      z-index: 5;
+      transition: all 0.2s ease;
     }
 
     .btn-cerrar-ficha:hover {
-      color: var(--acento);
+      background: var(--acento);
+      border-color: var(--acento);
     }
 
-    .popup-logos {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.75rem;
-      padding-right: 1.4rem;
-    }
-
-    .popup-logos img {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid var(--acento);
+    .popup-foto-contenedor {
+      width: 100%;
+      height: 155px;
+      overflow: hidden;
+      border: 1px solid var(--borde);
+      margin-bottom: 0.8rem;
       background-color: var(--fondo);
     }
 
-    .popup-logos img.logo-aliada {
-      margin-left: -12px;
-      border-color: #c27aff;
-      background-color: #ffffff;
-    }
-
-    .popup-alianza-texto {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--texto-suave);
-      line-height: 1.25;
+    .popup-foto-contenedor img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .popup-fecha {
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--acento);
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.18rem;
     }
 
     .popup-sede {
       font-family: 'Londrina Solid', sans-serif;
-      font-size: 1.65rem;
+      font-size: 1.55rem;
       font-weight: 400;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       line-height: 1.08;
       color: var(--texto);
-      margin-bottom: 0.55rem;
+      margin-bottom: 0.45rem;
     }
 
     .popup-resumen {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 300;
-      line-height: 1.58;
+      line-height: 1.52;
       color: var(--texto);
       margin: 0;
+    }
+
+    /* Logos interactivos hacia Instagram al pie de las fichas de colaboración */
+    .popup-redes-alianza {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.85rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .enlace-colectivo-ig {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      text-decoration: none;
+      color: var(--texto-suave);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.25s ease, transform 0.25s ease;
+    }
+
+    .enlace-colectivo-ig:hover {
+      color: var(--texto);
+      transform: translateY(-2px);
+    }
+
+    .enlace-colectivo-ig img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--acento);
+      background-color: var(--fondo);
+      transition: box-shadow 0.25s ease;
+    }
+
+    .enlace-colectivo-ig.aliada img {
+      border-color: #c27aff;
+      background-color: #ffffff;
+    }
+
+    .enlace-colectivo-ig:hover img {
+      box-shadow: 0 0 12px rgba(230, 0, 126, 0.85);
+    }
+
+    .enlace-colectivo-ig.aliada:hover img {
+      box-shadow: 0 0 12px rgba(194, 122, 255, 0.85);
     }
 
     /* =========================================================
@@ -325,7 +361,6 @@
       border-color: rgba(194, 122, 255, 0.75);
     }
 
-    /* Iluminación activa (individual o grupal por dios) */
     .pin-grupo.iluminado-rumbo {
       transform: scale(1.22);
     }
@@ -364,7 +399,7 @@
     }
 
     /* =========================================================
-       LÍNEA DEL TIEMPO / FICHAS TÉCNICAS DEBAJO DEL ALTAR
+       LÍNEA DEL TIEMPO / ARCHIVO DE ENCUENTROS DEBAJO DEL ALTAR
        ========================================================= */
     .bitacora-trayectoria {
       max-width: 1120px;
@@ -418,14 +453,14 @@
     .grid-hitos {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.35rem;
+      gap: 1.5rem;
     }
 
     .tarjeta-hito {
       background-color: var(--superficie);
       background-image: var(--textura-obsidiana);
       border: 1px solid var(--borde);
-      padding: 1.4rem 1.5rem;
+      overflow: hidden;
       cursor: pointer;
       transition: border-color 0.25s ease, transform 0.25s ease;
       display: flex;
@@ -440,6 +475,34 @@
 
     .tarjeta-hito.oculto {
       display: none;
+    }
+
+    .hito-imagen-contenedor {
+      width: 100%;
+      height: 225px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--borde);
+      background-color: var(--fondo);
+    }
+
+    .hito-imagen-contenedor img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+
+    .tarjeta-hito:hover .hito-imagen-contenedor img {
+      transform: scale(1.04);
+    }
+
+    .hito-cuerpo {
+      padding: 1.35rem 1.5rem 1.45rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
     }
 
     .hito-superior {
@@ -500,16 +563,16 @@
     }
 
     .hito-descripcion {
-      font-size: 0.92rem;
+      font-size: 0.91rem;
       font-weight: 300;
-      line-height: 1.6;
+      line-height: 1.62;
       color: var(--texto-suave);
       margin-top: 0.65rem;
     }
 
     .hito-ver-mapa {
       display: inline-block;
-      margin-top: 1rem;
+      margin-top: 1.1rem;
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.12em;
@@ -591,7 +654,7 @@
     </div>
 
     <!-- ORIENTE / ESTE: QUETZALCÓATL (INTERACTIVO) -->
-    <div class="deidad-rumbo deidad-oriente deidad-interactiva" id="dios-oriente" title="Iluminar Oriente · FARO Oriente y Nezahualcóyotl">
+    <div class="deidad-rumbo deidad-oriente deidad-interactiva" id="dios-oriente" title="Iluminar Oriente · FARO Oriente y Galería Canalla">
       <img src="img/quetzalcoatl.png" alt="Quetzalcóatl · Oriente" onerror="this.style.display='none'">
       <span class="deidad-etiqueta">Oriente · Quetzalcóatl</span>
     </div>
@@ -604,7 +667,7 @@
 
   </div>
 
-  <!-- LÍNEA DEL TIEMPO / FICHAS TÉCNICAS DE LOS ENCUENTROS -->
+  <!-- LÍNEA DEL TIEMPO / ARCHIVO DE ENCUENTROS -->
   <div class="bitacora-trayectoria">
     <div class="bitacora-cabecera">
       <h2>Archivo de Encuentros</h2>
@@ -634,8 +697,12 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
+    // Enlaces oficiales a Instagram
+    const INSTAGRAM_ZORROS = "https://www.instagram.com/zorros.y.nahuales/";
+    const INSTAGRAM_JACARANDAS = "https://www.instagram.com/jacarandas.y.violetas/";
+
     // =========================================================
-    // BASE DE DATOS DE ENCUENTROS
+    // BASE DE DATOS DE ENCUENTROS (MAPA + ARCHIVO INFERIOR)
     // =========================================================
     const encuentros = [
       {
@@ -646,9 +713,12 @@
         sede: "FARO Aragón",
         ubicacion: "Gustavo A. Madero, CDMX",
         coords: [19.4839, -99.0706],
-        colaboracion: "En colaboración con Colectiva Jacarandas y Violetas",
+        colaboracion: "En colaboración con Jacarandas y Violetas",
         logos: ["img/logo.png", "img/jacarandas.png"],
-        resumen: "Encuentro de artes vivas y performance realizado en conjunto con la Colectiva Jacarandas y Violetas en el marco de las jornadas de noviembre en FARO Aragón."
+        imagenMapaBase: "img/registrofaroaragon",
+        imagenArchivoBase: "img/registroaragon",
+        resumenMapa: "Participación en la exposición Ohtli Mictlán, dirigida por Jacarandas y Violetas, con el performance “Voces de la muerte y el viento”.<br><strong>Sede:</strong> Faro Aragón",
+        resumenArchivo: "En el marco de las jornadas de noviembre en FARO Aragón, se expuso por parte del colectivo el performance en vivo “Voces de la muerte y el viento” dentro del evento Caminando entre los muertos y la exposición fotográfica Ohtli Mictlán, dirigida por la colectiva Jacarandas y Violetas."
       },
       {
         id: "faro-oriente-2024",
@@ -658,9 +728,12 @@
         sede: "FARO Oriente",
         ubicacion: "Iztapalapa, CDMX",
         coords: [19.3712, -99.0137],
-        colaboracion: "En colaboración con Colectiva Jacarandas y Violetas",
+        colaboracion: "En colaboración con Jacarandas y Violetas",
         logos: ["img/logo.png", "img/jacarandas.png"],
-        resumen: "Segunda activación territorial junto a la Colectiva Jacarandas y Violetas, abriendo espacio para acciones performáticas y diálogo comunitario en el oriente de la ciudad."
+        imagenMapaBase: "img/registrofarooriente",
+        imagenArchivoBase: "img/registrooriente",
+        resumenMapa: "Participación en la exposición Ohtli Mictlán, dirigida por Jacarandas y Violetas, con el performance “Voces de la muerte y el viento”.<br><strong>Sede:</strong> Faro Oriente",
+        resumenArchivo: "Reperformance de “Voces de la muerte y el viento” en el marco de la exposición Ohtli Mictlán dirigida por Jacarandas y Violetas."
       },
       {
         id: "museo-unam-hoy-2025",
@@ -672,21 +745,41 @@
         coords: [19.4342, -99.1325],
         colaboracion: "",
         logos: ["img/logo.png"],
-        resumen: "Programa de performance y artes vivas gestionado por Zorros y Nahuales en el recinto universitario del Centro Histórico, articulando cuerpo, memoria y espacio museístico."
+        imagenMapaBase: "img/registromuseounam",
+        imagenArchivoBase: "img/registromuseounam",
+        resumenMapa: "Presentación de Ciclo de performance “Tezcatlipoca, Rituales del Caos”.<br><strong>Sede:</strong> Museo UNAM Hoy",
+        resumenArchivo: "“Tezcatlipoca: Rituales del Caos” es un ciclo de performance de presentación única en el que artistas de la Facultad de Artes y Diseño de la UNAM y bailarines de la Escuela Nacional de Danza Clásica, así como de la Academia de la Danza Mexicana, presentan piezas performáticas inspiradas en la figura del dios mexica Tezcatlipoca. El proyecto propone una serie de rituales contemporáneos que utilizan la acción performática como medio de revelación, cuestionamiento y transformación simbólica. Tomando el mito como punto de partida, se realiza una relectura crítica y actual que busca activar discursividades alrededor del poder, la mirada, el conflicto y la creación ritualizada en el espacio público-museal."
       },
       {
-        id: "nezahualcoyotl-2026",
+        id: "galeria-canalla-2026",
         rumbo: "oriente",
         anio: "2026",
         fecha: "24 de octubre de 2026",
-        sede: "Ciudad Nezahualcóyotl",
-        ubicacion: "Nezahualcóyotl, Estado de México",
-        coords: [19.4006, -99.0148],
+        sede: "Galería Canalla",
+        ubicacion: "Col. Metropolitana, Churubusco 219, Nezahualcóyotl, Estado de México",
+        coords: [19.3936, -99.0279],
         colaboracion: "",
         logos: ["img/logo.png"],
-        resumen: "Activación escénica y ciclo de performance de Zorros y Nahuales en Nezahualcóyotl, expandiendo las redes de acompañamiento y cuidado hacia la periferia."
+        imagenMapaBase: "img/registrocanalla",
+        imagenArchivoBase: "img/registrocanalla",
+        resumenMapa: "Presentación del Ciclo de performance “Sonidero Corporal” partiendo del proyecto Violencia cegada, muerte anestesiada.<br><strong>Sede:</strong> Galería Canalla, Nezahualcóyotl, Edomex",
+        resumenArchivo: "Violencia cegada, muerte anestesiada es un proyecto de arte corporal desarrollado en el Estado de México que articuló performance, trabajo en territorio y una línea de difusión audiovisual para reflexionar sobre la normalización de la violencia en la vida cotidiana. El proyecto se construyó como un proceso activo iniciado en febrero de 2026, que involucró a artistas emergentes y residentes del Edomex, y culminó en una activación escénica en formato sonidero. Más que una exhibición, se planteó como un dispositivo de producción, documentación y activación simbólica en territorio."
       }
     ];
+
+    // Helper para cargar automáticamente .jpg, .png o .webp sin romper la vista
+    function resolverImagen(imgEl, basePath) {
+      const paso = parseInt(imgEl.dataset.paso || "0", 10);
+      if (paso === 0) {
+        imgEl.dataset.paso = "1";
+        imgEl.src = basePath + ".png";
+      } else if (paso === 1) {
+        imgEl.dataset.paso = "2";
+        imgEl.src = basePath + ".webp";
+      } else {
+        imgEl.parentElement.style.display = "none";
+      }
+    }
 
     const centroBase = { lat: 19.423, lng: -99.062 };
 
@@ -710,15 +803,28 @@
 
     function abrirFichaEvento(ev) {
       const esColab = ev.logos.length > 1;
+
+      const htmlLogosAlianza = esColab
+        ? `<div class="popup-redes-alianza">
+             <a href="${INSTAGRAM_ZORROS}" target="_blank" rel="noopener" class="enlace-colectivo-ig" title="Instagram Zorros y Nahuales">
+               <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
+               <span>Zorros y Nahuales</span>
+             </a>
+             <a href="${INSTAGRAM_JACARANDAS}" target="_blank" rel="noopener" class="enlace-colectivo-ig aliada" title="Instagram Jacarandas y Violetas">
+               <img src="${ev.logos[1]}" alt="Jacarandas y Violetas">
+               <span>Jacarandas y Violetas</span>
+             </a>
+           </div>`
+        : '';
+
       contenidoFicha.innerHTML = `
-        <div class="popup-logos">
-          <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
-          ${esColab ? `<img src="${ev.logos[1]}" class="logo-aliada" alt="Jacarandas y Violetas">` : ''}
-          <span class="popup-alianza-texto">${ev.colaboracion || 'Zorros y Nahuales'}</span>
+        <div class="popup-foto-contenedor">
+          <img src="${ev.imagenMapaBase}.jpg" alt="${ev.sede}" onerror="resolverImagen(this, '${ev.imagenMapaBase}')">
         </div>
         <div class="popup-fecha">${ev.fecha}</div>
         <div class="popup-sede">${ev.sede}</div>
-        <p class="popup-resumen">${ev.resumen}</p>
+        <p class="popup-resumen">${ev.resumenMapa}</p>
+        ${htmlLogosAlianza}
       `;
       cajaFicha.classList.add('visible');
     }
@@ -757,7 +863,6 @@
       });
     }
 
-    // Ilumina SOLO el evento individual seleccionado
     function iluminarEventoIndividual(eventoId) {
       document.querySelectorAll('.pin-grupo').forEach(pin => {
         if (pin.dataset.id === eventoId) {
@@ -768,7 +873,6 @@
       });
     }
 
-    // Ilumina TODOS los eventos de un rumbo (solo cuando se pica al dios)
     function iluminarTodosDelRumbo(rumboActivo) {
       document.querySelectorAll('.pin-grupo').forEach(pin => {
         if (rumboActivo && pin.dataset.rumbo === rumboActivo) {
@@ -779,7 +883,6 @@
       });
     }
 
-    // Al arrastrar el mapa hacia un punto cardinal (solo colorea al dios del rumbo)
     mapa.on('move', () => {
       const c = mapa.getCenter();
       const dLat = c.lat - centroBase.lat;
@@ -830,33 +933,37 @@
       marcadoresPorId[ev.id] = marcador;
       registroMarcadores.push({ marcador, anio: ev.anio });
 
-      // Clic en evento individual: colorea su dios correspondiente e ilumina SOLO este pin
       marcador.on('click', () => {
         activarColorDios(ev.rumbo);
         iluminarEventoIndividual(ev.id);
         abrirFichaEvento(ev);
       });
 
-      // Ficha técnica en la línea del tiempo inferior
+      // Ficha técnica en el Archivo de Encuentros inferior
       const tarjeta = document.createElement('article');
       tarjeta.className = 'tarjeta-hito';
       tarjeta.dataset.anio = ev.anio;
       tarjeta.innerHTML = `
-        <div>
-          <div class="hito-superior">
-            <div>
-              <div class="hito-fecha">${ev.fecha} · ${ev.ubicacion}</div>
-              <h3 class="hito-titulo">${ev.sede}</h3>
-              ${ev.colaboracion ? `<div class="hito-colaboracion">${ev.colaboracion}</div>` : ''}
-            </div>
-            <div class="hito-logos">
-              <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
-              ${esColab ? `<img src="${ev.logos[1]}" alt="Jacarandas y Violetas">` : ''}
-            </div>
-          </div>
-          <p class="hito-descripcion">${ev.resumen}</p>
+        <div class="hito-imagen-contenedor">
+          <img src="${ev.imagenArchivoBase}.jpg" alt="${ev.sede}" onerror="resolverImagen(this, '${ev.imagenArchivoBase}')">
         </div>
-        <span class="hito-ver-mapa">Ubicar en el mapa &rarr;</span>
+        <div class="hito-cuerpo">
+          <div>
+            <div class="hito-superior">
+              <div>
+                <div class="hito-fecha">${ev.fecha} · ${ev.ubicacion}</div>
+                <h3 class="hito-titulo">${ev.sede}</h3>
+                ${ev.colaboracion ? `<div class="hito-colaboracion">${ev.colaboracion}</div>` : ''}
+              </div>
+              <div class="hito-logos">
+                <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
+                ${esColab ? `<img src="${ev.logos[1]}" alt="Jacarandas y Violetas">` : ''}
+              </div>
+            </div>
+            <p class="hito-descripcion">${ev.resumenArchivo}</p>
+          </div>
+          <span class="hito-ver-mapa">Ubicar en el mapa &rarr;</span>
+        </div>
       `;
 
       tarjeta.addEventListener('click', () => {
@@ -917,7 +1024,6 @@
 
         cerrarFichaEvento();
 
-        // 1. Filtra las fichas técnicas de abajo
         document.querySelectorAll('.tarjeta-hito').forEach(card => {
           if (anioSeleccionado === 'todos' || card.dataset.anio === anioSeleccionado) {
             card.classList.remove('oculto');
@@ -926,7 +1032,6 @@
           }
         });
 
-        // 2. Muestra u oculta los círculos correspondientes en el mapa
         registroMarcadores.forEach(({ marcador, anio }) => {
           if (anioSeleccionado === 'todos' || anio === anioSeleccionado) {
             if (!mapa.hasLayer(marcador)) {
