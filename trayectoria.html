@@ -803,6 +803,7 @@
     // =========================================================
     const contenedorLista = document.getElementById('lista-hitos');
     const marcadoresPorId = {};
+    const registroMarcadores = [];
 
     encuentros.forEach(ev => {
       const esColab = ev.logos.length > 1;
@@ -827,6 +828,7 @@
 
       const marcador = L.marker(ev.coords, { icon: iconoPersonalizado }).addTo(mapa);
       marcadoresPorId[ev.id] = marcador;
+      registroMarcadores.push({ marcador, anio: ev.anio });
 
       // Clic en evento individual: colorea su dios correspondiente e ilumina SOLO este pin
       marcador.on('click', () => {
@@ -903,7 +905,9 @@
       }
     });
 
-    // Filtros por año en el archivo inferior
+    // =========================================================
+    // FILTROS POR AÑO: SINCRONIZA TARJETAS INFERIORES + CÍRCULOS EN MAPA
+    // =========================================================
     const botonesFiltro = document.querySelectorAll('.btn-filtro');
     botonesFiltro.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -911,11 +915,27 @@
         btn.classList.add('activo');
         const anioSeleccionado = btn.dataset.anio;
 
+        cerrarFichaEvento();
+
+        // 1. Filtra las fichas técnicas de abajo
         document.querySelectorAll('.tarjeta-hito').forEach(card => {
           if (anioSeleccionado === 'todos' || card.dataset.anio === anioSeleccionado) {
             card.classList.remove('oculto');
           } else {
             card.classList.add('oculto');
+          }
+        });
+
+        // 2. Muestra u oculta los círculos correspondientes en el mapa
+        registroMarcadores.forEach(({ marcador, anio }) => {
+          if (anioSeleccionado === 'todos' || anio === anioSeleccionado) {
+            if (!mapa.hasLayer(marcador)) {
+              marcador.addTo(mapa);
+            }
+          } else {
+            if (mapa.hasLayer(marcador)) {
+              mapa.removeLayer(marcador);
+            }
           }
         });
       });
