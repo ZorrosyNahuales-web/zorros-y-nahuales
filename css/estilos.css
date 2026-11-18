@@ -291,18 +291,19 @@ footer a {
 @media (max-width: 850px) {
   .barra-superior {
     position: static;
-    padding: 0.9rem 0.6rem 0.4rem;
+    padding: 0.85rem 0.5rem 0.4rem;
   }
 
   .barra-superior nav {
-    flex-wrap: nowrap;
-    gap: 0.45rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
   }
 
   .barra-superior .btn-nav {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     letter-spacing: 0.08em;
-    padding: 0.5rem 0.65rem;
+    padding: 0.46rem 0.62rem;
     white-space: nowrap;
   }
 
