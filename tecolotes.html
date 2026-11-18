@@ -21,7 +21,7 @@
     .cabecera-tecolotes {
       max-width: 960px;
       margin: 0 auto;
-      padding: 1.5rem 5% 1rem;
+      padding: 1.5rem 5% 0.8rem;
       text-align: center;
     }
 
@@ -54,69 +54,59 @@
     }
 
     /* =========================================================
-       UMBRAL DUAL: SILUETAS DE LOS TECOLOTES (SIN AGRANDARSE)
+       UMBRAL DUAL LIBRE: SIN CAJAS, SIN MARCAS, A TODO COLOR Y GRANDES
        ========================================================= */
     .umbral-tecolotes {
-      max-width: 920px;
-      margin: 2rem auto 2.5rem;
+      max-width: 960px;
+      margin: 1.8rem auto 2.5rem;
       padding: 0 5%;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
+      gap: 2.5rem;
+      align-items: start;
     }
 
     .invocador-tecolote {
-      background-color: var(--superficie);
-      background-image: var(--textura-obsidiana);
-      border: 1px solid var(--borde);
-      padding: 1.8rem 1.4rem 1.5rem;
+      background: transparent;
+      border: none;
+      padding: 0.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       cursor: pointer;
       position: relative;
-      transition: border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
+      transition: filter 0.35s ease;
     }
 
-    .invocador-tecolote:hover {
-      border-color: rgba(230, 0, 126, 0.55);
-    }
-
-    .invocador-tecolote.activo {
-      border-color: var(--acento);
-      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.85), 0 0 24px rgba(230, 0, 126, 0.18);
-    }
-
-    /* La silueta mantiene su escala fija; solo cambia su luz y nitidez */
     .silueta-contenedor {
-      width: 175px;
-      height: 175px;
+      width: 275px;
+      height: 275px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1rem;
-      position: relative;
+      margin-bottom: 0.9rem;
     }
 
+    /* A todo color desde el inicio, sin escala de grises ni cambios bruscos de tamaño */
     .silueta-contenedor img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       mix-blend-mode: screen;
-      opacity: 0.48;
-      filter: grayscale(100%) contrast(110%);
-      transition: opacity 0.45s ease, filter 0.45s ease;
+      opacity: 0.94;
+      filter: none;
+      transition: opacity 0.35s ease, filter 0.35s ease;
     }
 
     .invocador-tecolote:hover .silueta-contenedor img,
     .invocador-tecolote.activo .silueta-contenedor img {
       opacity: 1;
-      filter: grayscale(0%) contrast(105%) drop-shadow(0 0 14px rgba(230, 0, 126, 0.45));
+      filter: drop-shadow(0 0 22px rgba(230, 0, 126, 0.55));
     }
 
     .tecolote-alias {
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -126,29 +116,17 @@
 
     .tecolote-nombre-corto {
       font-family: 'Londrina Solid', sans-serif;
-      font-size: 1.65rem;
+      font-size: 1.75rem;
       font-weight: 400;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--texto);
       line-height: 1.1;
-      margin-bottom: 0.65rem;
+      transition: color 0.3s ease;
     }
 
-    .tecolote-indicador {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--texto-suave);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      padding-bottom: 2px;
-      transition: color 0.3s ease, border-color 0.3s ease;
-    }
-
-    .invocador-tecolote.activo .tecolote-indicador {
-      color: var(--texto);
-      border-color: var(--acento);
+    .invocador-tecolote.activo .tecolote-nombre-corto {
+      color: var(--acento);
     }
 
     /* =========================================================
@@ -201,7 +179,6 @@
       border-color: var(--acento);
     }
 
-    /* Contenedor del retrato completo sin recortar su proporción */
     .retrato-completo-marco {
       background-color: #0d0f12;
       border-right: 1px solid var(--borde);
@@ -354,18 +331,18 @@
 
       .umbral-tecolotes {
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.85rem;
+        gap: 0.75rem;
         margin: 1.2rem auto 1.6rem;
       }
 
       .invocador-tecolote {
-        padding: 1.1rem 0.75rem 1rem;
+        padding: 0.25rem;
       }
 
       .silueta-contenedor {
-        width: 112px;
-        height: 112px;
-        margin-bottom: 0.65rem;
+        width: 155px;
+        height: 155px;
+        margin-bottom: 0.5rem;
       }
 
       .tecolote-nombre-corto {
@@ -417,29 +394,27 @@
   <section class="cabecera-tecolotes" style="border: none;">
     <p class="etiqueta-superior">Miradas Nocturnas · Archivo Visual</p>
     <h1>Tecolotes</h1>
-    <p>En la cosmovisión mesoamericana, el tecolote habita el umbral entre la penumbra y la revelación. Toca cada silueta para desplegar el retrato y la mirada de quienes han vuelto testigo la acción corporal del colectivo.</p>
+    <p>En la cosmovisión mesoamericana, el tecolote habita el umbral entre la penumbra y la revelación. Toca cada figura para desplegar el retrato y la mirada de quienes han vuelto testigo la acción corporal del colectivo.</p>
   </section>
 
-  <!-- UMBRAL DE LOS DOS TECOLOTES -->
+  <!-- UMBRAL DE LOS DOS TECOLOTES (LIBRES, GRANDES Y A TODO COLOR) -->
   <section class="umbral-tecolotes" aria-label="Fotógrafxs de registro">
-    <!-- TECOLOTE 1: LUISA LUNA VALLE "T21V" -->
-    <div class="invocador-tecolote" id="btn-tecolote-luisa" role="button" tabindex="0" aria-expanded="false">
-      <div class="silueta-contenedor">
-        <img src="img/tecolote1.png" alt="Silueta de Tecolote · Luisa Luna Valle">
-      </div>
-      <span class="tecolote-alias">T21V</span>
-      <h2 class="tecolote-nombre-corto">Luisa Luna Valle</h2>
-      <span class="tecolote-indicador">Invocar mirada</span>
-    </div>
-
-    <!-- TECOLOTE 2: DANIEL ITZEL HERNÁNDEZ QUIJANO "CARACOL ZURDO" -->
+    <!-- TECOLOTE DE DANIEL ITZEL HERNÁNDEZ QUIJANO (tecolote2.png) -->
     <div class="invocador-tecolote" id="btn-tecolote-daniel" role="button" tabindex="0" aria-expanded="false">
       <div class="silueta-contenedor">
-        <img src="img/tecolote2.png" alt="Silueta de Tecolote · Daniel Itzel Hernández Quijano">
+        <img src="img/tecolote2.png" alt="Tecolote · Daniel Itzel Hernández Quijano">
       </div>
       <span class="tecolote-alias">Caracol Zurdo</span>
       <h2 class="tecolote-nombre-corto">Daniel Itzel Hernández Quijano</h2>
-      <span class="tecolote-indicador">Invocar mirada</span>
+    </div>
+
+    <!-- TECOLOTE DE LUISA LUNA VALLE (tecolote1.png) -->
+    <div class="invocador-tecolote" id="btn-tecolote-luisa" role="button" tabindex="0" aria-expanded="false">
+      <div class="silueta-contenedor">
+        <img src="img/tecolote1.png" alt="Tecolote · Luisa Luna Valle">
+      </div>
+      <span class="tecolote-alias">T21V</span>
+      <h2 class="tecolote-nombre-corto">Luisa Luna Valle</h2>
     </div>
   </section>
 
@@ -469,23 +444,10 @@
     // BASE DE DATOS DE TECOLOTES (FOTÓGRAFOS DE REGISTRO)
     // =========================================================
     const tecolotesData = {
-      luisa: {
-        id: "luisa",
-        nombre: "Luisa Luna Valle “T21V”",
-        rol: "Registro Fotográfico · Tecolote I",
-        retrato: "img/luisa.png",
-        registros: "Archivo Ohtli: FARO Aragón (2024)",
-        instagram: "https://www.instagram.com/t.21.v/",
-        usuarioIg: "@t.21.v",
-        portafolio: "", // Pega aquí la URL de su portafolio cuando la tengas
-        semblanzaHtml: `
-          <p class="nota-pendiente">Semblanza en construcción. Fotógrafa y creadora visual encargada del registro escénico de <em>Voces de la muerte y el viento</em> en FARO Aragón (2024), capturando el diálogo entre el cuerpo ritual, el territorio y la memoria colectiva.</p>
-        `
-      },
       daniel: {
         id: "daniel",
         nombre: "Daniel Itzel Hernández Quijano “Caracol Zurdo”",
-        rol: "Registro Fotográfico · Tecolote II",
+        rol: "Registro Fotográfico · Tecolote I",
         retrato: "img/daniel.png",
         registros: "Archivo Ohtli: FARO Oriente (2024) · Museo UNAM Hoy (2025) · Galería Canalla (2026)",
         instagram: "https://www.instagram.com/caracolzurdo_/",
@@ -496,11 +458,24 @@
           <p>Pienso en mi trabajo desde el cuidado que deseo entregarle a quien capturo y el compromiso de encontrarse con el momento desde otra perspectiva al visitante. Vivo con curiosidad el registro: el movimiento, la energía y la intención debe ser accesible desde la estática de la imagen pero la fuerza debe mantenerse en su contenido. Tomar registro significa reconocer que hay identidad, mapeo, y una reconstrucción que termina por convertirse en testigo y en herencia.</p>
           <p>Creo en la fotografía como despojo de la privacidad pero a su vez como la experiencia del cuerpo como unidad colectiva, transitando fuera de lo individual y propio.</p>
         `
+      },
+      luisa: {
+        id: "luisa",
+        nombre: "Luisa Luna Valle “T21V”",
+        rol: "Registro Fotográfico · Tecolote II",
+        retrato: "img/luisa.png",
+        registros: "Archivo Ohtli: FARO Aragón (2024)",
+        instagram: "https://www.instagram.com/t.21.v/",
+        usuarioIg: "@t.21.v",
+        portafolio: "", // Pega aquí la URL de su portafolio cuando la tengas
+        semblanzaHtml: `
+          <p class="nota-pendiente">Semblanza en construcción. Fotógrafa y creadora visual encargada del registro escénico de <em>Voces de la muerte y el viento</em> en FARO Aragón (2024), capturando el diálogo entre el cuerpo ritual, el territorio y la memoria colectiva.</p>
+        `
       }
     };
 
-    const btnLuisa = document.getElementById('btn-tecolote-luisa');
     const btnDaniel = document.getElementById('btn-tecolote-daniel');
+    const btnLuisa = document.getElementById('btn-tecolote-luisa');
     const fichaBox = document.getElementById('ficha-fotografx');
     const retratoContenedor = document.getElementById('retrato-fotografx');
     const datosContenedor = document.getElementById('datos-fotografx');
@@ -512,7 +487,6 @@
       const artista = tecolotesData[clave];
       if (!artista) return;
 
-      // Si se vuelve a tocar el mismo tecolote activo, se cierra
       if (activoActual === clave) {
         cerrarFichaTecolote();
         return;
@@ -520,23 +494,19 @@
 
       activoActual = clave;
 
-      // Actualizar estado visual de las siluetas
-      btnLuisa.classList.toggle('activo', clave === 'luisa');
-      btnLuisa.setAttribute('aria-expanded', clave === 'luisa');
       btnDaniel.classList.toggle('activo', clave === 'daniel');
       btnDaniel.setAttribute('aria-expanded', clave === 'daniel');
+      btnLuisa.classList.toggle('activo', clave === 'luisa');
+      btnLuisa.setAttribute('aria-expanded', clave === 'luisa');
 
-      // Inyectar retrato completo
       retratoContenedor.innerHTML = `
         <img src="${artista.retrato}" alt="Retrato de ${artista.nombre}">
       `;
 
-      // Botón de portafolio (se activa automáticamente cuando agregues la URL en tecolotesData)
       const botonPortafolioHtml = artista.portafolio
         ? `<a href="${artista.portafolio}" target="_blank" rel="noopener" class="btn-enlace-artista secundario">Ver Portafolio &rarr;</a>`
         : `<span class="btn-enlace-artista secundario" style="opacity: 0.55; cursor: default;" title="Enlace próximo a publicarse">Portafolio · Próximamente</span>`;
 
-      // Inyectar semblanza y enlaces
       datosContenedor.innerHTML = `
         <div>
           <div class="ficha-rol">${artista.rol}</div>
@@ -556,7 +526,6 @@
 
       fichaBox.classList.add('visible');
 
-      // Desplazar suavemente hacia el retrato desplegado
       setTimeout(() => {
         document.getElementById('zona-ficha-tecolote').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 100);
@@ -565,18 +534,17 @@
     function cerrarFichaTecolote() {
       activoActual = null;
       fichaBox.classList.remove('visible');
-      btnLuisa.classList.remove('activo');
-      btnLuisa.setAttribute('aria-expanded', 'false');
       btnDaniel.classList.remove('activo');
       btnDaniel.setAttribute('aria-expanded', 'false');
+      btnLuisa.classList.remove('activo');
+      btnLuisa.setAttribute('aria-expanded', 'false');
     }
 
-    btnLuisa.addEventListener('click', () => mostrarTecolote('luisa'));
     btnDaniel.addEventListener('click', () => mostrarTecolote('daniel'));
+    btnLuisa.addEventListener('click', () => mostrarTecolote('luisa'));
     btnCerrar.addEventListener('click', cerrarFichaTecolote);
 
-    // Accesibilidad con teclado (Enter o Espacio)
-    [btnLuisa, btnDaniel].forEach(el => {
+    [btnDaniel, btnLuisa].forEach(el => {
       el.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
