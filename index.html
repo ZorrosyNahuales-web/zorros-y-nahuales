@@ -199,6 +199,52 @@
     </section>
   </main>
 
+  <!-- BUZÓN DE VINCULACIÓN Y GESTIÓN -->
+  <section class="buzon-vinculacion" id="contacto-directo">
+    <div class="buzon-cabecera">
+      <p class="etiqueta-superior">Programación · Alianzas · Convocatorias</p>
+      <h2>Escribir al Colectivo</h2>
+      <p>Si eres curadorx, gestorx de un espacio cultural o artista con interés en colaborar, deja tu mensaje aquí y llegará directo a nuestro correo.</p>
+    </div>
+
+    <form action="https://formsubmit.co/zorrosynahuales@gmail.com" method="POST" class="formulario-obsidiana">
+      <!-- Configuración automática de FormSubmit -->
+      <input type="hidden" name="_subject" value="Nuevo mensaje desde la web · Zorros y Nahuales">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="_honey" style="display:none">
+
+      <div class="fila-campos">
+        <div class="campo-grupo">
+          <label for="nombre-contacto">Nombre o Colectivo</label>
+          <input type="text" id="nombre-contacto" name="Nombre" placeholder="Ej. Mariana Ríos / Espacio Independiente" required>
+        </div>
+
+        <div class="campo-grupo">
+          <label for="correo-contacto">Correo electrónico</label>
+          <input type="email" id="correo-contacto" name="Correo" placeholder="tu@correo.com" required>
+        </div>
+      </div>
+
+      <div class="campo-grupo">
+        <label for="perfil-contacto">Perfil o motivo</label>
+        <select id="perfil-contacto" name="Perfil">
+          <option value="Curaduría / Programación de espacio">Curaduría / Programación de espacio</option>
+          <option value="Artista / Propuesta de colaboración">Artista / Propuesta de colaboración</option>
+          <option value="Gestión cultural / Residencia / Beca">Gestión cultural / Residencia / Beca</option>
+          <option value="Otro mensaje">Otro mensaje</option>
+        </select>
+      </div>
+
+      <div class="campo-grupo">
+        <label for="mensaje-contacto">Mensaje</label>
+        <textarea id="mensaje-contacto" name="Mensaje" rows="4" placeholder="Cuéntanos sobre tu proyecto, espacio o propuesta..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn-enviar-buzon">Enviar mensaje directo &rarr;</button>
+    </form>
+  </section>
+  
   <!-- CONTACTO PARA PROGRAMACIÓN Y CRÉDITOS -->
   <footer id="programacion">
     <div>
