@@ -834,7 +834,8 @@
         </div>
         <div class="popup-fecha">${ev.fecha}</div>
         <div class="popup-sede">${ev.sede}</div>
-        <p class="popup-resumen">${ev.resumenMapa}</p>${htmlLogosAlianza}
+        <p class="popup-resumen">${ev.resumenMapa}</p>
+        ${htmlLogosAlianza}
       `;
       cajaFicha.classList.add('visible');
     }
@@ -924,4 +925,138 @@
       const htmlLogosPin = esColab
         ? `<div class="pin-grupo" data-id="${ev.id}" data-rumbo="${ev.rumbo}">
              <div class="pin-circulo zorros"><img src="${ev.logos[0]}" alt="Zorros y Nahuales"></div>
-             <div class="pin-circulo colaboracion"><img src="${ev.logos[1]}" alt="Jacarandas y Violetas
+             <div class="pin-circulo colaboracion"><img src="${ev.logos[1]}" alt="Jacarandas y Violetas"></div>
+             <span class="pin-etiqueta-anio">${ev.anio}</span>
+           </div>`
+        : `<div class="pin-grupo" data-id="${ev.id}" data-rumbo="${ev.rumbo}">
+             <div class="pin-circulo zorros"><img src="${ev.logos[0]}" alt="Zorros y Nahuales"></div>
+             <span class="pin-etiqueta-anio">${ev.anio}</span>
+           </div>`;
+
+      const iconoPersonalizado = L.divIcon({
+        className: 'pin-colectivo',
+        html: htmlLogosPin,
+        iconSize: esColab ? [82, 54] : [50, 54],
+        iconAnchor: esColab ? [41, 24] : [25, 24]
+      });
+
+      const marcador = L.marker(ev.coords, { icon: iconoPersonalizado }).addTo(mapa);
+      marcadoresPorId[ev.id] = marcador;
+      registroMarcadores.push({ marcador, anio: ev.anio });
+
+      marcador.on('click', () => {
+        activarColorDios(ev.rumbo);
+        iluminarEventoIndividual(ev.id);
+        abrirFichaEvento(ev);
+      });
+
+      // Ficha técnica en el Archivo de Encuentros inferior
+      const tarjeta = document.createElement('article');
+      tarjeta.className = 'tarjeta-hito';
+      tarjeta.dataset.anio = ev.anio;
+      tarjeta.innerHTML = `
+        <div class="hito-imagen-contenedor">
+          <img src="${ev.imagenArchivo}" alt="${ev.sede}">
+          <span class="credito-foto">${ev.creditoFoto}</span>
+        </div>
+        <div class="hito-cuerpo">
+          <div>
+            <div class="hito-superior">
+              <div>
+                <div class="hito-fecha">${ev.fecha} · ${ev.ubicacion}</div>
+                <h3 class="hito-titulo">${ev.sede}</h3>
+                ${ev.colaboracion ? `<div class="hito-colaboracion">${ev.colaboracion}</div>` : ''}
+              </div>
+              <div class="hito-logos">
+                <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
+                ${esColab ? `<img src="${ev.logos[1]}" alt="Jacarandas y Violetas">` : ''}
+              </div>
+            </div>
+            <p class="hito-descripcion">${ev.resumenArchivo}</p>
+          </div>
+          <span class="hito-ver-mapa">Ubicar en el mapa &rarr;</span>
+        </div>
+      `;
+
+      tarjeta.addEventListener('click', () => {
+        document.getElementById('altar-cardinal').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        activarColorDios(ev.rumbo);
+        iluminarEventoIndividual(ev.id);
+        mapa.flyTo(ev.coords, 13, { duration: 1.1 });
+        setTimeout(() => {
+          abrirFichaEvento(ev);
+          iluminarEventoIndividual(ev.id);
+        }, 650);
+      });
+
+      contenedorLista.appendChild(tarjeta);
+    });
+
+    // =========================================================
+    // CLIC EN TEZCATLIPOCA (NORTE) Y QUETZALCÓATL (ORIENTE)
+    // =========================================================
+    deidades.norte.addEventListener('click', () => {
+      cerrarFichaEvento();
+      activarColorDios('norte');
+      iluminarTodosDelRumbo('norte');
+      const faroAragon = encuentros.find(e => e.id === 'faro-aragon-2024');
+      if (faroAragon) {
+        mapa.flyTo(faroAragon.coords, 13, { duration: 1.1 });
+        setTimeout(() => {
+          activarColorDios('norte');
+          iluminarTodosDelRumbo('norte');
+        }, 1150);
+      }
+    });
+
+    deidades.oriente.addEventListener('click', () => {
+      cerrarFichaEvento();
+      activarColorDios('oriente');
+      iluminarTodosDelRumbo('oriente');
+      const eventosOriente = encuentros.filter(e => e.rumbo === 'oriente');
+      if (eventosOriente.length > 0) {
+        const limites = L.latLngBounds(eventosOriente.map(e => e.coords));
+        mapa.flyToBounds(limites, { padding: [95, 95], maxZoom: 13, duration: 1.1 });
+        setTimeout(() => {
+          activarColorDios('oriente');
+          iluminarTodosDelRumbo('oriente');
+        }, 1150);
+      }
+    });
+
+    // =========================================================
+    // FILTROS POR AÑO: SINCRONIZA TARJETAS INFERIORES + CÍRCULOS EN MAPA
+    // =========================================================
+    const botonesFiltro = document.querySelectorAll('.btn-filtro');
+    botonesFiltro.forEach(btn => {
+      btn.addEventListener('click', () => {
+        botonesFiltro.forEach(b => b.classList.remove('activo'));
+        btn.classList.add('activo');
+        const anioSeleccionado = btn.dataset.anio;
+
+        cerrarFichaEvento();
+
+        document.querySelectorAll('.tarjeta-hito').forEach(card => {
+          if (anioSeleccionado === 'todos' || card.dataset.anio === anioSeleccionado) {
+            card.classList.remove('oculto');
+          } else {
+            card.classList.add('oculto');
+          }
+        });
+
+        registroMarcadores.forEach(({ marcador, anio }) => {
+          if (anioSeleccionado === 'todos' || anio === anioSeleccionado) {
+            if (!mapa.hasLayer(marcador)) {
+              marcador.addTo(mapa);
+            }
+          } else {
+            if (mapa.hasLayer(marcador)) {
+              mapa.removeLayer(marcador);
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
