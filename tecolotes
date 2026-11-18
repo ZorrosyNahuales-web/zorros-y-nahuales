@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tecolotes · Miradas de Registro | Zorros y Nahuales</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    /* =========================================================
+       TECOLOTES · GUARDIANES DE LA MEMORIA VISUAL
+       ========================================================= */
+    .barra-tecolotes {
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+      padding: 0.9rem 1.5rem;
+      background: linear-gradient(180deg, rgba(22, 24, 29, 0.96) 65%, rgba(22, 24, 29, 0) 100%);
+      pointer-events: auto;
+    }
+
+    .cabecera-tecolotes {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 5% 1rem;
+      text-align: center;
+    }
+
+    .cabecera-tecolotes .etiqueta-superior {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.3rem;
+    }
+
+    .cabecera-tecolotes h1 {
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: clamp(2.6rem, 5.5vw, 3.8rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    .cabecera-tecolotes p {
+      max-width: 650px;
+      margin: 0 auto;
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--texto-suave);
+    }
+
+    /* =========================================================
+       UMBRAL DUAL: SILUETAS DE LOS TECOLOTES (SIN AGRANDARSE)
+       ========================================================= */
+    .umbral-tecolotes {
+      max-width: 920px;
+      margin: 2rem auto 2.5rem;
+      padding: 0 5%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .invocador-tecolote {
+      background-color: var(--superficie);
+      background-image: var(--textura-obsidiana);
+      border: 1px solid var(--borde);
+      padding: 1.8rem 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
+    }
+
+    .invocador-tecolote:hover {
+      border-color: rgba(230, 0, 126, 0.55);
+    }
+
+    .invocador-tecolote.activo {
+      border-color: var(--acento);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.85), 0 0 24px rgba(230, 0, 126, 0.18);
+    }
+
+    /* La silueta mantiene su escala fija; solo cambia su luz y nitidez */
+    .silueta-contenedor {
+      width: 175px;
+      height: 175px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .silueta-contenedor img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      mix-blend-mode: screen;
+      opacity: 0.48;
+      filter: grayscale(100%) contrast(110%);
+      transition: opacity 0.45s ease, filter 0.45s ease;
+    }
+
+    .invocador-tecolote:hover .silueta-contenedor img,
+    .invocador-tecolote.activo .silueta-contenedor img {
+      opacity: 1;
+      filter: grayscale(0%) contrast(105%) drop-shadow(0 0 14px rgba(230, 0, 126, 0.45));
+    }
+
+    .tecolote-alias {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.25rem;
+    }
+
+    .tecolote-nombre-corto {
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--texto);
+      line-height: 1.1;
+      margin-bottom: 0.65rem;
+    }
+
+    .tecolote-indicador {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--texto-suave);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 2px;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .invocador-tecolote.activo .tecolote-indicador {
+      color: var(--texto);
+      border-color: var(--acento);
+    }
+
+    /* =========================================================
+       FICHA DESPLEGABLE: RETRATO COMPLETO + SEMBLANZA + ENLACES
+       ========================================================= */
+    .contenedor-ficha-tecolote {
+      max-width: 1040px;
+      margin: 0 auto 4.5rem;
+      padding: 0 5%;
+    }
+
+    .ficha-fotografx {
+      display: none;
+      background-color: var(--superficie);
+      background-image: var(--textura-obsidiana);
+      border: 1px solid var(--acento);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
+      position: relative;
+      animation: revelarRetrato 0.4s ease-out;
+    }
+
+    .ficha-fotografx.visible {
+      display: grid;
+      grid-template-columns: minmax(280px, 42%) 1fr;
+    }
+
+    @keyframes revelarRetrato {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-cerrar-tecolote {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.95rem;
+      background: rgba(13, 15, 18, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--texto);
+      width: 32px;
+      height: 32px;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.25s ease;
+    }
+
+    .btn-cerrar-tecolote:hover {
+      background: var(--acento);
+      border-color: var(--acento);
+    }
+
+    /* Contenedor del retrato completo sin recortar su proporción */
+    .retrato-completo-marco {
+      background-color: #0d0f12;
+      border-right: 1px solid var(--borde);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .retrato-completo-marco img {
+      width: 100%;
+      height: auto;
+      max-height: 540px;
+      object-fit: contain;
+      display: block;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85);
+    }
+
+    .ficha-contenido {
+      padding: 2.2rem 2.4rem 2.2rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .ficha-rol {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.35rem;
+    }
+
+    .ficha-nombre-completo {
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: clamp(1.9rem, 3.5vw, 2.5rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.08;
+      color: var(--texto);
+      margin-bottom: 0.45rem;
+    }
+
+    .ficha-registros {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #c27aff;
+      margin-bottom: 1.35rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .ficha-semblanza p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.72;
+      color: var(--texto);
+      margin-bottom: 1rem;
+    }
+
+    .ficha-semblanza p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ficha-semblanza .nota-pendiente {
+      color: var(--texto-suave);
+      font-style: italic;
+      border-left: 2px solid var(--acento);
+      padding-left: 0.9rem;
+    }
+
+    .ficha-enlaces {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.8rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-enlace-artista {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.2rem;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--acento);
+      background-color: var(--acento);
+      color: var(--texto);
+      transition: all 0.25s ease;
+    }
+
+    .btn-enlace-artista:hover {
+      background-color: transparent;
+      color: var(--texto);
+      box-shadow: 0 0 16px rgba(230, 0, 126, 0.45);
+    }
+
+    .btn-enlace-artista.secundario {
+      background-color: transparent;
+      border-color: rgba(255, 255, 255, 0.28);
+      color: var(--texto-suave);
+    }
+
+    .btn-enlace-artista.secundario:hover {
+      border-color: #c27aff;
+      color: var(--texto);
+      box-shadow: 0 0 16px rgba(194, 122, 255, 0.35);
+    }
+
+    /* =========================================================
+       AJUSTES RESPONSIVOS PARA CELULAR (PANTALLAS <= 860PX)
+       ========================================================= */
+    @media (max-width: 860px) {
+      .barra-tecolotes {
+        position: relative;
+        padding: 0.75rem 0.75rem 0.4rem;
+        background: transparent;
+      }
+
+      .barra-tecolotes nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+      }
+
+      .barra-tecolotes .btn-nav {
+        padding: 0.42rem 0.72rem;
+        font-size: 0.72rem;
+      }
+
+      .cabecera-tecolotes {
+        padding: 0.8rem 5% 0.6rem;
+      }
+
+      .cabecera-tecolotes p {
+        font-size: 0.88rem;
+      }
+
+      .umbral-tecolotes {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
+        margin: 1.2rem auto 1.6rem;
+      }
+
+      .invocador-tecolote {
+        padding: 1.1rem 0.75rem 1rem;
+      }
+
+      .silueta-contenedor {
+        width: 112px;
+        height: 112px;
+        margin-bottom: 0.65rem;
+      }
+
+      .tecolote-nombre-corto {
+        font-size: 1.25rem;
+      }
+
+      .ficha-fotografx.visible {
+        grid-template-columns: 1fr;
+      }
+
+      .retrato-completo-marco {
+        border-right: none;
+        border-bottom: 1px solid var(--borde);
+        padding: 1.1rem;
+      }
+
+      .retrato-completo-marco img {
+        max-height: 400px;
+      }
+
+      .ficha-contenido {
+        padding: 1.5rem 1.25rem 1.6rem;
+      }
+
+      .ficha-enlaces {
+        flex-direction: column;
+      }
+
+      .btn-enlace-artista {
+        justify-content: center;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA SUPERIOR -->
+  <header class="barra-superior barra-tecolotes">
+    <nav>
+      <a href="index.html" class="btn-nav">Inicio</a>
+      <a href="trayectoria.html" class="btn-nav" title="Trayectoria y mapa">Ohtli</a>
+      <a href="blog.html" class="btn-nav" title="Bitácora y textos">Amoxtli</a>
+      <a href="eventos.html" class="btn-nav" title="Eventos activos">Axcan</a>
+      <a href="tecolotes.html" class="btn-nav" title="Fotógrafxs de registro">Tecolotes</a>
+    </nav>
+  </header>
+
+  <section class="cabecera-tecolotes" style="border: none;">
+    <p class="etiqueta-superior">Miradas Nocturnas · Archivo Visual</p>
+    <h1>Tecolotes</h1>
+    <p>En la cosmovisión mesoamericana, el tecolote habita el umbral entre la penumbra y la revelación. Toca cada silueta para desplegar el retrato y la mirada de quienes han vuelto testigo la acción corporal del colectivo.</p>
+  </section>
+
+  <!-- UMBRAL DE LOS DOS TECOLOTES -->
+  <section class="umbral-tecolotes" aria-label="Fotógrafxs de registro">
+    <!-- TECOLOTE 1: LUISA LUNA VALLE "T21V" -->
+    <div class="invocador-tecolote" id="btn-tecolote-luisa" role="button" tabindex="0" aria-expanded="false">
+      <div class="silueta-contenedor">
+        <img src="img/tecolote1.png" alt="Silueta de Tecolote · Luisa Luna Valle">
+      </div>
+      <span class="tecolote-alias">T21V</span>
+      <h2 class="tecolote-nombre-corto">Luisa Luna Valle</h2>
+      <span class="tecolote-indicador">Invocar mirada</span>
+    </div>
+
+    <!-- TECOLOTE 2: DANIEL ITZEL HERNÁNDEZ QUIJANO "CARACOL ZURDO" -->
+    <div class="invocador-tecolote" id="btn-tecolote-daniel" role="button" tabindex="0" aria-expanded="false">
+      <div class="silueta-contenedor">
+        <img src="img/tecolote2.png" alt="Silueta de Tecolote · Daniel Itzel Hernández Quijano">
+      </div>
+      <span class="tecolote-alias">Caracol Zurdo</span>
+      <h2 class="tecolote-nombre-corto">Daniel Itzel Hernández Quijano</h2>
+      <span class="tecolote-indicador">Invocar mirada</span>
+    </div>
+  </section>
+
+  <!-- FICHA DESPLEGABLE DEL ARTISTA SELECCIONADO -->
+  <section class="contenedor-ficha-tecolote" id="zona-ficha-tecolote">
+    <article class="ficha-fotografx" id="ficha-fotografx" aria-live="polite">
+      <button class="btn-cerrar-tecolote" id="btn-cerrar-tecolote" title="Cerrar ficha">&times;</button>
+      <div class="retrato-completo-marco" id="retrato-fotografx"></div>
+      <div class="ficha-contenido" id="datos-fotografx"></div>
+    </article>
+  </section>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <div>
+      <p><strong>Contacto para programación y gestión:</strong></p>
+      <p>Correo: <a href="mailto:zorrosynahuales@gmail.com">zorrosynahuales@gmail.com</a> · Instagram: <a href="https://www.instagram.com/zorros.y.nahuales/" target="_blank">@zorrosynahuales</a></p>
+    </div>
+    <div>
+      <p>Archivo vivo de Zorros y Nahuales.</p>
+      <p>Registro y memoria visual.</p>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================
+    // BASE DE DATOS DE TECOLOTES (FOTÓGRAFOS DE REGISTRO)
+    // =========================================================
+    const tecolotesData = {
+      luisa: {
+        id: "luisa",
+        nombre: "Luisa Luna Valle “T21V”",
+        rol: "Registro Fotográfico · Tecolote I",
+        retrato: "img/luisa.png",
+        registros: "Archivo Ohtli: FARO Aragón (2024)",
+        instagram: "https://www.instagram.com/t.21.v/",
+        usuarioIg: "@t.21.v",
+        portafolio: "", // Pega aquí la URL de su portafolio cuando la tengas
+        semblanzaHtml: `
+          <p class="nota-pendiente">Semblanza en construcción. Fotógrafa y creadora visual encargada del registro escénico de <em>Voces de la muerte y el viento</em> en FARO Aragón (2024), capturando el diálogo entre el cuerpo ritual, el territorio y la memoria colectiva.</p>
+        `
+      },
+      daniel: {
+        id: "daniel",
+        nombre: "Daniel Itzel Hernández Quijano “Caracol Zurdo”",
+        rol: "Registro Fotográfico · Tecolote II",
+        retrato: "img/daniel.png",
+        registros: "Archivo Ohtli: FARO Oriente (2024) · Museo UNAM Hoy (2025) · Galería Canalla (2026)",
+        instagram: "https://www.instagram.com/caracolzurdo_/",
+        usuarioIg: "@caracolzurdo_",
+        portafolio: "", // Pega aquí la URL de su portafolio cuando la tengas
+        semblanzaHtml: `
+          <p>Cuando me pienso desde el lente de la cámara me reconozco como una extensión del momento, registrar es tener en cuenta la narrativa que tendrá la imagen y su secuencia, capturar la tensión es entregarle al otro lo sensible de lo vivido.</p>
+          <p>Pienso en mi trabajo desde el cuidado que deseo entregarle a quien capturo y el compromiso de encontrarse con el momento desde otra perspectiva al visitante. Vivo con curiosidad el registro: el movimiento, la energía y la intención debe ser accesible desde la estática de la imagen pero la fuerza debe mantenerse en su contenido. Tomar registro significa reconocer que hay identidad, mapeo, y una reconstrucción que termina por convertirse en testigo y en herencia.</p>
+          <p>Creo en la fotografía como despojo de la privacidad pero a su vez como la experiencia del cuerpo como unidad colectiva, transitando fuera de lo individual y propio.</p>
+        `
+      }
+    };
+
+    const btnLuisa = document.getElementById('btn-tecolote-luisa');
+    const btnDaniel = document.getElementById('btn-tecolote-daniel');
+    const fichaBox = document.getElementById('ficha-fotografx');
+    const retratoContenedor = document.getElementById('retrato-fotografx');
+    const datosContenedor = document.getElementById('datos-fotografx');
+    const btnCerrar = document.getElementById('btn-cerrar-tecolote');
+
+    let activoActual = null;
+
+    function mostrarTecolote(clave) {
+      const artista = tecolotesData[clave];
+      if (!artista) return;
+
+      // Si se vuelve a tocar el mismo tecolote activo, se cierra
+      if (activoActual === clave) {
+        cerrarFichaTecolote();
+        return;
+      }
+
+      activoActual = clave;
+
+      // Actualizar estado visual de las siluetas
+      btnLuisa.classList.toggle('activo', clave === 'luisa');
+      btnLuisa.setAttribute('aria-expanded', clave === 'luisa');
+      btnDaniel.classList.toggle('activo', clave === 'daniel');
+      btnDaniel.setAttribute('aria-expanded', clave === 'daniel');
+
+      // Inyectar retrato completo
+      retratoContenedor.innerHTML = `
+        <img src="${artista.retrato}" alt="Retrato de ${artista.nombre}">
+      `;
+
+      // Botón de portafolio (se activa automáticamente cuando agregues la URL en tecolotesData)
+      const botonPortafolioHtml = artista.portafolio
+        ? `<a href="${artista.portafolio}" target="_blank" rel="noopener" class="btn-enlace-artista secundario">Ver Portafolio &rarr;</a>`
+        : `<span class="btn-enlace-artista secundario" style="opacity: 0.55; cursor: default;" title="Enlace próximo a publicarse">Portafolio · Próximamente</span>`;
+
+      // Inyectar semblanza y enlaces
+      datosContenedor.innerHTML = `
+        <div>
+          <div class="ficha-rol">${artista.rol}</div>
+          <h3 class="ficha-nombre-completo">${artista.nombre}</h3>
+          <div class="ficha-registros">${artista.registros}</div>
+          <div class="ficha-semblanza">
+            ${artista.semblanzaHtml}
+          </div>
+        </div>
+        <div class="ficha-enlaces">
+          <a href="${artista.instagram}" target="_blank" rel="noopener" class="btn-enlace-artista">
+            Instagram (${artista.usuarioIg}) &rarr;
+          </a>
+          ${botonPortafolioHtml}
+        </div>
+      `;
+
+      fichaBox.classList.add('visible');
+
+      // Desplazar suavemente hacia el retrato desplegado
+      setTimeout(() => {
+        document.getElementById('zona-ficha-tecolote').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+
+    function cerrarFichaTecolote() {
+      activoActual = null;
+      fichaBox.classList.remove('visible');
+      btnLuisa.classList.remove('activo');
+      btnLuisa.setAttribute('aria-expanded', 'false');
+      btnDaniel.classList.remove('activo');
+      btnDaniel.setAttribute('aria-expanded', 'false');
+    }
+
+    btnLuisa.addEventListener('click', () => mostrarTecolote('luisa'));
+    btnDaniel.addEventListener('click', () => mostrarTecolote('daniel'));
+    btnCerrar.addEventListener('click', cerrarFichaTecolote);
+
+    // Accesibilidad con teclado (Enter o Espacio)
+    [btnLuisa, btnDaniel].forEach(el => {
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          el.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
