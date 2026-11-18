@@ -8,181 +8,150 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <style>
     /* =========================================================
-       OHTLI · MAPA A PANTALLA COMPLETA + 4 DIOSES DE LOS RUMBOS
+       OHTLI · ALTAR CARDINAL CON LOS 4 DIOSES POR FUERA DEL MAPA
        ========================================================= */
     .barra-trayectoria {
-      position: fixed;
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
       z-index: 1200;
       padding: 0.9rem 1.5rem;
-      background: linear-gradient(180deg, rgba(13, 15, 18, 0.95) 55%, rgba(13, 15, 18, 0) 100%);
+      background: linear-gradient(180deg, rgba(22, 24, 29, 0.96) 65%, rgba(22, 24, 29, 0) 100%);
       pointer-events: auto;
     }
 
-    /* Escenario del mapa a ancho completo */
-    .escenario-mapa-total {
-      position: relative;
-      width: 100%;
-      height: 90vh;
-      min-height: 620px;
-      background-color: #0d0f12;
-      border-bottom: 1px solid rgba(230, 0, 126, 0.45);
-      overflow: hidden;
+    .cabecera-ohtli {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 1.6rem 5% 0.8rem;
+      text-align: center;
     }
 
-    /* z-index 460 asegura que los popups de Leaflet siempre queden POR ENCIMA de los dioses */
-    #mapa-trayectoria {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      z-index: 460;
-      background-color: transparent;
-    }
-
-    /* Estilo obsidiana minimalista: siluetas sutiles sin competir con dioses ni pins */
-    #mapa-trayectoria .leaflet-tile-pane {
-      filter: invert(100%) hue-rotate(195deg) brightness(52%) contrast(135%) saturate(15%);
-      opacity: 0.44;
-    }
-
-    /* Viñeta oscura periférica para integrar el mapa y los dioses */
-    .escenario-mapa-total::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, transparent 40%, rgba(10, 12, 15, 0.94) 94%);
-      pointer-events: none;
-      z-index: 470;
-    }
-
-    /* Título flotante arriba a la izquierda con respaldo sutil */
-    .titulo-flotante-ohtli {
-      position: absolute;
-      top: 4.7rem;
-      left: 1.6rem;
-      z-index: 520;
-      pointer-events: none;
-      max-width: 280px;
-      background: linear-gradient(135deg, rgba(13, 15, 18, 0.9) 65%, rgba(13, 15, 18, 0) 100%);
-      padding: 0.75rem 1rem;
-      border-left: 2px solid var(--acento);
-    }
-
-    .titulo-flotante-ohtli .etiqueta-superior {
-      font-size: 0.68rem;
+    .cabecera-ohtli .etiqueta-superior {
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--acento);
-      margin-bottom: 0.15rem;
+      margin-bottom: 0.3rem;
     }
 
-    .titulo-flotante-ohtli h1 {
+    .cabecera-ohtli h1 {
       font-family: 'Londrina Solid', sans-serif;
-      font-size: clamp(2.2rem, 3.6vw, 3.1rem);
+      font-size: clamp(2.6rem, 5.5vw, 3.8rem);
       font-weight: 400;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      line-height: 0.95;
-      color: var(--texto);
+      line-height: 1;
+      margin-bottom: 0.55rem;
     }
 
-    .titulo-flotante-ohtli p {
-      font-size: 0.78rem;
+    .cabecera-ohtli p {
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 0.96rem;
       font-weight: 300;
       color: var(--texto-suave);
-      margin-top: 0.4rem;
-      line-height: 1.4;
     }
 
     /* =========================================================
-       DEIDADES DE LOS 4 RUMBOS EMPALMADAS EN EL MAPA (z-index 420)
+       ALTAR CARDINAL: 4 DIOSES ALREDEDOR + MAPA LEGIBLE AL CENTRO
        ========================================================= */
+    .altar-cardinal {
+      max-width: 1280px;
+      margin: 1.2rem auto 3.8rem;
+      padding: 0 3%;
+      display: grid;
+      grid-template-columns: 145px 1fr 145px;
+      grid-template-rows: auto minmax(470px, 1fr) auto;
+      grid-template-areas:
+        ".        norte    ."
+        "poniente mapa     oriente"
+        ".        sur      .";
+      gap: 0.9rem;
+      align-items: center;
+      justify-items: center;
+    }
+
+    .deidad-norte    { grid-area: norte; }
+    .deidad-sur      { grid-area: sur; }
+    .deidad-poniente { grid-area: poniente; }
+    .deidad-oriente  { grid-area: oriente; }
+
+    /* Deidades ubicadas en los 4 puntos cardinales fuera del lienzo */
     .deidad-rumbo {
-      position: absolute;
-      z-index: 420;
-      pointer-events: none;
       display: flex;
       flex-direction: column;
       align-items: center;
-      opacity: 0.28;
-      filter: grayscale(45%) contrast(110%);
-      transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
+      text-align: center;
+      cursor: pointer;
+      opacity: 0.42;
+      filter: grayscale(40%);
+      transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+      padding: 0.35rem;
     }
 
     .deidad-rumbo img {
-      width: clamp(78px, 9vw, 118px);
-      height: auto;
+      width: 96px;
+      height: 96px;
       object-fit: contain;
       mix-blend-mode: screen;
-      -webkit-mask-image: radial-gradient(circle, #000 56%, transparent 95%);
-      mask-image: radial-gradient(circle, #000 56%, transparent 95%);
+      -webkit-mask-image: radial-gradient(circle, #000 58%, transparent 96%);
+      mask-image: radial-gradient(circle, #000 58%, transparent 96%);
     }
 
     .deidad-etiqueta {
-      font-size: 0.56rem;
+      font-size: 0.62rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--texto-suave);
-      background: rgba(13, 15, 18, 0.85);
-      padding: 2px 7px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      margin-top: -2px;
-      transition: color 0.35s ease, border-color 0.35s ease;
-    }
-
-    /* Posición cardinal de cada deidad */
-    .deidad-norte {
-      top: 4.3rem;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .deidad-sur {
-      bottom: 0.8rem;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    /* Poniente = Izquierda (Xipe Tótec) */
-    .deidad-poniente {
-      top: 58%;
-      left: 1.4rem;
-      transform: translateY(-50%);
-    }
-
-    /* Oriente = Derecha (Quetzalcóatl) */
-    .deidad-oriente {
-      top: 52%;
-      right: 1.4rem;
-      transform: translateY(-50%);
+      margin-top: 0.25rem;
+      line-height: 1.25;
+      transition: color 0.35s ease;
     }
 
     /* Iluminación ritual al acercarse a cada rumbo */
+    .deidad-rumbo:hover,
     .deidad-rumbo.iluminado {
-      opacity: 0.96;
+      opacity: 1;
+      transform: scale(1.08);
     }
 
-    .deidad-norte.iluminado    { transform: translateX(-50%) scale(1.08); filter: grayscale(0%) drop-shadow(0 0 20px rgba(180, 108, 255, 0.85)); }
-    .deidad-sur.iluminado      { transform: translateX(-50%) scale(1.08); filter: grayscale(0%) drop-shadow(0 0 20px rgba(46, 196, 182, 0.85)); }
-    .deidad-poniente.iluminado { transform: translateY(-50%) scale(1.08); filter: grayscale(0%) drop-shadow(0 0 20px rgba(230, 57, 70, 0.9)); }
-    .deidad-oriente.iluminado  { transform: translateY(-50%) scale(1.08); filter: grayscale(0%) drop-shadow(0 0 20px rgba(247, 245, 240, 0.85)); }
+    .deidad-norte:hover,
+    .deidad-norte.iluminado    { filter: grayscale(0%) drop-shadow(0 0 18px rgba(180, 108, 255, 0.9)); }
+    .deidad-sur:hover,
+    .deidad-sur.iluminado      { filter: grayscale(0%) drop-shadow(0 0 18px rgba(46, 196, 182, 0.9)); }
+    .deidad-poniente:hover,
+    .deidad-poniente.iluminado { filter: grayscale(0%) drop-shadow(0 0 18px rgba(230, 57, 70, 0.95)); }
+    .deidad-oriente:hover,
+    .deidad-oriente.iluminado  { filter: grayscale(0%) drop-shadow(0 0 18px rgba(247, 245, 240, 0.85)); }
 
+    .deidad-rumbo:hover .deidad-etiqueta,
     .deidad-rumbo.iluminado .deidad-etiqueta {
-      border-color: var(--acento);
-      color: var(--texto);
-      box-shadow: 0 0 12px rgba(230, 0, 126, 0.45);
+      color: var(--acento);
     }
 
-    /* Controles de zoom de Leaflet abajo a la derecha */
-    .leaflet-top.leaflet-left {
-      top: auto !important;
-      bottom: 24px !important;
-      left: auto !important;
-      right: 20px !important;
+    /* Marco del Mapa Central 100% despejado y legible */
+    .marco-mapa {
+      grid-area: mapa;
+      position: relative;
+      width: 100%;
+      height: 510px;
+      border: 1px solid rgba(230, 0, 126, 0.55);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+      background-color: #161920;
+      overflow: hidden;
+    }
+
+    #mapa-trayectoria {
+      width: 100%;
+      height: 100%;
+      background-color: #161920;
+    }
+
+    /* Filtro oscuro balanceado: calles, parques y nombres claramente legibles */
+    #mapa-trayectoria .leaflet-tile-pane {
+      filter: invert(100%) hue-rotate(190deg) brightness(94%) contrast(104%) saturate(45%);
     }
 
     /* =========================================================
@@ -213,7 +182,7 @@
       overflow: hidden;
       background-color: var(--fondo);
       border: 2px solid var(--acento);
-      box-shadow: 0 0 16px rgba(230, 0, 126, 0.85), 0 4px 12px rgba(0, 0, 0, 0.95);
+      box-shadow: 0 0 14px rgba(230, 0, 126, 0.85), 0 4px 10px rgba(0, 0, 0, 0.9);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -230,7 +199,7 @@
       margin-left: -11px;
       background-color: #ffffff;
       border-color: #c27aff;
-      box-shadow: 0 0 16px rgba(194, 122, 255, 0.85), 0 4px 12px rgba(0, 0, 0, 0.95);
+      box-shadow: 0 0 14px rgba(194, 122, 255, 0.85), 0 4px 10px rgba(0, 0, 0, 0.9);
     }
 
     .pin-etiqueta-anio {
@@ -256,7 +225,7 @@
       color: var(--texto) !important;
       border: 1px solid var(--acento) !important;
       border-radius: 0 !important;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.98) !important;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95) !important;
       padding: 0 !important;
     }
 
@@ -340,11 +309,11 @@
     }
 
     /* =========================================================
-       LÍNEA DEL TIEMPO / FICHAS TÉCNICAS DEBAJO DEL MAPA
+       LÍNEA DEL TIEMPO / FICHAS TÉCNICAS DEBAJO DEL ALTAR
        ========================================================= */
     .bitacora-trayectoria {
       max-width: 1120px;
-      margin: 3.5rem auto 0;
+      margin: 1rem auto 0;
       padding: 0 5% 4.5rem;
     }
 
@@ -495,25 +464,26 @@
       align-self: flex-start;
     }
 
-    @media (max-width: 768px) {
-      .escenario-mapa-total {
-        height: 78vh;
-        min-height: 500px;
-      }
-
-      .titulo-flotante-ohtli {
-        top: 4.5rem;
-        left: 0.8rem;
-        max-width: 195px;
-        padding: 0.5rem 0.7rem;
+    /* Adaptación móvil: dioses compactos en barra arriba/abajo del mapa */
+    @media (max-width: 860px) {
+      .altar-cardinal {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 400px auto;
+        grid-template-areas:
+          "norte    poniente"
+          "mapa     mapa"
+          "oriente  sur";
+        gap: 0.75rem;
       }
 
       .deidad-rumbo img {
-        width: 60px;
+        width: 68px;
+        height: 68px;
       }
 
-      .deidad-oriente { right: 0.3rem; }
-      .deidad-poniente { left: 0.3rem; top: 64%; }
+      .marco-mapa {
+        height: 400px;
+      }
 
       .grid-hitos {
         grid-template-columns: 1fr;
@@ -523,7 +493,7 @@
 </head>
 <body>
 
-  <!-- BARRA SUPERIOR FLOTANTE -->
+  <!-- BARRA SUPERIOR -->
   <header class="barra-superior barra-trayectoria">
     <nav>
       <a href="index.html" class="btn-nav">Inicio</a>
@@ -534,42 +504,46 @@
     </nav>
   </header>
 
-  <!-- MAPA DE PANTALLA COMPLETA CON LOS 4 DIOSES DE LOS RUMBOS -->
-  <section class="escenario-mapa-total" id="escenario-mapa" style="border: none; padding: 0; max-width: 100%; margin: 0;">
+  <!-- CABECERA LIMPIA -->
+  <section class="cabecera-ohtli" style="border: none;">
+    <p class="etiqueta-superior">Cartografía de los 4 Rumbos · 2024 – 2026</p>
+    <h1>Ohtli</h1>
+    <p>Explora el territorio del Valle de México custodiado por los cuatro rumbos. Toca cada emblema o deidad cardinal para invocar su memoria.</p>
+  </section>
 
-    <div class="titulo-flotante-ohtli">
-      <p class="etiqueta-superior">Cartografía · 2024 – 2026</p>
-      <h1>Ohtli</h1>
-      <p>Desplázate hacia los cuatro rumbos del Valle de México o toca cada emblema para invocar su memoria.</p>
-    </div>
+  <!-- ALTAR CARDINAL CON LOS 4 DIOSES POR FUERA DEL MAPA -->
+  <div class="altar-cardinal" id="altar-cardinal">
 
     <!-- NORTE: TEZCATLIPOCA -->
-    <div class="deidad-rumbo deidad-norte" id="dios-norte">
+    <div class="deidad-rumbo deidad-norte" id="dios-norte" data-rumbo="norte">
       <img src="img/tezcatlipoca.png" alt="Tezcatlipoca · Norte" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Norte · Tezcatlipoca</span>
+      <span class="deidad-etiqueta">Norte<br>Tezcatlipoca</span>
     </div>
 
     <!-- PONIENTE / OESTE: XIPE TÓTEC -->
-    <div class="deidad-rumbo deidad-poniente" id="dios-poniente">
+    <div class="deidad-rumbo deidad-poniente" id="dios-poniente" data-rumbo="poniente">
       <img src="img/xipe-totec.png" alt="Xipe Tótec · Poniente" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Poniente · Xipe Tótec</span>
+      <span class="deidad-etiqueta">Poniente<br>Xipe Tótec</span>
+    </div>
+
+    <!-- MAPA CENTRAL 100% DESPEJADO Y LEGIBLE -->
+    <div class="marco-mapa">
+      <div id="mapa-trayectoria"></div>
     </div>
 
     <!-- ORIENTE / ESTE: QUETZALCÓATL -->
-    <div class="deidad-rumbo deidad-oriente" id="dios-oriente">
+    <div class="deidad-rumbo deidad-oriente" id="dios-oriente" data-rumbo="oriente">
       <img src="img/quetzalcoatl.png" alt="Quetzalcóatl · Oriente" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Oriente · Quetzalcóatl</span>
+      <span class="deidad-etiqueta">Oriente<br>Quetzalcóatl</span>
     </div>
 
     <!-- SUR: HUITZILOPOCHTLI -->
-    <div class="deidad-rumbo deidad-sur" id="dios-sur">
+    <div class="deidad-rumbo deidad-sur" id="dios-sur" data-rumbo="sur">
       <img src="img/huitzilopochtli.png" alt="Huitzilopochtli · Sur" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Sur · Huitzilopochtli</span>
+      <span class="deidad-etiqueta">Sur<br>Huitzilopochtli</span>
     </div>
 
-    <!-- LIENZO DEL MAPA -->
-    <div id="mapa-trayectoria"></div>
-  </section>
+  </div>
 
   <!-- LÍNEA DEL TIEMPO / FICHAS TÉCNICAS DE LOS ENCUENTROS -->
   <div class="bitacora-trayectoria">
@@ -602,7 +576,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
     // =========================================================
-    // BASE DE DATOS DE ENCUENTROS (EDITA AQUÍ FICHAS Y COORDENADAS)
+    // BASE DE DATOS DE ENCUENTROS
     // =========================================================
     const encuentros = [
       {
@@ -655,23 +629,22 @@
       }
     ];
 
-    // Centro ajustado para que los 4 pins queden libres entre los 4 dioses
-    const centroBase = { lat: 19.402, lng: -99.068 };
+    const centroBase = { lat: 19.423, lng: -99.062 };
 
     const mapa = L.map('mapa-trayectoria', {
       center: [centroBase.lat, centroBase.lng],
-      zoom: 10,
+      zoom: 11,
       scrollWheelZoom: false
     });
 
-    // Capa oficial libre de OpenStreetMap (estilizada en obsidiana sutil vía CSS, cero API keys)
+    // Capa oficial libre de OpenStreetMap (legible y oscura vía CSS)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap',
       maxZoom: 18
     }).addTo(mapa);
 
     // =========================================================
-    // ILUMINACIÓN DINÁMICA DE LOS 4 DIOSES (AL MOVER MAPA O CURSOR)
+    // ILUMINACIÓN DINÁMICA DE LOS 4 DIOSES
     // =========================================================
     const deidades = {
       norte: document.getElementById('dios-norte'),
@@ -690,7 +663,7 @@
       });
     }
 
-    // 1. Detectar hacia qué rumbo arrastras/mueves el mapa
+    // 1. Al arrastrar el mapa hacia un punto cardinal
     mapa.on('move', () => {
       const c = mapa.getCenter();
       const dLat = c.lat - centroBase.lat;
@@ -709,22 +682,35 @@
       }
     });
 
-    // 2. Detectar cuando acercas el cursor hacia los bordes cardinales del mapa
-    const escenarioMapa = document.getElementById('escenario-mapa');
-    escenarioMapa.addEventListener('mousemove', (e) => {
-      const rect = escenarioMapa.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;  // 0 (izq) a 1 (der)
-      const y = (e.clientY - rect.top) / rect.height;  // 0 (arriba) a 1 (abajo)
+    // 2. Al acercar el cursor cerca de los bordes del mapa
+    const marcoMapa = document.querySelector('.marco-mapa');
+    marcoMapa.addEventListener('mousemove', (e) => {
+      const rect = marcoMapa.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
 
-      if (y < 0.25) {
+      if (y < 0.16) {
         iluminarRumbo('norte');
-      } else if (y > 0.75) {
+      } else if (y > 0.84) {
         iluminarRumbo('sur');
-      } else if (x > 0.76) {
+      } else if (x > 0.84) {
         iluminarRumbo('oriente');
-      } else if (x < 0.24) {
+      } else if (x < 0.16) {
         iluminarRumbo('poniente');
       }
+    });
+
+    // 3. Al dar clic directo en un dios, vuela a ese rumbo en el mapa
+    const marcadoresPorRumbo = {};
+    Object.keys(deidades).forEach(rumbo => {
+      deidades[rumbo].addEventListener('click', () => {
+        iluminarRumbo(rumbo);
+        const ev = encuentros.find(item => item.rumbo === rumbo);
+        if (ev && marcadoresPorRumbo[rumbo]) {
+          mapa.flyTo(ev.coords, 13, { duration: 1.1 });
+          setTimeout(() => marcadoresPorRumbo[rumbo].openPopup(), 650);
+        }
+      });
     });
 
     // =========================================================
@@ -771,6 +757,8 @@
         .addTo(mapa)
         .bindPopup(htmlPopup, { maxWidth: 300 });
 
+      marcadoresPorRumbo[ev.rumbo] = marcador;
+
       marcador.on('click', () => {
         iluminarRumbo(ev.rumbo);
       });
@@ -798,7 +786,7 @@
       `;
 
       tarjeta.addEventListener('click', () => {
-        document.getElementById('escenario-mapa').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('altar-cardinal').scrollIntoView({ behavior: 'smooth', block: 'center' });
         iluminarRumbo(ev.rumbo);
         mapa.flyTo(ev.coords, 13, { duration: 1.1 });
         setTimeout(() => {
