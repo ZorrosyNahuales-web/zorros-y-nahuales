@@ -722,7 +722,7 @@
     const INSTAGRAM_JACARANDAS = "https://www.instagram.com/jacarandas.y.violetas/";
 
     // =========================================================
-    // BASE DE DATOS DE ENCUENTROS (CON CRÉDITOS FOTOGRÁFICOS)
+    // BASE DE DATOS DE ENCUENTROS (RUTAS DIRECTAS EN .png)
     // =========================================================
     const encuentros = [
       {
@@ -735,8 +735,8 @@
         coords: [19.4839, -99.0706],
         colaboracion: "En colaboración con Jacarandas y Violetas",
         logos: ["img/logo.png", "img/jacarandas.png"],
-        imagenMapaBase: "img/registrofaroaragon.png",
-        imagenArchivoBase: "img/registroaragon.png",
+        imagenMapa: "img/registrofaroaragon.png",
+        imagenArchivo: "img/registroaragon.png",
         creditoFoto: "Fotografía: Luisa Luna Valle “T21V”, 2024.",
         resumenMapa: "Participación en la exposición Ohtli Mictlán, dirigida por Jacarandas y Violetas, con el performance “Voces de la muerte y el viento”.<br><strong>Sede:</strong> Faro Aragón",
         resumenArchivo: "En el marco de las jornadas de noviembre en FARO Aragón, se expuso por parte del colectivo el performance en vivo “Voces de la muerte y el viento” dentro del evento Caminando entre los muertos y la exposición fotográfica Ohtli Mictlán, dirigida por la colectiva Jacarandas y Violetas."
@@ -751,8 +751,8 @@
         coords: [19.3712, -99.0137],
         colaboracion: "En colaboración con Jacarandas y Violetas",
         logos: ["img/logo.png", "img/jacarandas.png"],
-        imagenMapaBase: "img/registrofarooriente.png",
-        imagenArchivoBase: "img/registrooriente.png",
+        imagenMapa: "img/registrofarooriente.png",
+        imagenArchivo: "img/registrooriente.png",
         creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2024.",
         resumenMapa: "Participación en la exposición Ohtli Mictlán, dirigida por Jacarandas y Violetas, con el performance “Voces de la muerte y el viento”.<br><strong>Sede:</strong> Faro Oriente",
         resumenArchivo: "Reperformance de “Voces de la muerte y el viento” en el marco de la exposición Ohtli Mictlán dirigida por Jacarandas y Violetas."
@@ -767,8 +767,8 @@
         coords: [19.4342, -99.1325],
         colaboracion: "",
         logos: ["img/logo.png"],
-        imagenMapaBase: "img/registromuseounam.png",
-        imagenArchivoBase: "img/registromuseounam.png",
+        imagenMapa: "img/registromuseounam.png",
+        imagenArchivo: "img/registromuseounam.png",
         creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2025.",
         resumenMapa: "Presentación de Ciclo de performance “Tezcatlipoca, Rituales del Caos”.<br><strong>Sede:</strong> Museo UNAM Hoy",
         resumenArchivo: "“Tezcatlipoca: Rituales del Caos” es un ciclo de performance de presentación única en el que artistas de la Facultad de Artes y Diseño de la UNAM y bailarines de la Escuela Nacional de Danza Clásica, así como de la Academia de la Danza Mexicana, presentan piezas performáticas inspiradas en la figura del dios mexica Tezcatlipoca. El proyecto propone una serie de rituales contemporáneos que utilizan la acción performática como medio de revelación, cuestionamiento y transformación simbólica. Tomando el mito como punto de partida, se realiza una relectura crítica y actual que busca activar discursividades alrededor del poder, la mirada, el conflicto y la creación ritualizada en el espacio público-museal."
@@ -783,26 +783,13 @@
         coords: [19.3936, -99.0279],
         colaboracion: "",
         logos: ["img/logo.png"],
-        imagenMapaBase: "img/registrocanalla.png",
-        imagenArchivoBase: "img/registrocanalla.png",
+        imagenMapa: "img/registrocanalla.png",
+        imagenArchivo: "img/registrocanalla.png",
         creditoFoto: "Fotografía: Daniel Itzel Hernández Quijano “Caracol Zurdo”, 2026.",
         resumenMapa: "Presentación del Ciclo de performance “Sonidero Corporal” partiendo del proyecto Violencia cegada, muerte anestesiada.<br><strong>Sede:</strong> Galería Canalla, Nezahualcóyotl, Edomex",
         resumenArchivo: "Violencia cegada, muerte anestesiada es un proyecto de arte corporal desarrollado en el Estado de México que articuló performance, trabajo en territorio y una línea de difusión audiovisual para reflexionar sobre la normalización de la violencia en la vida cotidiana. El proyecto se construyó como un proceso activo iniciado en febrero de 2026, que involucró a artistas emergentes y residentes del Edomex, y culminó en una activación escénica en formato sonidero. Más que una exhibición, se planteó como un dispositivo de producción, documentación y activación simbólica en territorio."
       }
     ];
-
-    function resolverImagen(imgEl, basePath) {
-      const paso = parseInt(imgEl.dataset.paso || "0", 10);
-      if (paso === 0) {
-        imgEl.dataset.paso = "1";
-        imgEl.src = basePath + ".png";
-      } else if (paso === 1) {
-        imgEl.dataset.paso = "2";
-        imgEl.src = basePath + ".webp";
-      } else {
-        imgEl.parentElement.style.display = "none";
-      }
-    }
 
     const centroBase = { lat: 19.423, lng: -99.062 };
 
@@ -842,13 +829,12 @@
 
       contenidoFicha.innerHTML = `
         <div class="popup-foto-contenedor">
-          <img src="${ev.imagenMapaBase}.jpg" alt="${ev.sede}" onerror="resolverImagen(this, '${ev.imagenMapaBase}')">
+          <img src="${ev.imagenMapa}" alt="${ev.sede}">
           <span class="credito-foto">${ev.creditoFoto}</span>
         </div>
         <div class="popup-fecha">${ev.fecha}</div>
         <div class="popup-sede">${ev.sede}</div>
-        <p class="popup-resumen">${ev.resumenMapa}</p>
-        ${htmlLogosAlianza}
+        <p class="popup-resumen">${ev.resumenMapa}</p>${htmlLogosAlianza}
       `;
       cajaFicha.classList.add('visible');
     }
@@ -938,138 +924,4 @@
       const htmlLogosPin = esColab
         ? `<div class="pin-grupo" data-id="${ev.id}" data-rumbo="${ev.rumbo}">
              <div class="pin-circulo zorros"><img src="${ev.logos[0]}" alt="Zorros y Nahuales"></div>
-             <div class="pin-circulo colaboracion"><img src="${ev.logos[1]}" alt="Jacarandas y Violetas"></div>
-             <span class="pin-etiqueta-anio">${ev.anio}</span>
-           </div>`
-        : `<div class="pin-grupo" data-id="${ev.id}" data-rumbo="${ev.rumbo}">
-             <div class="pin-circulo zorros"><img src="${ev.logos[0]}" alt="Zorros y Nahuales"></div>
-             <span class="pin-etiqueta-anio">${ev.anio}</span>
-           </div>`;
-
-      const iconoPersonalizado = L.divIcon({
-        className: 'pin-colectivo',
-        html: htmlLogosPin,
-        iconSize: esColab ? [82, 54] : [50, 54],
-        iconAnchor: esColab ? [41, 24] : [25, 24]
-      });
-
-      const marcador = L.marker(ev.coords, { icon: iconoPersonalizado }).addTo(mapa);
-      marcadoresPorId[ev.id] = marcador;
-      registroMarcadores.push({ marcador, anio: ev.anio });
-
-      marcador.on('click', () => {
-        activarColorDios(ev.rumbo);
-        iluminarEventoIndividual(ev.id);
-        abrirFichaEvento(ev);
-      });
-
-      // Ficha técnica en el Archivo de Encuentros inferior
-      const tarjeta = document.createElement('article');
-      tarjeta.className = 'tarjeta-hito';
-      tarjeta.dataset.anio = ev.anio;
-      tarjeta.innerHTML = `
-        <div class="hito-imagen-contenedor">
-          <img src="${ev.imagenArchivoBase}.jpg" alt="${ev.sede}" onerror="resolverImagen(this, '${ev.imagenArchivoBase}')">
-          <span class="credito-foto">${ev.creditoFoto}</span>
-        </div>
-        <div class="hito-cuerpo">
-          <div>
-            <div class="hito-superior">
-              <div>
-                <div class="hito-fecha">${ev.fecha} · ${ev.ubicacion}</div>
-                <h3 class="hito-titulo">${ev.sede}</h3>
-                ${ev.colaboracion ? `<div class="hito-colaboracion">${ev.colaboracion}</div>` : ''}
-              </div>
-              <div class="hito-logos">
-                <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
-                ${esColab ? `<img src="${ev.logos[1]}" alt="Jacarandas y Violetas">` : ''}
-              </div>
-            </div>
-            <p class="hito-descripcion">${ev.resumenArchivo}</p>
-          </div>
-          <span class="hito-ver-mapa">Ubicar en el mapa &rarr;</span>
-        </div>
-      `;
-
-      tarjeta.addEventListener('click', () => {
-        document.getElementById('altar-cardinal').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        activarColorDios(ev.rumbo);
-        iluminarEventoIndividual(ev.id);
-        mapa.flyTo(ev.coords, 13, { duration: 1.1 });
-        setTimeout(() => {
-          abrirFichaEvento(ev);
-          iluminarEventoIndividual(ev.id);
-        }, 650);
-      });
-
-      contenedorLista.appendChild(tarjeta);
-    });
-
-    // =========================================================
-    // CLIC EN TEZCATLIPOCA (NORTE) Y QUETZALCÓATL (ORIENTE)
-    // =========================================================
-    deidades.norte.addEventListener('click', () => {
-      cerrarFichaEvento();
-      activarColorDios('norte');
-      iluminarTodosDelRumbo('norte');
-      const faroAragon = encuentros.find(e => e.id === 'faro-aragon-2024');
-      if (faroAragon) {
-        mapa.flyTo(faroAragon.coords, 13, { duration: 1.1 });
-        setTimeout(() => {
-          activarColorDios('norte');
-          iluminarTodosDelRumbo('norte');
-        }, 1150);
-      }
-    });
-
-    deidades.oriente.addEventListener('click', () => {
-      cerrarFichaEvento();
-      activarColorDios('oriente');
-      iluminarTodosDelRumbo('oriente');
-      const eventosOriente = encuentros.filter(e => e.rumbo === 'oriente');
-      if (eventosOriente.length > 0) {
-        const limites = L.latLngBounds(eventosOriente.map(e => e.coords));
-        mapa.flyToBounds(limites, { padding: [95, 95], maxZoom: 13, duration: 1.1 });
-        setTimeout(() => {
-          activarColorDios('oriente');
-          iluminarTodosDelRumbo('oriente');
-        }, 1150);
-      }
-    });
-
-    // =========================================================
-    // FILTROS POR AÑO: SINCRONIZA TARJETAS INFERIORES + CÍRCULOS EN MAPA
-    // =========================================================
-    const botonesFiltro = document.querySelectorAll('.btn-filtro');
-    botonesFiltro.forEach(btn => {
-      btn.addEventListener('click', () => {
-        botonesFiltro.forEach(b => b.classList.remove('activo'));
-        btn.classList.add('activo');
-        const anioSeleccionado = btn.dataset.anio;
-
-        cerrarFichaEvento();
-
-        document.querySelectorAll('.tarjeta-hito').forEach(card => {
-          if (anioSeleccionado === 'todos' || card.dataset.anio === anioSeleccionado) {
-            card.classList.remove('oculto');
-          } else {
-            card.classList.add('oculto');
-          }
-        });
-
-        registroMarcadores.forEach(({ marcador, anio }) => {
-          if (anioSeleccionado === 'todos' || anio === anioSeleccionado) {
-            if (!mapa.hasLayer(marcador)) {
-              marcador.addTo(mapa);
-            }
-          } else {
-            if (mapa.hasLayer(marcador)) {
-              mapa.removeLayer(marcador);
-            }
-          }
-        });
-      });
-    });
-  </script>
-</body>
-</html>
+             <div class="pin-circulo colaboracion"><img src="${ev.logos[1]}" alt="Jacarandas y Violetas
