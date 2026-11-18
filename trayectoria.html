@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <style>
     /* =========================================================
-       OHTLI · ALTAR CARDINAL CON LOS 4 DIOSES POR FUERA DEL MAPA
+       OHTLI · ALTAR CARDINAL CON FONDO 4RUMBOS Y MAPA LEGIBLE
        ========================================================= */
     .barra-trayectoria {
       position: sticky;
@@ -19,7 +19,31 @@
       pointer-events: auto;
     }
 
+    /* Envoltura con fondo cosmográfico 4rumbos.png */
+    .zona-cosmograma {
+      position: relative;
+      overflow: hidden;
+      padding-bottom: 1.5rem;
+    }
+
+    .fondo-4rumbos {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(1150px, 96vw);
+      height: auto;
+      opacity: 0.14;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 0;
+      -webkit-mask-image: radial-gradient(circle, #000 50%, transparent 92%);
+      mask-image: radial-gradient(circle, #000 50%, transparent 92%);
+    }
+
     .cabecera-ohtli {
+      position: relative;
+      z-index: 2;
       max-width: 980px;
       margin: 0 auto;
       padding: 1.6rem 5% 0.8rem;
@@ -57,8 +81,10 @@
        ALTAR CARDINAL: 4 DIOSES ALREDEDOR + MAPA LEGIBLE AL CENTRO
        ========================================================= */
     .altar-cardinal {
+      position: relative;
+      z-index: 2;
       max-width: 1280px;
-      margin: 1.2rem auto 3.8rem;
+      margin: 1.2rem auto 2.5rem;
       padding: 0 3%;
       display: grid;
       grid-template-columns: 145px 1fr 145px;
@@ -77,17 +103,20 @@
     .deidad-poniente { grid-area: poniente; }
     .deidad-oriente  { grid-area: oriente; }
 
-    /* Deidades ubicadas en los 4 puntos cardinales fuera del lienzo */
     .deidad-rumbo {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      cursor: pointer;
-      opacity: 0.42;
+      opacity: 0.44;
       filter: grayscale(40%);
       transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
       padding: 0.35rem;
+    }
+
+    /* Solo Tezcatlipoca (Norte) y Xipe Tótec (Poniente) son interactivos al clic */
+    .deidad-interactiva {
+      cursor: pointer;
     }
 
     .deidad-rumbo img {
@@ -110,8 +139,7 @@
       transition: color 0.35s ease;
     }
 
-    /* Iluminación ritual al acercarse a cada rumbo */
-    .deidad-rumbo:hover,
+    .deidad-interactiva:hover,
     .deidad-rumbo.iluminado {
       opacity: 1;
       transform: scale(1.08);
@@ -119,14 +147,12 @@
 
     .deidad-norte:hover,
     .deidad-norte.iluminado    { filter: grayscale(0%) drop-shadow(0 0 18px rgba(180, 108, 255, 0.9)); }
-    .deidad-sur:hover,
     .deidad-sur.iluminado      { filter: grayscale(0%) drop-shadow(0 0 18px rgba(46, 196, 182, 0.9)); }
     .deidad-poniente:hover,
     .deidad-poniente.iluminado { filter: grayscale(0%) drop-shadow(0 0 18px rgba(230, 57, 70, 0.95)); }
-    .deidad-oriente:hover,
     .deidad-oriente.iluminado  { filter: grayscale(0%) drop-shadow(0 0 18px rgba(247, 245, 240, 0.85)); }
 
-    .deidad-rumbo:hover .deidad-etiqueta,
+    .deidad-interactiva:hover .deidad-etiqueta,
     .deidad-rumbo.iluminado .deidad-etiqueta {
       color: var(--acento);
     }
@@ -138,7 +164,7 @@
       width: 100%;
       height: 510px;
       border: 1px solid rgba(230, 0, 126, 0.55);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.88);
       background-color: #161920;
       overflow: hidden;
     }
@@ -149,7 +175,6 @@
       background-color: #161920;
     }
 
-    /* Filtro oscuro balanceado: calles, parques y nombres claramente legibles */
     #mapa-trayectoria .leaflet-tile-pane {
       filter: invert(100%) hue-rotate(190deg) brightness(94%) contrast(104%) saturate(45%);
     }
@@ -464,7 +489,6 @@
       align-self: flex-start;
     }
 
-    /* Adaptación móvil: dioses compactos en barra arriba/abajo del mapa */
     @media (max-width: 860px) {
       .altar-cardinal {
         grid-template-columns: 1fr 1fr;
@@ -504,45 +528,49 @@
     </nav>
   </header>
 
-  <!-- CABECERA LIMPIA -->
-  <section class="cabecera-ohtli" style="border: none;">
-    <p class="etiqueta-superior">Cartografía de los 4 Rumbos · 2024 – 2026</p>
-    <h1>Ohtli</h1>
-    <p>Explora el territorio del Valle de México custodiado por los cuatro rumbos. Toca cada emblema o deidad cardinal para invocar su memoria.</p>
-  </section>
+  <!-- ZONA COSMOGRÁFICA CON FONDO 4RUMBOS.PNG -->
+  <div class="zona-cosmograma">
+    <img src="img/4rumbos.png" alt="" class="fondo-4rumbos" onerror="this.style.display='none'">
 
-  <!-- ALTAR CARDINAL CON LOS 4 DIOSES POR FUERA DEL MAPA -->
-  <div class="altar-cardinal" id="altar-cardinal">
+    <section class="cabecera-ohtli" style="border: none;">
+      <p class="etiqueta-superior">Cartografía de los 4 Rumbos · 2024 – 2026</p>
+      <h1>Ohtli</h1>
+      <p>Explora el territorio del Valle de México custodiado por los cuatro rumbos. Toca los emblemas del mapa o las deidades del Norte y Poniente para recorrer sus activaciones.</p>
+    </section>
 
-    <!-- NORTE: TEZCATLIPOCA -->
-    <div class="deidad-rumbo deidad-norte" id="dios-norte" data-rumbo="norte">
-      <img src="img/tezcatlipoca.png" alt="Tezcatlipoca · Norte" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Norte<br>Tezcatlipoca</span>
+    <!-- ALTAR CARDINAL CON LOS 4 DIOSES POR FUERA DEL MAPA -->
+    <div class="altar-cardinal" id="altar-cardinal">
+
+      <!-- NORTE: TEZCATLIPOCA (INTERACTIVO) -->
+      <div class="deidad-rumbo deidad-norte deidad-interactiva" id="dios-norte" title="Ir al Norte · FARO Aragón">
+        <img src="img/tezcatlipoca.png" alt="Tezcatlipoca · Norte" onerror="this.style.display='none'">
+        <span class="deidad-etiqueta">Norte<br>Tezcatlipoca</span>
+      </div>
+
+      <!-- PONIENTE / OESTE: XIPE TÓTEC (INTERACTIVO) -->
+      <div class="deidad-rumbo deidad-poniente deidad-interactiva" id="dios-poniente" title="Ir al Poniente · FARO Oriente y Nezahualcóyotl">
+        <img src="img/xipe-totec.png" alt="Xipe Tótec · Poniente" onerror="this.style.display='none'">
+        <span class="deidad-etiqueta">Poniente<br>Xipe Tótec</span>
+      </div>
+
+      <!-- MAPA CENTRAL 100% DESPEJADO Y LEGIBLE -->
+      <div class="marco-mapa">
+        <div id="mapa-trayectoria"></div>
+      </div>
+
+      <!-- ORIENTE / ESTE: QUETZALCÓATL -->
+      <div class="deidad-rumbo deidad-oriente" id="dios-oriente">
+        <img src="img/quetzalcoatl.png" alt="Quetzalcóatl · Oriente" onerror="this.style.display='none'">
+        <span class="deidad-etiqueta">Oriente<br>Quetzalcóatl</span>
+      </div>
+
+      <!-- SUR: HUITZILOPOCHTLI -->
+      <div class="deidad-rumbo deidad-sur" id="dios-sur">
+        <img src="img/huitzilopochtli.png" alt="Huitzilopochtli · Sur" onerror="this.style.display='none'">
+        <span class="deidad-etiqueta">Sur<br>Huitzilopochtli</span>
+      </div>
+
     </div>
-
-    <!-- PONIENTE / OESTE: XIPE TÓTEC -->
-    <div class="deidad-rumbo deidad-poniente" id="dios-poniente" data-rumbo="poniente">
-      <img src="img/xipe-totec.png" alt="Xipe Tótec · Poniente" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Poniente<br>Xipe Tótec</span>
-    </div>
-
-    <!-- MAPA CENTRAL 100% DESPEJADO Y LEGIBLE -->
-    <div class="marco-mapa">
-      <div id="mapa-trayectoria"></div>
-    </div>
-
-    <!-- ORIENTE / ESTE: QUETZALCÓATL -->
-    <div class="deidad-rumbo deidad-oriente" id="dios-oriente" data-rumbo="oriente">
-      <img src="img/quetzalcoatl.png" alt="Quetzalcóatl · Oriente" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Oriente<br>Quetzalcóatl</span>
-    </div>
-
-    <!-- SUR: HUITZILOPOCHTLI -->
-    <div class="deidad-rumbo deidad-sur" id="dios-sur" data-rumbo="sur">
-      <img src="img/huitzilopochtli.png" alt="Huitzilopochtli · Sur" onerror="this.style.display='none'">
-      <span class="deidad-etiqueta">Sur<br>Huitzilopochtli</span>
-    </div>
-
   </div>
 
   <!-- LÍNEA DEL TIEMPO / FICHAS TÉCNICAS DE LOS ENCUENTROS -->
@@ -593,7 +621,7 @@
       },
       {
         id: "faro-oriente-2024",
-        rumbo: "oriente",
+        rumbo: "poniente",
         anio: "2024",
         fecha: "Mediados de noviembre de 2024",
         sede: "FARO Oriente",
@@ -601,11 +629,11 @@
         coords: [19.3712, -99.0137],
         colaboracion: "En colaboración con Colectiva Jacarandas y Violetas",
         logos: ["img/logo.png", "img/jacarandas.png"],
-        resumen: "Segunda activación territorial junto a la Colectiva Jacarandas y Violetas, abriendo espacio para acciones performáticas y diálogo comunitario en el oriente de la ciudad."
+        resumen: "Segunda activación territorial junto a la Colectiva Jacarandas y Violetas, abriendo espacio para acciones performáticas y diálogo comunitario."
       },
       {
         id: "museo-unam-hoy-2025",
-        rumbo: "poniente",
+        rumbo: "centro",
         anio: "2025",
         fecha: "28 de noviembre de 2025",
         sede: "Museo UNAM Hoy",
@@ -617,7 +645,7 @@
       },
       {
         id: "nezahualcoyotl-2026",
-        rumbo: "sur",
+        rumbo: "poniente",
         anio: "2026",
         fecha: "24 de octubre de 2026",
         sede: "Ciudad Nezahualcóyotl",
@@ -637,7 +665,6 @@
       scrollWheelZoom: false
     });
 
-    // Capa oficial libre de OpenStreetMap (legible y oscura vía CSS)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap',
       maxZoom: 18
@@ -700,23 +727,11 @@
       }
     });
 
-    // 3. Al dar clic directo en un dios, vuela a ese rumbo en el mapa
-    const marcadoresPorRumbo = {};
-    Object.keys(deidades).forEach(rumbo => {
-      deidades[rumbo].addEventListener('click', () => {
-        iluminarRumbo(rumbo);
-        const ev = encuentros.find(item => item.rumbo === rumbo);
-        if (ev && marcadoresPorRumbo[rumbo]) {
-          mapa.flyTo(ev.coords, 13, { duration: 1.1 });
-          setTimeout(() => marcadoresPorRumbo[rumbo].openPopup(), 650);
-        }
-      });
-    });
-
     // =========================================================
     // PINS CIRCULARES Y FICHAS TÉCNICAS SINCRONIZADAS
     // =========================================================
     const contenedorLista = document.getElementById('lista-hitos');
+    const marcadoresPorId = {};
 
     encuentros.forEach(ev => {
       const esColab = ev.logos.length > 1;
@@ -757,7 +772,7 @@
         .addTo(mapa)
         .bindPopup(htmlPopup, { maxWidth: 300 });
 
-      marcadoresPorRumbo[ev.rumbo] = marcador;
+      marcadoresPorId[ev.id] = marcador;
 
       marcador.on('click', () => {
         iluminarRumbo(ev.rumbo);
@@ -795,6 +810,27 @@
       });
 
       contenedorLista.appendChild(tarjeta);
+    });
+
+    // =========================================================
+    // CLIC SOLO EN TEZCATLIPOCA (NORTE) Y XIPE TÓTEC (PONIENTE)
+    // =========================================================
+    deidades.norte.addEventListener('click', () => {
+      iluminarRumbo('norte');
+      const faroAragon = encuentros.find(e => e.id === 'faro-aragon-2024');
+      if (faroAragon && marcadoresPorId[faroAragon.id]) {
+        mapa.flyTo(faroAragon.coords, 13, { duration: 1.1 });
+        setTimeout(() => marcadoresPorId[faroAragon.id].openPopup(), 650);
+      }
+    });
+
+    deidades.poniente.addEventListener('click', () => {
+      iluminarRumbo('poniente');
+      const eventosPoniente = encuentros.filter(e => e.rumbo === 'poniente');
+      if (eventosPoniente.length > 0) {
+        const limites = L.latLngBounds(eventosPoniente.map(e => e.coords));
+        mapa.flyToBounds(limites, { padding: [95, 95], maxZoom: 13, duration: 1.1 });
+      }
     });
 
     // Filtros por año en el archivo inferior
