@@ -325,7 +325,7 @@
       border-color: rgba(194, 122, 255, 0.75);
     }
 
-    /* Iluminación activa al tocar el dios del rumbo asignado */
+    /* Iluminación activa (individual o grupal por dios) */
     .pin-grupo.iluminado-rumbo {
       transform: scale(1.22);
     }
@@ -725,13 +725,14 @@
 
     function cerrarFichaEvento() {
       cajaFicha.classList.remove('visible');
+      limpiarIluminacionPines();
     }
 
     btnCerrarFicha.addEventListener('click', cerrarFichaEvento);
     mapa.on('click', cerrarFichaEvento);
 
     // =========================================================
-    // ACTIVACIÓN DE COLOR EN DIOSES + ILUMINACIÓN DE CÍRCULOS
+    // CONTROL DE COLOR DE DIOSES E ILUMINACIÓN DE CÍRCULOS
     // =========================================================
     const deidades = {
       norte: document.getElementById('dios-norte'),
@@ -740,8 +741,7 @@
       poniente: document.getElementById('dios-poniente')
     };
 
-    function iluminarRumbo(rumboActivo) {
-      // 1. Pasar el dios correspondiente de opaco a color (o apagar todos)
+    function activarColorDios(rumboActivo) {
       Object.keys(deidades).forEach(r => {
         if (r === rumboActivo) {
           deidades[r].classList.add('iluminado');
@@ -749,8 +749,27 @@
           deidades[r].classList.remove('iluminado');
         }
       });
+    }
 
-      // 2. Iluminar los círculos de eventos asignados a ese rumbo (rosa y lila)
+    function limpiarIluminacionPines() {
+      document.querySelectorAll('.pin-grupo').forEach(pin => {
+        pin.classList.remove('iluminado-rumbo');
+      });
+    }
+
+    // Ilumina SOLO el evento individual seleccionado
+    function iluminarEventoIndividual(eventoId) {
+      document.querySelectorAll('.pin-grupo').forEach(pin => {
+        if (pin.dataset.id === eventoId) {
+          pin.classList.add('iluminado-rumbo');
+        } else {
+          pin.classList.remove('iluminado-rumbo');
+        }
+      });
+    }
+
+    // Ilumina TODOS los eventos de un rumbo (solo cuando se pica al dios)
+    function iluminarTodosDelRumbo(rumboActivo) {
       document.querySelectorAll('.pin-grupo').forEach(pin => {
         if (rumboActivo && pin.dataset.rumbo === rumboActivo) {
           pin.classList.add('iluminado-rumbo');
@@ -760,7 +779,7 @@
       });
     }
 
-    // Al arrastrar el mapa hacia un punto cardinal
+    // Al arrastrar el mapa hacia un punto cardinal (solo colorea al dios del rumbo)
     mapa.on('move', () => {
       const c = mapa.getCenter();
       const dLat = c.lat - centroBase.lat;
@@ -768,14 +787,14 @@
       const umbral = 0.015;
 
       if (Math.abs(dLat) < umbral && Math.abs(dLng) < umbral) {
-        iluminarRumbo(null);
+        activarColorDios(null);
         return;
       }
 
       if (Math.abs(dLat) > Math.abs(dLng)) {
-        iluminarRumbo(dLat > 0 ? 'norte' : 'sur');
+        activarColorDios(dLat > 0 ? 'norte' : 'sur');
       } else {
-        iluminarRumbo(dLng > 0 ? 'oriente' : 'poniente');
+        activarColorDios(dLng > 0 ? 'oriente' : 'poniente');
       }
     });
 
@@ -789,12 +808,12 @@
       const esColab = ev.logos.length > 1;
 
       const htmlLogosPin = esColab
-        ? `<div class="pin-grupo" data-rumbo="${ev.rumbo}">
+        ? `<div class="pin-grupo" data-id="${ev.id}" data-rumbo="${ev.rumbo}">
              <div class="pin-circulo zorros"><img src="${ev.logos[0]}" alt="Zorros y Nahuales"></div>
              <div class="pin-circulo colaboracion"><img src="${ev.logos[1]}" alt="Jacarandas y Violetas"></div>
              <span class="pin-etiqueta-anio">${ev.anio}</span>
            </div>`
-        : `<div class="pin-grupo" data-rumbo="${ev.rumbo}">
+        : `<div class="pin-grupo" data-id="${ev.id}" data-rumbo="${ev.rumbo}">
              <div class="pin-circulo zorros"><img src="${ev.logos[0]}" alt="Zorros y Nahuales"></div>
              <span class="pin-etiqueta-anio">${ev.anio}</span>
            </div>`;
@@ -809,8 +828,10 @@
       const marcador = L.marker(ev.coords, { icon: iconoPersonalizado }).addTo(mapa);
       marcadoresPorId[ev.id] = marcador;
 
+      // Clic en evento individual: colorea su dios correspondiente e ilumina SOLO este pin
       marcador.on('click', () => {
-        iluminarRumbo(ev.rumbo);
+        activarColorDios(ev.rumbo);
+        iluminarEventoIndividual(ev.id);
         abrirFichaEvento(ev);
       });
 
@@ -838,10 +859,12 @@
 
       tarjeta.addEventListener('click', () => {
         document.getElementById('altar-cardinal').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        iluminarRumbo(ev.rumbo);
+        activarColorDios(ev.rumbo);
+        iluminarEventoIndividual(ev.id);
         mapa.flyTo(ev.coords, 13, { duration: 1.1 });
         setTimeout(() => {
           abrirFichaEvento(ev);
+          iluminarEventoIndividual(ev.id);
         }, 650);
       });
 
@@ -853,22 +876,30 @@
     // =========================================================
     deidades.norte.addEventListener('click', () => {
       cerrarFichaEvento();
-      iluminarRumbo('norte');
+      activarColorDios('norte');
+      iluminarTodosDelRumbo('norte');
       const faroAragon = encuentros.find(e => e.id === 'faro-aragon-2024');
       if (faroAragon) {
         mapa.flyTo(faroAragon.coords, 13, { duration: 1.1 });
-        setTimeout(() => iluminarRumbo('norte'), 1150);
+        setTimeout(() => {
+          activarColorDios('norte');
+          iluminarTodosDelRumbo('norte');
+        }, 1150);
       }
     });
 
     deidades.oriente.addEventListener('click', () => {
       cerrarFichaEvento();
-      iluminarRumbo('oriente');
+      activarColorDios('oriente');
+      iluminarTodosDelRumbo('oriente');
       const eventosOriente = encuentros.filter(e => e.rumbo === 'oriente');
       if (eventosOriente.length > 0) {
         const limites = L.latLngBounds(eventosOriente.map(e => e.coords));
         mapa.flyToBounds(limites, { padding: [95, 95], maxZoom: 13, duration: 1.1 });
-        setTimeout(() => iluminarRumbo('oriente'), 1150);
+        setTimeout(() => {
+          activarColorDios('oriente');
+          iluminarTodosDelRumbo('oriente');
+        }, 1150);
       }
     });
 
