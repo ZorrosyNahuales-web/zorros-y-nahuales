@@ -23,6 +23,7 @@
       margin: 0 auto;
       padding: 1.5rem 5% 0.8rem;
       text-align: center;
+      border: none !important;
     }
 
     .cabecera-tecolotes .etiqueta-superior {
@@ -54,16 +55,17 @@
     }
 
     /* =========================================================
-       UMBRAL DUAL PANORÁMICO: GRANDES, SEPARADOS Y 100% NÍTIDOS
+       UMBRAL DUAL PANORÁMICO: SIN LÍNEAS DIVISORIAS, 100% NÍTIDOS
        ========================================================= */
     .umbral-tecolotes {
       max-width: 1240px;
-      margin: 2.2rem auto 3rem;
+      margin: 2.2rem auto 2.5rem;
       padding: 0 4%;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 5rem;
       align-items: start;
+      border: none !important;
     }
 
     .invocador-tecolote {
@@ -87,7 +89,6 @@
       margin-bottom: 1.1rem;
     }
 
-    /* Imagen completamente sólida, nítida, sin mezcla ni textura superpuesta */
     .silueta-contenedor img {
       width: 100%;
       height: 100%;
@@ -133,6 +134,7 @@
       max-width: 1120px;
       margin: 0 auto 4.5rem;
       padding: 0 5%;
+      border: none !important;
     }
 
     .ficha-fotografx {
@@ -388,7 +390,7 @@
     </nav>
   </header>
 
-  <section class="cabecera-tecolotes" style="border: none;">
+  <section class="cabecera-tecolotes">
     <p class="etiqueta-superior">Miradas Nocturnas · Archivo Visual</p>
     <h1>Tecolotes</h1>
     <p>En la cosmovisión mesoamericana, el tecolote habita el umbral entre la penumbra y la revelación. Toca cada figura para desplegar el retrato y la mirada de quienes han vuelto testigo la acción corporal del colectivo.</p>
@@ -437,9 +439,6 @@
   </footer>
 
   <script>
-    // =========================================================
-    // BASE DE DATOS DE TECOLOTES (FOTÓGRAFOS DE REGISTRO)
-    // =========================================================
     const tecolotesData = {
       daniel: {
         id: "daniel",
@@ -449,7 +448,7 @@
         registros: "Archivo Ohtli: FARO Oriente (2024) · Museo UNAM Hoy (2025) · Galería Canalla (2026)",
         instagram: "https://www.instagram.com/caracolzurdo_/",
         usuarioIg: "@caracolzurdo_",
-        portafolio: "", // Pega aquí la URL de su portafolio cuando la tengas
+        portafolio: "",
         semblanzaHtml: `
           <p>Cuando me pienso desde el lente de la cámara me reconozco como una extensión del momento, registrar es tener en cuenta la narrativa que tendrá la imagen y su secuencia, capturar la tensión es entregarle al otro lo sensible de lo vivido.</p>
           <p>Pienso en mi trabajo desde el cuidado que deseo entregarle a quien capturo y el compromiso de encontrarse con el momento desde otra perspectiva al visitante. Vivo con curiosidad el registro: el movimiento, la energía y la intención debe ser accesible desde la estática de la imagen pero la fuerza debe mantenerse en su contenido. Tomar registro significa reconocer que hay identidad, mapeo, y una reconstrucción que termina por convertirse en testigo y en herencia.</p>
@@ -461,10 +460,10 @@
         nombre: "Luisa Luna Valle “T21V”",
         rol: "Registro Fotográfico · Tecolote II",
         retrato: "img/luisa.png",
-        registros: "Archivo Ohtli: FARO Aragón (2024) . Museo UNAM Hoy (2025)",
+        registros: "Archivo Ohtli: FARO Aragón (2024)",
         instagram: "https://www.instagram.com/t.21.v/",
         usuarioIg: "@t.21.v",
-        portafolio: "", // Pega aquí la URL de su portafolio cuando la tengas
+        portafolio: "",
         semblanzaHtml: `
           <p class="nota-pendiente">Semblanza en construcción. Fotógrafa y creadora visual encargada del registro escénico de <em>Voces de la muerte y el viento</em> en FARO Aragón (2024), capturando el diálogo entre el cuerpo ritual, el territorio y la memoria colectiva.</p>
         `
