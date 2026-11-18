@@ -3,289 +3,172 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ohtli · Los 4 Rumbos | Zorros y Nahuales</title>
+  <title>Ohtli · Cartografía de los 4 Rumbos | Zorros y Nahuales</title>
   <link rel="stylesheet" href="css/estilos.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <style>
     /* =========================================================
-       OHTLI · CARTOGRAFÍA CYBER-PAGANA DE LOS 4 RUMBOS
+       OHTLI · MAPA A PANTALLA COMPLETA + 4 DIOSES DE LOS RUMBOS
        ========================================================= */
     .barra-trayectoria {
-      position: sticky;
+      position: fixed;
       top: 0;
-      padding: 1rem 1.5rem;
-      background: linear-gradient(180deg, rgba(22, 24, 29, 0.96) 65%, rgba(22, 24, 29, 0) 100%);
+      left: 0;
+      width: 100%;
+      z-index: 1100;
+      padding: 0.9rem 1.5rem;
+      background: linear-gradient(180deg, rgba(17, 19, 23, 0.92) 55%, rgba(17, 19, 23, 0) 100%);
       pointer-events: auto;
     }
 
-    .cabecera-pagina {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem 5% 1.4rem;
-      text-align: center;
-    }
-
-    .cabecera-pagina .etiqueta-superior {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--acento);
-      margin-bottom: 0.4rem;
-    }
-
-    .cabecera-pagina h1 {
-      font-family: 'Londrina Solid', sans-serif;
-      font-size: clamp(2.8rem, 6vw, 4.2rem);
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      line-height: 1;
-      margin-bottom: 0.75rem;
-      text-shadow: 0 0 24px rgba(230, 0, 126, 0.35);
-    }
-
-    .cabecera-pagina p {
-      max-width: 680px;
-      margin: 0 auto;
-      font-size: 1rem;
-      font-weight: 300;
-      color: var(--texto-suave);
-    }
-
-    .leyenda-mapa {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.4rem;
-      margin-top: 1.2rem;
-      font-size: 0.78rem;
-      color: var(--texto-suave);
-    }
-
-    .leyenda-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .leyenda-muestra {
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .leyenda-muestra img {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid var(--acento);
-      background-color: var(--fondo);
-    }
-
-    .leyenda-muestra img + img {
-      margin-left: -7px;
-      border-color: #b46cff;
-      background-color: #ffffff;
-    }
-
-    /* =========================================================
-       COSMOGRAMA DE LOS 4 RUMBOS + ESPEJO DE OBSIDIANA CENTRAL
-       ========================================================= */
-    .cosmograma-rumbos {
-      position: relative;
-      max-width: 1260px;
-      margin: 1rem auto 4.5rem;
-      padding: 0 4%;
-      display: grid;
-      grid-template-columns: 310px 1fr 310px;
-      grid-template-rows: auto minmax(440px, 1fr) auto;
-      grid-template-areas:
-        ".      norte   ."
-        "poniente mapa  oriente"
-        ".      sur     .";
-      gap: 1.4rem;
-      align-items: center;
-    }
-
-    /* Ejes cósmicos detrás del cosmograma */
-    .cosmograma-rumbos::before {
-      content: "";
-      position: absolute;
-      inset: 10% 14%;
-      border: 1px dashed rgba(230, 0, 126, 0.22);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .rumbo-norte    { grid-area: norte; max-width: 440px; width: 100%; justify-self: center; }
-    .rumbo-sur      { grid-area: sur; max-width: 440px; width: 100%; justify-self: center; }
-    .rumbo-poniente { grid-area: poniente; }
-    .rumbo-oriente  { grid-area: oriente; }
-
-    /* Espejo de obsidiana (Mapa central) */
-    .espejo-mapa-centro {
-      grid-area: mapa;
+    /* Escenario del mapa a ancho completo */
+    .escenario-mapa-total {
       position: relative;
       width: 100%;
-      height: 480px;
-      border: 1px solid var(--acento);
-      box-shadow:
-        0 0 35px rgba(230, 0, 126, 0.22),
-        inset 0 0 25px rgba(0, 0, 0, 0.9);
-      background-color: #111317;
-      z-index: 2;
+      height: 88vh;
+      min-height: 580px;
+      background-color: #0d0f12;
+      border-bottom: 1px solid rgba(230, 0, 126, 0.5);
+      overflow: hidden;
     }
-
-    /* Esquinas rituales del espejo */
-    .espejo-mapa-centro::before,
-    .espejo-mapa-centro::after {
-      content: "✦";
-      position: absolute;
-      color: var(--acento);
-      font-size: 0.9rem;
-      z-index: 500;
-      pointer-events: none;
-      text-shadow: 0 0 8px var(--acento);
-    }
-    .espejo-mapa-centro::before { top: 8px; right: 12px; }
-    .espejo-mapa-centro::after  { bottom: 22px; left: 12px; }
 
     #mapa-trayectoria {
       width: 100%;
       height: 100%;
-      background-color: #111317;
+      z-index: 1;
+      background-color: #0d0f12;
     }
 
-    /* Convierte los mosaicos libres de OpenStreetMap en estética Obsidiana Oscura */
-    #mapa-trayectoria .leaflet-tile-pane {
-      filter: invert(100%) hue-rotate(195deg) brightness(86%) contrast(118%) saturate(55%);
+    /* Viñeta oscura en los bordes para fundir los dioses con el mapa */
+    .escenario-mapa-total::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 95px rgba(10, 11, 14, 0.92);
+      pointer-events: none;
+      z-index: 400;
+    }
+
+    /* Título flotante discreto arriba a la izquierda */
+    .titulo-flotante-ohtli {
+      position: absolute;
+      top: 4.8rem;
+      left: 2rem;
+      z-index: 500;
+      pointer-events: none;
+      max-width: 340px;
+    }
+
+    .titulo-flotante-ohtli .etiqueta-superior {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.2rem;
+    }
+
+    .titulo-flotante-ohtli h1 {
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 0.95;
+      color: var(--texto);
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.95);
+    }
+
+    .titulo-flotante-ohtli p {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--texto-suave);
+      margin-top: 0.45rem;
+      line-height: 1.45;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
     }
 
     /* =========================================================
-       TARJETAS DE CADA RUMBO CÓSMICO
+       DEIDADES DE LOS 4 RUMBOS EMPALMADAS EN EL MAPA
        ========================================================= */
-    .tarjeta-rumbo {
-      position: relative;
-      z-index: 2;
-      background-color: var(--superficie);
-      background-image: var(--textura-obsidiana);
-      border: 1px solid var(--borde);
-      padding: 1.25rem 1.35rem;
-      cursor: pointer;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
-    }
-
-    /* Colores rituales de los 4 rumbos mexicas */
-    .tarjeta-rumbo[data-rumbo="norte"]    { border-top: 3px solid #6b7280; } /* Mictlampa · Negro/Humo */
-    .tarjeta-rumbo[data-rumbo="oriente"]  { border-right: 3px solid #e63946; } /* Tlahuiztlampa · Rojo */
-    .tarjeta-rumbo[data-rumbo="poniente"] { border-left: 3px solid #f7f5f0; } /* Cihuatlampa · Blanco Hueso */
-    .tarjeta-rumbo[data-rumbo="sur"]      { border-bottom: 3px solid #2ec4b6; } /* Huitztlampa · Azul Turquesa */
-
-    .tarjeta-rumbo:hover,
-    .tarjeta-rumbo.activa {
-      border-color: var(--acento);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85), 0 0 18px rgba(230, 0, 126, 0.28);
-    }
-
-    .rumbo-cinta {
+    .deidad-rumbo {
+      position: absolute;
+      z-index: 450;
+      pointer-events: none;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.65rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+      opacity: 0.24;
+      filter: grayscale(40%) drop-shadow(0 0 10px rgba(0, 0, 0, 0.9));
+      transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
     }
 
-    .rumbo-cardinal {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .rumbo-glifo {
-      width: 28px;
-      height: 28px;
+    .deidad-rumbo img {
+      width: clamp(120px, 15vw, 210px);
+      height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 0 6px rgba(230, 0, 126, 0.6));
+      mix-blend-mode: lighten;
     }
 
-    .rumbo-nombre-nahuatl {
-      font-size: 0.7rem;
+    .deidad-etiqueta {
+      font-size: 0.64rem;
       font-weight: 700;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
+      color: var(--texto);
+      background: rgba(13, 15, 18, 0.72);
+      padding: 2px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-top: -8px;
+    }
+
+    /* Posición cardinal de cada deidad */
+    .deidad-norte {
+      top: 4.3rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .deidad-sur {
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .deidad-oriente {
+      top: 50%;
+      right: 1.2rem;
+      transform: translateY(-50%);
+    }
+
+    .deidad-poniente {
+      top: 50%;
+      left: 1.2rem;
+      transform: translateY(-50%);
+    }
+
+    /* Iluminación ritual al acercarse a cada rumbo */
+    .deidad-rumbo.iluminado {
+      opacity: 0.95;
+      filter: grayscale(0%) drop-shadow(0 0 22px rgba(230, 0, 126, 0.85));
+    }
+
+    .deidad-norte.iluminado    { transform: translateX(-50%) scale(1.07); filter: drop-shadow(0 0 24px rgba(180, 108, 255, 0.9)); }
+    .deidad-sur.iluminado      { transform: translateX(-50%) scale(1.07); filter: drop-shadow(0 0 24px rgba(46, 196, 182, 0.9)); }
+    .deidad-oriente.iluminado  { transform: translateY(-50%) scale(1.07); filter: drop-shadow(0 0 24px rgba(230, 57, 70, 0.95)); }
+    .deidad-poniente.iluminado { transform: translateY(-50%) scale(1.07); filter: drop-shadow(0 0 24px rgba(247, 245, 240, 0.85)); }
+
+    .deidad-rumbo.iluminado .deidad-etiqueta {
+      border-color: var(--acento);
       color: var(--acento);
     }
 
-    .rumbo-logos {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .rumbo-logos img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid var(--acento);
-      background-color: var(--fondo);
-    }
-
-    .rumbo-logos img + img {
-      margin-left: -9px;
-      border-color: #c27aff;
-      background-color: #ffffff;
-    }
-
-    .rumbo-fecha {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--texto-suave);
-      margin-bottom: 0.15rem;
-    }
-
-    .rumbo-sede {
-      font-family: 'Londrina Solid', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.1;
-      color: var(--texto);
-    }
-
-    .rumbo-colab {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: #c27aff;
-      margin-top: 0.25rem;
-    }
-
-    .rumbo-resumen {
-      font-size: 0.86rem;
-      font-weight: 300;
-      line-height: 1.55;
-      color: var(--texto-suave);
-      margin-top: 0.55rem;
-    }
-
-    .rumbo-invocar {
-      display: inline-block;
-      margin-top: 0.75rem;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--texto);
-      border-bottom: 1px solid var(--acento);
+    /* Controles de zoom de Leaflet abajo a la derecha para no chocar con Quetzalcóatl */
+    .leaflet-top.leaflet-left {
+      top: auto !important;
+      bottom: 24px !important;
+      left: auto !important;
+      right: 20px !important;
     }
 
     /* =========================================================
@@ -305,18 +188,18 @@
     }
 
     .pin-grupo:hover {
-      transform: scale(1.16);
+      transform: scale(1.18);
       z-index: 999 !important;
     }
 
     .pin-circulo {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       overflow: hidden;
       background-color: var(--fondo);
       border: 2px solid var(--acento);
-      box-shadow: 0 0 14px rgba(230, 0, 126, 0.85), 0 4px 10px rgba(0, 0, 0, 0.95);
+      box-shadow: 0 0 16px rgba(230, 0, 126, 0.85), 0 4px 12px rgba(0, 0, 0, 0.95);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -329,12 +212,11 @@
       display: block;
     }
 
-    /* Segundo círculo entrelazado con fondo blanco para Jacarandas y Violetas */
     .pin-circulo.colaboracion {
       margin-left: -11px;
       background-color: #ffffff;
       border-color: #c27aff;
-      box-shadow: 0 0 14px rgba(194, 122, 255, 0.8), 0 4px 10px rgba(0, 0, 0, 0.95);
+      box-shadow: 0 0 16px rgba(194, 122, 255, 0.85), 0 4px 12px rgba(0, 0, 0, 0.95);
     }
 
     .pin-etiqueta-anio {
@@ -376,12 +258,12 @@
 
     .leaflet-popup-content {
       margin: 0 !important;
-      width: 280px !important;
+      width: 285px !important;
       font-family: 'Lato', sans-serif !important;
     }
 
     .popup-ficha {
-      padding: 1.1rem 1.2rem 1.2rem;
+      padding: 1.15rem 1.2rem 1.2rem;
     }
 
     .popup-logos {
@@ -444,39 +326,189 @@
     }
 
     /* =========================================================
-       ADAPTACIÓN A TABLET Y CELULAR
+       LÍNEA DEL TIEMPO / FICHAS TÉCNICAS DEBAJO DEL MAPA
        ========================================================= */
-    @media (max-width: 1020px) {
-      .cosmograma-rumbos {
+    .bitacora-trayectoria {
+      max-width: 1120px;
+      margin: 3.5rem auto 0;
+      padding: 0 5% 4.5rem;
+    }
+
+    .bitacora-cabecera {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--borde);
+    }
+
+    .bitacora-cabecera h2 {
+      margin-bottom: 0;
+      font-size: 1.85rem;
+    }
+
+    .filtros-anio {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .btn-filtro {
+      background-color: transparent;
+      color: var(--texto-suave);
+      border: 1px solid var(--borde);
+      padding: 0.45rem 0.9rem;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-filtro:hover,
+    .btn-filtro.activo {
+      background-color: var(--acento);
+      border-color: var(--acento);
+      color: var(--texto);
+    }
+
+    .grid-hitos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.35rem;
+    }
+
+    .tarjeta-hito {
+      background-color: var(--superficie);
+      background-image: var(--textura-obsidiana);
+      border: 1px solid var(--borde);
+      padding: 1.4rem 1.5rem;
+      cursor: pointer;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tarjeta-hito:hover {
+      border-color: var(--acento);
+      transform: translateY(-3px);
+    }
+
+    .tarjeta-hito.oculto {
+      display: none;
+    }
+
+    .hito-superior {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hito-logos {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .hito-logos img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--acento);
+      background-color: var(--fondo);
+    }
+
+    .hito-logos img + img {
+      margin-left: -10px;
+      border-color: #c27aff;
+      background-color: #ffffff;
+    }
+
+    .hito-fecha {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--acento);
+      margin-bottom: 0.2rem;
+    }
+
+    .hito-titulo {
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      color: var(--texto);
+    }
+
+    .hito-colaboracion {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #c27aff;
+      margin-top: 0.25rem;
+    }
+
+    .hito-descripcion {
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--texto-suave);
+      margin-top: 0.65rem;
+    }
+
+    .hito-ver-mapa {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--texto);
+      border-bottom: 1px solid var(--acento);
+      align-self: flex-start;
+    }
+
+    @media (max-width: 768px) {
+      .escenario-mapa-total {
+        height: 76vh;
+        min-height: 480px;
+      }
+
+      .titulo-flotante-ohtli {
+        top: 4.5rem;
+        left: 1rem;
+        max-width: 220px;
+      }
+
+      .deidad-rumbo img {
+        width: 92px;
+      }
+
+      .deidad-oriente { right: 0.3rem; }
+      .deidad-poniente { left: 0.3rem; }
+
+      .grid-hitos {
         grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        grid-template-areas:
-          "mapa"
-          "norte"
-          "oriente"
-          "poniente"
-          "sur";
-        gap: 1.1rem;
-      }
-
-      .cosmograma-rumbos::before {
-        display: none;
-      }
-
-      .rumbo-norte,
-      .rumbo-sur {
-        max-width: 100%;
-      }
-
-      .espejo-mapa-centro {
-        height: 390px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- BARRA SUPERIOR -->
+  <!-- BARRA SUPERIOR FLOTANTE -->
   <header class="barra-superior barra-trayectoria">
     <nav>
       <a href="index.html" class="btn-nav">Inicio</a>
@@ -487,37 +519,57 @@
     </nav>
   </header>
 
-  <!-- CABECERA -->
-  <section class="cabecera-pagina" style="border: none;">
-    <p class="etiqueta-superior">Cartografía de los 4 Rumbos · 2024 – 2026</p>
-    <h1>Ohtli</h1>
-    <p>
-      El sendero territorial de Zorros y Nahuales orientado hacia los cuatro rumbos del Valle de México. Toca un rumbo o un emblema en el espejo de obsidiana para desplegar su memoria.
-    </p>
+  <!-- MAPA DE PANTALLA COMPLETA CON LOS 4 DIOSES DE LOS RUMBOS -->
+  <section class="escenario-mapa-total" id="escenario-mapa" style="border: none; padding: 0; max-width: 100%; margin: 0;">
 
-    <div class="leyenda-mapa">
-      <div class="leyenda-item">
-        <span class="leyenda-muestra">
-          <img src="img/logo.png" alt="Zorros y Nahuales">
-        </span>
-        <span>Zorros y Nahuales</span>
-      </div>
-      <div class="leyenda-item">
-        <span class="leyenda-muestra">
-          <img src="img/logo.png" alt="Zorros y Nahuales">
-          <img src="img/jacarandas.png" alt="Colectiva Jacarandas y Violetas">
-        </span>
-        <span>En colaboración con Colectiva Jacarandas y Violetas</span>
-      </div>
+    <div class="titulo-flotante-ohtli">
+      <p class="etiqueta-superior">Cartografía · 2024 – 2026</p>
+      <h1>Ohtli</h1>
+      <p>Desplázate hacia los cuatro rumbos del Valle de México o toca cada emblema para invocar su memoria.</p>
     </div>
+
+    <!-- NORTE: TEZCATLIPOCA -->
+    <div class="deidad-rumbo deidad-norte" id="dios-norte">
+      <img src="img/tezcatlipoca.png" alt="Tezcatlipoca · Norte" onerror="this.style.display='none'">
+      <span class="deidad-etiqueta">Norte · Tezcatlipoca</span>
+    </div>
+
+    <!-- ORIENTE / ESTE: XIPE TÓTEC -->
+    <div class="deidad-rumbo deidad-oriente" id="dios-oriente">
+      <img src="img/xipe-totec.png" alt="Xipe Tótec · Oriente" onerror="this.style.display='none'">
+      <span class="deidad-etiqueta">Oriente · Xipe Tótec</span>
+    </div>
+
+    <!-- PONIENTE / OESTE: QUETZALCÓATL -->
+    <div class="deidad-rumbo deidad-poniente" id="dios-poniente">
+      <img src="img/quetzalcoatl.png" alt="Quetzalcóatl · Poniente" onerror="this.style.display='none'">
+      <span class="deidad-etiqueta">Poniente · Quetzalcóatl</span>
+    </div>
+
+    <!-- SUR: HUITZILOPOCHTLI -->
+    <div class="deidad-rumbo deidad-sur" id="dios-sur">
+      <img src="img/huitzilopochtli.png" alt="Huitzilopochtli · Sur" onerror="this.style.display='none'">
+      <span class="deidad-etiqueta">Sur · Huitzilopochtli</span>
+    </div>
+
+    <!-- LIENZO DEL MAPA -->
+    <div id="mapa-trayectoria"></div>
   </section>
 
-  <!-- COSMOGRAMA DE LOS 4 RUMBOS + MAPA CENTRAL -->
-  <main class="cosmograma-rumbos" id="cosmograma-rumbos" style="background: none; box-shadow: none;">
-    <div class="espejo-mapa-centro">
-      <div id="mapa-trayectoria"></div>
+  <!-- LÍNEA DEL TIEMPO / FICHAS TÉCNICAS DE LOS ENCUENTROS -->
+  <div class="bitacora-trayectoria">
+    <div class="bitacora-cabecera">
+      <h2>Archivo de Encuentros</h2>
+      <div class="filtros-anio">
+        <button class="btn-filtro activo" data-anio="todos">Todos</button>
+        <button class="btn-filtro" data-anio="2026">2026</button>
+        <button class="btn-filtro" data-anio="2025">2025</button>
+        <button class="btn-filtro" data-anio="2024">2024</button>
+      </div>
     </div>
-  </main>
+
+    <div class="grid-hitos" id="lista-hitos"></div>
+  </div>
 
   <!-- PIE DE PÁGINA -->
   <footer>
@@ -535,42 +587,36 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
     // =========================================================
-    // LOS 4 RUMBOS DE OHTLI (EDITA AQUÍ TEXTOS O COORDENADAS)
+    // BASE DE DATOS DE ENCUENTROS (EDITA AQUÍ FICHAS Y COORDENADAS)
     // =========================================================
     const encuentros = [
       {
         id: "faro-aragon-2024",
         rumbo: "norte",
-        tituloRumbo: "Norte · Mictlampa",
-        glifoRumbo: "img/tecpatl.png",
         anio: "2024",
         fecha: "1 y 2 de noviembre de 2024",
         sede: "FARO Aragón",
         ubicacion: "Gustavo A. Madero, CDMX",
         coords: [19.4839, -99.0706],
-        colaboracion: "Con Colectiva Jacarandas y Violetas",
+        colaboracion: "En colaboración con Colectiva Jacarandas y Violetas",
         logos: ["img/logo.png", "img/jacarandas.png"],
         resumen: "Encuentro de artes vivas y performance realizado en conjunto con la Colectiva Jacarandas y Violetas en el marco de las jornadas de noviembre en FARO Aragón."
       },
       {
         id: "faro-oriente-2024",
         rumbo: "oriente",
-        tituloRumbo: "Oriente · Tlahuiztlampa",
-        glifoRumbo: "img/acatl.png",
         anio: "2024",
         fecha: "Mediados de noviembre de 2024",
         sede: "FARO Oriente",
         ubicacion: "Iztapalapa, CDMX",
         coords: [19.3712, -99.0137],
-        colaboracion: "Con Colectiva Jacarandas y Violetas",
+        colaboracion: "En colaboración con Colectiva Jacarandas y Violetas",
         logos: ["img/logo.png", "img/jacarandas.png"],
         resumen: "Segunda activación territorial junto a la Colectiva Jacarandas y Violetas, abriendo espacio para acciones performáticas y diálogo comunitario en el oriente de la ciudad."
       },
       {
         id: "museo-unam-hoy-2025",
         rumbo: "poniente",
-        tituloRumbo: "Centro / Poniente · Cihuatlampa",
-        glifoRumbo: "img/calli.png",
         anio: "2025",
         fecha: "28 de noviembre de 2025",
         sede: "Museo UNAM Hoy",
@@ -583,8 +629,6 @@
       {
         id: "nezahualcoyotl-2026",
         rumbo: "sur",
-        tituloRumbo: "Sur / Periferia · Huitztlampa",
-        glifoRumbo: "img/tochtli.png",
         anio: "2026",
         fecha: "24 de octubre de 2026",
         sede: "Ciudad Nezahualcóyotl",
@@ -596,20 +640,83 @@
       }
     ];
 
-    // Inicializar mapa centrado en el Valle de México
+    // Centro base del Valle de México
+    const centroBase = { lat: 19.423, lng: -99.062 };
+
     const mapa = L.map('mapa-trayectoria', {
-      center: [19.423, -99.062],
+      center: [centroBase.lat, centroBase.lng],
       zoom: 11,
       scrollWheelZoom: false
     });
 
-    // Capa libre de OpenStreetMap (estilizada en obsidiana mediante CSS)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap',
-      maxZoom: 19
+    // Capa limpia minimalista oscura SIN nombres de calles ni avenidas (CartoDB Dark Matter No Labels)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 18
     }).addTo(mapa);
 
-    const cosmograma = document.getElementById('cosmograma-rumbos');
+    // =========================================================
+    // ILUMINACIÓN DINÁMICA DE LOS 4 DIOSES (AL MOVER MAPA O CURSOR)
+    // =========================================================
+    const deidades = {
+      norte: document.getElementById('dios-norte'),
+      sur: document.getElementById('dios-sur'),
+      oriente: document.getElementById('dios-oriente'),
+      poniente: document.getElementById('dios-poniente')
+    };
+
+    function iluminarRumbo(rumboActivo) {
+      Object.keys(deidades).forEach(r => {
+        if (r === rumboActivo) {
+          deidades[r].classList.add('iluminado');
+        } else {
+          deidades[r].classList.remove('iluminado');
+        }
+      });
+    }
+
+    // 1. Detectar hacia qué rumbo arrastras/mueves el mapa
+    mapa.on('move', () => {
+      const c = mapa.getCenter();
+      const dLat = c.lat - centroBase.lat;
+      const dLng = c.lng - centroBase.lng;
+      const umbral = 0.015;
+
+      if (Math.abs(dLat) < umbral && Math.abs(dLng) < umbral) {
+        iluminarRumbo(null);
+        return;
+      }
+
+      if (Math.abs(dLat) > Math.abs(dLng)) {
+        iluminarRumbo(dLat > 0 ? 'norte' : 'sur');
+      } else {
+        iluminarRumbo(dLng > 0 ? 'oriente' : 'poniente');
+      }
+    });
+
+    // 2. Detectar cuando acercas el cursor hacia los bordes cardinales del mapa
+    const escenarioMapa = document.getElementById('escenario-mapa');
+    escenarioMapa.addEventListener('mousemove', (e) => {
+      const rect = escenarioMapa.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;  // 0 (izq) a 1 (der)
+      const y = (e.clientY - rect.top) / rect.height;  // 0 (arriba) a 1 (abajo)
+
+      if (y < 0.25) {
+        iluminarRumbo('norte');
+      } else if (y > 0.75) {
+        iluminarRumbo('sur');
+      } else if (x > 0.76) {
+        iluminarRumbo('oriente');
+      } else if (x < 0.24) {
+        iluminarRumbo('poniente');
+      }
+    });
+
+    // =========================================================
+    // PINS CIRCULARES Y FICHAS TÉCNICAS SINCRONIZADAS
+    // =========================================================
+    const contenedorLista = document.getElementById('lista-hitos');
 
     encuentros.forEach(ev => {
       const esColab = ev.logos.length > 1;
@@ -638,7 +745,7 @@
           <div class="popup-logos">
             <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
             ${esColab ? `<img src="${ev.logos[1]}" class="logo-aliada" alt="Jacarandas y Violetas">` : ''}
-            <span class="popup-alianza-texto">${ev.tituloRumbo}</span>
+            <span class="popup-alianza-texto">${ev.colaboracion || 'Zorros y Nahuales'}</span>
           </div>
           <div class="popup-fecha">${ev.fecha}</div>
           <div class="popup-sede">${ev.sede}</div>
@@ -650,44 +757,60 @@
         .addTo(mapa)
         .bindPopup(htmlPopup, { maxWidth: 300 });
 
-      // Tarjeta posicionada en su punto cardinal del cosmograma
+      marcador.on('click', () => {
+        iluminarRumbo(ev.rumbo);
+      });
+
+      // Ficha técnica en la línea del tiempo inferior
       const tarjeta = document.createElement('article');
-      tarjeta.className = `tarjeta-rumbo rumbo-${ev.rumbo}`;
-      tarjeta.dataset.rumbo = ev.rumbo;
+      tarjeta.className = 'tarjeta-hito';
+      tarjeta.dataset.anio = ev.anio;
       tarjeta.innerHTML = `
-        <div class="rumbo-cinta">
-          <div class="rumbo-cardinal">
-            <img src="${ev.glifoRumbo}" alt="${ev.tituloRumbo}" class="rumbo-glifo">
-            <span class="rumbo-nombre-nahuatl">${ev.tituloRumbo}</span>
+        <div>
+          <div class="hito-superior">
+            <div>
+              <div class="hito-fecha">${ev.fecha} · ${ev.ubicacion}</div>
+              <h3 class="hito-titulo">${ev.sede}</h3>
+              ${ev.colaboracion ? `<div class="hito-colaboracion">${ev.colaboracion}</div>` : ''}
+            </div>
+            <div class="hito-logos">
+              <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
+              ${esColab ? `<img src="${ev.logos[1]}" alt="Jacarandas y Violetas">` : ''}
+            </div>
           </div>
-          <div class="rumbo-logos">
-            <img src="${ev.logos[0]}" alt="Zorros y Nahuales">
-            ${esColab ? `<img src="${ev.logos[1]}" alt="Jacarandas y Violetas">` : ''}
-          </div>
+          <p class="hito-descripcion">${ev.resumen}</p>
         </div>
-        <div class="rumbo-fecha">${ev.fecha}</div>
-        <h2 class="rumbo-sede">${ev.sede}</h2>
-        ${ev.colaboracion ? `<div class="rumbo-colab">${ev.colaboracion}</div>` : ''}
-        <p class="rumbo-resumen">${ev.resumen}</p>
-        <span class="rumbo-invocar">Invocar en el espejo &rarr;</span>
+        <span class="hito-ver-mapa">Ubicar en el mapa &rarr;</span>
       `;
 
       tarjeta.addEventListener('click', () => {
-        document.querySelectorAll('.tarjeta-rumbo').forEach(t => t.classList.remove('activa'));
-        tarjeta.classList.add('activa');
-        document.getElementById('mapa-trayectoria').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        mapa.flyTo(ev.coords, 14, { duration: 1.1 });
+        document.getElementById('escenario-mapa').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        iluminarRumbo(ev.rumbo);
+        mapa.flyTo(ev.coords, 13, { duration: 1.1 });
         setTimeout(() => {
           marcador.openPopup();
         }, 650);
       });
 
-      marcador.on('click', () => {
-        document.querySelectorAll('.tarjeta-rumbo').forEach(t => t.classList.remove('activa'));
-        tarjeta.classList.add('activa');
-      });
+      contenedorLista.appendChild(tarjeta);
+    });
 
-      cosmograma.appendChild(tarjeta);
+    // Filtros por año en el archivo inferior
+    const botonesFiltro = document.querySelectorAll('.btn-filtro');
+    botonesFiltro.forEach(btn => {
+      btn.addEventListener('click', () => {
+        botonesFiltro.forEach(b => b.classList.remove('activo'));
+        btn.classList.add('activo');
+        const anioSeleccionado = btn.dataset.anio;
+
+        document.querySelectorAll('.tarjeta-hito').forEach(card => {
+          if (anioSeleccionado === 'todos' || card.dataset.anio === anioSeleccionado) {
+            card.classList.remove('oculto');
+          } else {
+            card.classList.add('oculto');
+          }
+        });
+      });
     });
   </script>
 </body>
